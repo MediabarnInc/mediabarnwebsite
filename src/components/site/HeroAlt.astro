@@ -1,6 +1,6 @@
 ---
 // Hero for /alt/, from Figma "MB UX Assets" › "Mediabarn alt" (node 2023:12997, frame 1304 × 735).
-// Layers, back to front: the photo (fallback under the live silk), the dark wireframe waves,
+// Layers, back to front: the photo (fallback under the live silk), the brand waves,
 // the nav, the centered headline and line, and the client card strip along the bottom.
 // The strip runs wider than the screen in the design, so it scrolls as a slow marquee
 // (paused on hover or focus; a plain sideways scroller under reduced motion).
@@ -21,24 +21,21 @@ const navOrder = ['design', 'research', 'product'].map((id) => pillars.find((p) 
 		</div>
 	</SilkBackground>
 
-	{/* Figma "Abstract Element Dark": the brand waves, rotated, bleeding off the right */}
-	<div class="hero-waves pointer-events-none absolute flex items-center justify-center" aria-hidden="true">
-		<div class="hero-waves-inner flex-none"><img src={`${A}/waves-dark.svg`} alt="" class="block h-full w-full" /></div>
-	</div>
+	{/* Figma "Abstract Element Dark": the brand waves, supplied as a full-frame transparent PNG (1304 × 735) */}
+	<img src={`${A}/waves.png`} alt="" aria-hidden="true" class="hero-waves pointer-events-none absolute inset-0 h-full w-full object-cover" />
 
 	<div class="relative mx-auto max-w-[1304px]">
 		{/* nav */}
 		<header class="flex items-start justify-between px-[clamp(16px,3.2vw,42px)] pt-[30px]">
-			<a href="/" class="hero-logo relative block" aria-label="Mediabarn home">
-				<img src={`${A}/logo-barn.svg`} alt="" class="absolute" style="inset:0.49% 0.09% 2.39% 71.14%" />
-				<img src={`${A}/logo-text.svg`} alt="" class="absolute" style="inset:50.76% 12.28% 0.96% 0.44%" />
+			<a href="/" class="hero-logo block" aria-label="Mediabarn home">
+				<img src={`${A}/logo.svg`} alt="" width="161" height="50" class="block" />
 			</a>
 			<nav aria-label="Main" class="flex items-center gap-[clamp(20px,4vw,54px)] pr-[clamp(0px,1vw,37px)] pt-[0px]">
 				<ul role="list" class="hidden items-center gap-[54px] tab:flex">
 					{navOrder.map((p) => <li><a href={p.href} class="hero-link">{p.name}</a></li>)}
 				</ul>
 				<button type="button" class="menu-btn grid size-10 place-items-center -m-3" aria-expanded="false" aria-controls="alt-menu">
-					<img src={`${A}/menu.svg`} alt="" width="12" height="8" />
+					<img src={`${A}/menu.svg`} alt="" width="15" height="11" />
 					<span class="sr-only">Menu</span>
 				</button>
 			</nav>
@@ -55,21 +52,13 @@ const navOrder = ['design', 'research', 'product'].map((id) => pillars.find((p) 
 	<div class="strip relative mt-[clamp(48px,6.2vw,80px)]" tabindex="0" aria-label="Clients we’ve worked with" role="region">
 		<ul role="list" class="strip-track flex w-max">
 			{[0, 1].map((copy) => clientCards.map((c) => (
-				<li class:list={['card relative shrink-0', c.shadow && 'card-shadow']} aria-hidden={copy === 1 ? 'true' : undefined}>
+				<li class="card relative shrink-0" aria-hidden={copy === 1 ? 'true' : undefined}>
 					<img src={c.photo} alt="" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-					<div class="absolute inset-0" style={`background:${c.tint}`}></div>
-					{c.logo && (
-						<div class="absolute overflow-clip" style={`inset:${c.logo.inset}`}>
-							{c.logo.inner
-								? <div class="absolute" style={`inset:${c.logo.inner}`}><img src={c.logo.src} alt={copy === 0 ? c.name : ''} class="absolute inset-0 block h-full w-full" /></div>
-								: <img src={c.logo.src} alt={copy === 0 ? c.name : ''} class="absolute inset-0 block h-full w-full" />}
-						</div>
-					)}
-					{c.pieces && (
-						<div class="absolute left-1/2 -translate-x-1/2 overflow-clip" style={`top:${c.pieces.top};bottom:${c.pieces.bottom};aspect-ratio:${c.pieces.aspect}`} role={copy === 0 ? 'img' : undefined} aria-label={copy === 0 ? c.name : undefined}>
-							{c.pieces.items.map((it) => <img src={it.src} alt="" class="absolute block" style={`inset:${it.inset}`} />)}
-						</div>
-					)}
+					<div class="absolute overflow-clip" style={c.box}>
+						{c.inner
+							? <div class="absolute" style={`inset:${c.inner}`}><img src={c.logo} alt={copy === 0 ? c.name : ''} class="absolute inset-0 block h-full w-full" /></div>
+							: <img src={c.logo} alt={copy === 0 ? c.name : ''} class="absolute inset-0 block h-full w-full" />}
+					</div>
 				</li>
 			)))}
 		</ul>
@@ -103,9 +92,6 @@ const navOrder = ['design', 'research', 'product'].map((id) => pillars.find((p) 
 	.hero-alt { --brown: #483933; color: var(--brown); }
 	.hero-alt .hero-photo { left: -1.92%; top: -25.48%; width: 103.84%; height: 145.39%; transform: scaleX(-1); }
 
-	/* Figma: inset -72.94% -43.62% -116.47% -13.69%, element rotated 52.43° and sized against its box */
-	.hero-alt .hero-waves { inset: -72.94% -43.62% -116.47% -13.69%; container-type: size; }
-	.hero-alt .hero-waves-inner { width: hypot(50.4594cqw, 63.2428cqh); height: hypot(-49.5406cqw, 36.7572cqh); rotate: 52.43deg; }
 
 	.hero-alt .hero-logo { width: 161px; height: 50px; }
 	.hero-alt .hero-link { font-weight: 600; font-size: 14px; line-height: 1.204; letter-spacing: -0.05em; color: var(--brown); }
@@ -116,7 +102,6 @@ const navOrder = ['design', 'research', 'product'].map((id) => pillars.find((p) 
 	.hero-alt .hero-sub strong { font-weight: 600; }
 
 	.hero-alt .card { width: var(--card-size, clamp(150px, 18.8vw, 245px)); aspect-ratio: 1; background: #d9d9d9; }
-	.hero-alt .card-shadow { filter: drop-shadow(0 4px 6.6px rgba(71, 32, 32, .25)); }
 	.hero-alt .strip { overflow: hidden; }
 	.hero-alt .strip:focus-visible { outline-offset: -3px; }
 	@media (prefers-reduced-motion: no-preference) {

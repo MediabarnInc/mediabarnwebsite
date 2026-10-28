@@ -42,6 +42,6 @@ Copy follows `mediabarn-voice-and-tone-standards.md`: no em dashes, acronyms def
 
 Alternative home page, branched from `mb2.0` (79d5a8d) on 2026-10-28:
 
-- **Hero** from Figma “MB UX Assets” › “Mediabarn alt” (node 2023:12997): `src/components/site/HeroAlt.astro`, with the client cards in `src/data/clientCards.ts`.
+- **Hero** from Figma “MB UX Assets” › “Mediabarn alt” (node 2023:12997): `src/components/site/HeroAlt.astro`, with the client cards in `src/data/clientCards.ts`. The Figma strip had a seventh card (NIST); it’s left out until its photo is supplied.
 - **Silk background** (`src/components/site/SilkBackground.astro`): a WebGL2 shader in warm white, beige, sand and light brown that drifts and leans toward the pointer, with paper grain on top. Still frame under reduced motion; the Figma photo shows where WebGL2 isn’t available.
-- **Figma assets**: run `sh scripts/fetch-hero-alt-assets.sh` from the project folder to download the hero’s logo, waves, menu icon, card photos and client logos into `public/images/hero-alt/`. The links expire 2026-11-04; after that, regenerate them from the Figma node.
+- **Hero assets** (supplied 2026-10-28) are in `public/images/hero-alt/`: logo, menu icon, waves, the background photo, and six client cards (photos with their tint applied, plus white logos). The Uplifting Athletes SVG was exported 60 px wide with artwork running to 70 px, so its frame was widened to 70 to show the whole mark.
