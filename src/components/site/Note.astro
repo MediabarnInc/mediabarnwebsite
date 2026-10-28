@@ -1,0 +1,8 @@
+---
+// Review note for the client: hidden unless "Review notes" is on (ReviewToggle). Never ships.
+interface Props { title?: string; class?: string }
+const { title = 'Review', class: cls } = Astro.props;
+---
+<aside class:list={['wf-note border border-dashed border-[var(--line-strong)] bg-[color-mix(in_srgb,var(--paper-light)_85%,transparent)] px-4 py-3 text-[13.5px] leading-[1.55] text-[var(--ink)]', cls]}>
+	<span class="eyebrow eyebrow-em mr-2 !text-[11px] !text-[var(--red-ink)]">{title}</span><slot />
+</aside>

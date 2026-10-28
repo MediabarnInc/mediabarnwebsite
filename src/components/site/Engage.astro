@@ -1,0 +1,16 @@
+---
+// "Engage with us": how agencies and partners can buy. Shared by Federal and Healthcare.
+import Section from './Section.astro';
+import SectionHeader from './SectionHeader.astro';
+import { vehicleLogos } from '@/data/images';
+const vehicles = ['GSA MAS Contract #GS-07F-289BA', 'NIST Human Factors and Usability BPA', '8(a) joint venture partnerships', 'Teaming arrangements', 'Subcontracts through large federal consulting firms', 'Purchase card and micro-purchase'];
+---
+<Section tone="light" id="engage">
+	<SectionHeader before="Easy to work with, and easy to " em="buy" after=" from.">Mediabarn is a small business, available through several federal contract vehicles, and partners with large federal consulting and technology firms. We are a founding member of the Digital Services Coalition, a nonprofit focused on government customer experience.</SectionHeader>
+	<ol role="list" class="mt-14 grid border-t border-[var(--line)] tab:grid-cols-2 desk:grid-cols-3">
+		{vehicles.map((v, i) => <li class="flex gap-4 border-b border-[var(--line)] py-5 pr-6"><span class="font-semibold text-[12px] text-[var(--red-ink)]">{String(i + 1).padStart(2, '0')}</span><span class="font-semibold">{v}</span></li>)}
+	</ol>
+	<div class="mt-8 flex flex-wrap gap-4">
+		{vehicleLogos.map((l) => <div class="glass grid h-16 w-40 place-items-center px-5"><img src={l.src} alt={l.name} loading="lazy" class="vehicle-logo max-h-8 max-w-full object-contain" /></div>)}
+	</div>
+</Section>

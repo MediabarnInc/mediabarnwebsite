@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Note from '@/components/site/Note.astro';
+import Placeholder from '@/components/site/Placeholder.astro';
+import { contact, products } from '@/data/site';
+
+const topics = [
+	{ v: 'research', l: 'Plan a research study' },
+	{ v: 'lab', l: 'Book the lab or focus group room' },
+	{ v: 'design', l: 'Start a design project' },
+	...products.map((p) => ({ v: p.slug, l: `See a demo of ${p.name}` })),
+	{ v: 'other', l: 'Something else' },
+];
+const field = 'w-full border border-[var(--line-strong)] bg-[var(--card)] px-3 py-2.5 text-[16px] focus:border-[var(--line-strong)]';
+---
+<BaseLayout title="Contact" description="Start a conversation with Mediabarn about research, design, or product.">
+	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<div class="wrap grid gap-14 desk:grid-cols-[1.2fr_.8fr]">
+			<div>
+				<h1 class="mb-6 max-w-[14ch]">Start the <span class="em">conversation</span>.</h1>
+				<p class="lede mb-10 max-w-[52ch]">Tell us what you’re working on. One form reaches all three pillars, and we’ll route it to the right people.</p>
+
+				<form action="#" method="post" class="grid gap-6">
+					<fieldset>
+						<legend class="h4 mb-3">What can we help with?</legend>
+						<div class="grid gap-2 pad:grid-cols-2">
+							{topics.map((t, i) => (
+								<label class="flex cursor-pointer items-center gap-3 border border-[var(--line)] px-4 py-3 text-[15px] has-[:checked]:border-[var(--line-strong)] has-[:checked]:font-semibold">
+									<input type="radio" name="topic" value={t.v} checked={i === 0} class="accent-[var(--red-deep)]" />{t.l}
+								</label>
+							))}
+						</div>
+					</fieldset>
+					<div class="grid gap-4 pad:grid-cols-2">
+						<label class="grid gap-1.5 text-[14px] font-semibold">Name<input class={field} name="name" autocomplete="name" /></label>
+						<label class="grid gap-1.5 text-[14px] font-semibold">Work email <span class="sr-only">(required)</span><input class={field} type="email" name="email" autocomplete="email" required /></label>
+						<label class="grid gap-1.5 text-[14px] font-semibold">Organization<input class={field} name="org" autocomplete="organization" /></label>
+						<label class="grid gap-1.5 text-[14px] font-semibold">Phone<input class={field} type="tel" name="phone" autocomplete="tel" /></label>
+					</div>
+					<label class="grid gap-1.5 text-[14px] font-semibold">Tell us a little more<textarea class={field} rows="5" name="message"></textarea></label>
+					<button type="submit" class="btn justify-self-start max-pad:w-full">Send</button>
+				</form>
+				<Note class="mt-8">Links across the site add ?topic= (for example “Book the lab” → lab), which preselects the right option. The form isn’t wired yet; the TrustLedger site’s HubSpot setup can be reused, with the topic routing to the right team.</Note>
+			</div>
+			<aside class="grid content-start gap-8 desk:pt-28">
+				{contact.offices.map((o) => <div><h2 class="eyebrow mb-2">{o.name}</h2><p class="text-[17px] leading-[1.6]">{o.lines.map((l) => <>{l}<br /></>)}</p></div>)}
+				<div><h2 class="eyebrow mb-2">Email and phone</h2><p class="text-[17px] leading-[1.6]"><a class="underline underline-offset-4" href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.phone}</p></div>
+				<Placeholder label="Map: Arlington and Virginia Beach" ratio="4/3" mood="sand" />
+			</aside>
+		</div>
+	</section>
+</BaseLayout>
+<script is:inline>
+	(() => {
+		try {
+			const t = new URLSearchParams(location.search).get('topic');
+			const r = t && document.querySelector(`input[name=topic][value="${CSS.escape(t)}"]`);
+			if (r) r.checked = true;
+		} catch {}
+	})();
+</script>

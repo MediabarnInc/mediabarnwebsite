@@ -1,0 +1,60 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/site/Section.astro';
+import SectionHeader from '@/components/site/SectionHeader.astro';
+import Placeholder from '@/components/site/Placeholder.astro';
+import Note from '@/components/site/Note.astro';
+import Engage from '@/components/site/Engage.astro';
+import Cta from '@/components/site/Cta.astro';
+import { photos } from '@/data/images';
+
+const pillarsHc = [
+	{ t: 'Outcome focused', d: 'We tie the work to your organization’s goals. We help set measures such as customer effort, satisfaction, and Net Promoter Score (NPS), and assess the business value of key journeys.' },
+	{ t: 'Enterprise CX', d: 'Service design connects front-stage and back-stage activity, so care works as one service across departments instead of a set of separate ones.' },
+	{ t: 'Research', d: 'Journey maps, data-driven personas, and qualitative and quantitative research, in two research labs with strict protocols and HIPAA compliance.' },
+	{ t: 'Every touchpoint', d: 'We design for the whole experience, including in-person moments, not only websites and apps.' },
+];
+const people = [
+	{ t: 'Patients', d: 'The people receiving care. We use patient-friendly language, so no one needs medical expertise to navigate their own care.' },
+	{ t: 'Practitioners', d: 'The people providing care, whose tools and workflows shape what patients experience.' },
+	{ t: 'Payers', d: 'The people covering the cost, whose processes patients feel in every bill and approval.' },
+];
+---
+<BaseLayout title="Healthcare" pillar="design" description="Enterprise customer experience for patients, practitioners, and payers.">
+	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<div class="wrap grid gap-10 desk:grid-cols-[1.1fr_.9fr] desk:items-end">
+			<div>
+				<nav aria-label="Breadcrumb" class="crumbs mb-4"><a href="/design/">Design</a> / <span aria-current="page">Healthcare</span></nav>
+				<h1 class="mb-6 max-w-[17ch]">Aligning experiences for patients, providers, and <span class="em">payers</span>.</h1>
+				<p class="lede max-w-[56ch]">Healthcare journeys cross digital and traditional channels, and aligning them takes time. We provide enterprise customer experience (CX) strategy, planning, and execution that improves those journeys step by step as your CX practice matures.</p>
+				<div class="mt-8 flex flex-wrap gap-3"><a href="/contact/" class="btn max-pad:w-full">Talk to our healthcare team</a><a href="/product/cx-align/" class="btn btn-outline max-pad:w-full">See CXAlign</a></div>
+			</div>
+			<Placeholder label="Healthcare photo" ratio="4/3" src={photos.telehealthNurse} alt="A nurse on a telehealth call" focus="50% 30%" />
+		</div>
+	</section>
+
+	<Section bg={{ label: "a care team planning together", src: photos.healthMeeting, mood: "sand" }}>
+		<SectionHeader before="Outcome-based " em="enterprise" after=" CX for healthcare." />
+		<div class="mt-12 grid gap-4 tab:grid-cols-2">
+			{pillarsHc.map((s) => <div class="glass p-7"><h3 class="mb-3">{s.t}</h3><p class="body">{s.d}</p></div>)}
+		</div>
+	</Section>
+
+	<Section tone="light">
+		<SectionHeader before="Patients, practitioners, and " em="payers" after=".">Our clients include hospital systems, health insurers, medical equipment makers, and federal health agencies.</SectionHeader>
+		<div class="mt-12 grid gap-6 desk:grid-cols-3">
+			{people.map((p) => <div class="border border-[var(--line)] glass p-7"><h3 class="mb-3">{p.t}</h3><p class="body">{p.d}</p></div>)}
+		</div>
+	</Section>
+
+	<Section>
+		<div class="grid gap-8 border border-[var(--line-strong)] p-8 desk:grid-cols-[1.2fr_.8fr] desk:items-center">
+			<div><h2 class="h3 mb-3">Keep the work moving with CXAlign.</h2><p class="body">CXAlign brings patient experience priorities, initiatives, research, and teams into one view, so healthcare leaders can see gaps sooner and decide what comes next.</p></div>
+			<a href="/product/cx-align/" class="btn justify-self-start max-pad:w-full desk:justify-self-end">Explore CXAlign</a>
+		</div>
+	</Section>
+
+	<Engage />
+	<div class="wrap"><Note class="my-6">Copy rewritten from the current /healthcare page. The CXAlign callout is new and is where the Design and Product pillars meet.</Note></div>
+	<Cta />
+</BaseLayout>

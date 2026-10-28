@@ -1,0 +1,12 @@
+---
+// Section heading: `em` marks the emphasized word (red is reserved for the loop, so it renders in ink).
+// The default slot is the one-line thesis that opens the section. No kicker: the heading carries itself.
+interface Props { before?: string; em: string; after?: string; as?: 'h1' | 'h2'; wide?: boolean; class?: string }
+const { before = '', em, after = '', as: Tag = 'h2', wide = false, class: cls } = Astro.props;
+---
+<header class:list={['grid gap-5', !wide && 'desk:grid-cols-[1.1fr_.9fr] desk:items-end desk:gap-16', cls]}>
+	<div>
+		<Tag class:list={[!wide && 'max-w-[16ch]']}>{before}<span class="em">{em}</span>{after}</Tag>
+	</div>
+	{Astro.slots.has('default') && <p class:list={['lede', !wide && 'max-w-[50ch] desk:border-l desk:border-[var(--line)] desk:pl-8']}><slot /></p>}
+</header>

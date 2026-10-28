@@ -1,0 +1,58 @@
+---
+import '@/styles/global.css';
+import ReviewToggle from '@/components/site/ReviewToggle.astro';
+import Nav from '@/components/site/Nav.astro';
+import Footer from '@/components/site/Footer.astro';
+import NextLens from '@/components/site/NextLens.astro';
+import SquareCursor from '@/components/site/SquareCursor.astro';
+import type { PillarId } from '@/data/site';
+
+interface Props {
+	title: string;
+	description?: string;
+	/** which pillar this page belongs to: lights it in the nav and adds the loop band at the end */
+	pillar?: PillarId;
+	/** 'none': the page brings its own header (the /alt/ hero has the nav built in) */
+	nav?: 'lens' | 'none';
+}
+const { title, description = 'Mediabarn brings research, design, and product together, using Human-Centered Design.', pillar, nav = 'lens' } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title} | Mediabarn</title>
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#EAE4D7" />
+		<meta name="robots" content="noindex" />{/* pre-launch */}
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		{/* Motion gate: hidden/resting states only exist under html.motion, so without JS,
+		    without IntersectionObserver, or with reduced motion, everything renders in place. */}
+		<script is:inline>
+			(() => {
+				addEventListener('load', () => setTimeout(() => document.documentElement.classList.add('loaded'), 100));
+				if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+				const r = document.documentElement;
+				r.classList.add('motion');
+				addEventListener('DOMContentLoaded', () => {
+					try {
+						const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { e.target.classList.add('up'); io.unobserve(e.target); } }, { threshold: 0.08 });
+						document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+					} catch { r.classList.remove('motion'); }
+				});
+			})();
+		</script>
+	</head>
+	<body>
+		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[70] focus:bg-[var(--red-deep)] focus:px-3 focus:py-2 focus:text-white">Skip to content</a>
+		{nav === 'lens' && <Nav pillar={pillar} />}
+		<main id="main">
+			<slot />
+			{pillar && <NextLens current={pillar} />}
+		</main>
+		<Footer />
+		<ReviewToggle />
+		<SquareCursor />
+	</body>
+</html>

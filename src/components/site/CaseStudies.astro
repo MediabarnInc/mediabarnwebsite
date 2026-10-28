@@ -1,0 +1,34 @@
+---
+// Case studies band: one featured story and two more, each a photo with a frosted panel over it.
+// Used high on the home page and the Design page so the work shows up before the explanation.
+import BgImage from './BgImage.astro';
+import SectionHeader from './SectionHeader.astro';
+import Note from './Note.astro';
+import { cases, caseHref } from '@/data/cases';
+import { photos } from '@/data/images';
+import { pillars } from '@/data/site';
+interface Props { id?: string; more?: boolean }
+const { id = 'work', more = false } = Astro.props;
+const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
+---
+<section id={id} class="dark noisy relative overflow-hidden py-[clamp(72px,9vw,140px)]" aria-labelledby={`${id}-h`}>
+	<BgImage label="people at work around a table" src={photos.peopleWriting} scrim="dark" mood="ember" />
+	<div class="wrap relative">
+		<SectionHeader before="What changed for the " em="people" after=" we designed for.">Real projects, start to finish: who we worked with, what we did, and what changed for the people on the other side.</SectionHeader>
+		<div class="mt-14 grid gap-5 desk:grid-cols-[1.35fr_1fr] desk:grid-rows-2">
+			{cases.map((c, i) => (
+				<article class:list={['relative isolate flex items-end overflow-hidden p-3 pad:p-5', i === 0 ? 'min-h-[440px] desk:row-span-2 desk:min-h-[620px]' : 'min-h-[300px]']}>
+					<BgImage label={c.photo} src={c.image} scrim="dark" mood={c.mood} labelAt="tr" />
+					<div class="glass flex w-full flex-col gap-3 p-6 pad:p-7">
+						<p class="text-[14px] font-medium text-[var(--fg-muted)]">{c.who} · {c.pillars.map(pillarName).join(' + ')}</p>
+						<h3 class:list={['font-serif font-normal leading-[1.08]', i === 0 ? 'text-[clamp(30px,3.4vw,46px)]' : 'text-[clamp(26px,2.4vw,32px)]']}>{c.title}</h3>
+						<p class="body max-w-[52ch]">{c.outcome}</p>
+						<a href={caseHref(c)} class="link mt-1 self-start text-[15px]">Read the case study <span class="arrow" aria-hidden="true">→</span></a>
+					</div>
+				</article>
+			))}
+		</div>
+		<Note class="mt-6">All three stories are placeholders: the current site’s case studies are still “Accordion content goes here!”. We need problem, approach, and outcome for each, plus a photo. Each links to a case study page built from the same template.</Note>
+		{more && <a href="/design/#work" class="btn btn-light mt-10 max-pad:w-full">More of our work <span class="arrow" aria-hidden="true">→</span></a>}
+	</div>
+</section>

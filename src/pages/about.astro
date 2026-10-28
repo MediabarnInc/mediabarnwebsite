@@ -1,0 +1,47 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/site/Section.astro';
+import SectionHeader from '@/components/site/SectionHeader.astro';
+import Note from '@/components/site/Note.astro';
+import Placeholder from '@/components/site/Placeholder.astro';
+import Proof from '@/components/site/Proof.astro';
+import Cta from '@/components/site/Cta.astro';
+import { photos, headshots } from '@/data/images';
+import { pillars } from '@/data/site';
+
+const leaders = [
+	{ n: 'Keith Deaven', r: 'CEO and Co-Founder', img: headshots.keith },
+	{ n: 'Jason Pentecost', r: 'Principal and Co-Founder', img: headshots.jason },
+	{ n: 'Greg Herring', r: 'Vice President, Strategy and Operations', img: headshots.greg },
+	{ n: 'Mauro Scappa', r: 'Vice President, Placement Services', img: headshots.mauro },
+];
+---
+<BaseLayout title="About" description="Mediabarn’s customer-centric philosophy, leadership, and history.">
+	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<div class="wrap grid gap-10 desk:grid-cols-[1.1fr_.9fr] desk:items-end">
+			<div>
+				<h1 class="mb-6 max-w-[16ch]">A customer-centric philosophy defines <span class="em">who</span> we are.</h1>
+				<p class="lede max-w-[56ch]">We are committed to applying Human-Centered Design (HCD) methods to understand customer needs, collect feedback, and use that feedback to improve services and products. Whether the people are customers, citizens, or employees, our goal is to improve the experience of every person involved.</p>
+			</div>
+			<Placeholder label="Team photo" ratio="4/3" src={photos.officeLobby} alt="The Mediabarn office, with the red barn wall" />
+		</div>
+	</section>
+
+	<Section tone="light" bg={{ label: "people at work around a table", src: photos.peopleWriting, mood: "sand" }}>
+		<SectionHeader before="Three pillars, one " em="practice" after=".">Research, design, and product share the same people, the same methods, and the same lab. That’s what lets each one make the others better.</SectionHeader>
+		<div class="mt-12 grid gap-4 desk:grid-cols-3">
+			{pillars.map((p) => <a href={p.href} class="flex flex-col gap-2 glass p-7"><span class="h3">{p.name} →</span><span class="eyebrow">{p.verb}</span><span class="body">{p.oneLiner}</span></a>)}
+		</div>
+	</Section>
+
+	<Section id="leadership">
+		<SectionHeader before="There’s little substitute for " em="experience" after=".">Our management team averages 20 years each in the field, in roles at a wide range of high-profile digital companies. They lead, challenge, and support the people who do the work.</SectionHeader>
+		<ul role="list" class="mt-12 grid gap-8 pad:grid-cols-2 desk:grid-cols-4">
+			{leaders.map((l) => <li><Placeholder label="Headshot" ratio="1/1" class="mb-4" src={l.img} alt={l.n} focus="50% 25%" /><h3 class="h4">{l.n}</h3><p class="body text-[14.5px]">{l.r}</p></li>)}
+		</ul>
+		<Note class="mt-6">Mauro Scappa’s title is “Vice President, Placement Services,” which belongs to Creative Staffing. With staffing removed from the site, should his title change, or should he come off this list?</Note>
+	</Section>
+
+	<Proof />
+	<Cta />
+</BaseLayout>

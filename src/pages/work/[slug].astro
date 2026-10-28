@@ -1,0 +1,144 @@
+---
+// Case study page: one template for every story in src/data/cases.ts. Structure follows the reference layout
+// (challenge / approach / result up front, then chapters with big media, a quote, the ending, related work),
+// with the chapters told as the loop: Understand → Shape → Run, one per pillar the work used.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BgImage from '@/components/site/BgImage.astro';
+import Section from '@/components/site/Section.astro';
+import SectionHeader from '@/components/site/SectionHeader.astro';
+import Placeholder from '@/components/site/Placeholder.astro';
+import Note from '@/components/site/Note.astro';
+import Cta from '@/components/site/Cta.astro';
+import { cases, caseDetail, caseHref } from '@/data/cases';
+import { pillars } from '@/data/site';
+
+export function getStaticPaths() {
+	return cases.map((c) => ({ params: { slug: c.slug } }));
+}
+const c = cases.find((x) => x.slug === Astro.params.slug)!;
+const d = caseDetail(c);
+const used = pillars.filter((p) => c.pillars.includes(p.id));
+const chapters = used.map((p, i) => ({ pillar: p, n: i + 1, ...d.chapters[p.id]! }));
+const others = cases.filter((x) => x.slug !== c.slug);
+const summary = [
+	{ t: 'Challenge', d: d.challenge },
+	{ t: 'Approach', d: d.approach },
+	{ t: 'Result', d: d.result },
+];
+---
+<BaseLayout title={`${c.title} · ${c.who}`} description={d.result}>
+	{/* ---------- Hero: the story's photo, title low on the frame ---------- */}
+	<section class="dark noisy relative overflow-hidden" aria-labelledby="case-h">
+		<BgImage label={c.photo} src={c.image} scrim="dark" mood={c.mood} />
+		<div class="wrap relative flex min-h-[min(720px,calc(100svh-var(--nav-h)))] flex-col justify-end py-16 desk:py-24">
+			<nav aria-label="Breadcrumb" class="crumbs mb-5"><a href="/design/#work">Our work</a> / <span aria-current="page">{c.who}</span></nav>
+			<h1 id="case-h" class="mb-6 max-w-[18ch]">{c.title}</h1>
+			<p class="text-[17px] font-medium text-[var(--fg-muted)]">{c.who} · {used.map((p) => p.name).join(' + ')}</p>
+		</div>
+	</section>
+
+	{/* ---------- At a glance ---------- */}
+	<Section tone="light">
+		<dl class="grid gap-8 desk:grid-cols-3 desk:gap-0">
+			{summary.map((s, i) => (
+				<div class:list={['flex flex-col gap-3', i > 0 && 'desk:border-l desk:border-[var(--line)] desk:pl-10', i < 2 && 'desk:pr-10']}>
+					<dt class="h3">{s.t}</dt>
+					<dd class="body">{s.d}</dd>
+				</div>
+			))}
+		</dl>
+
+		<div class="mt-20 grid gap-12 desk:grid-cols-[1.5fr_1fr] desk:gap-20">
+			<p class="font-serif text-[clamp(24px,2.4vw,34px)] leading-[1.3]">{d.intro}</p>
+			<aside class="glass flex flex-col gap-6 self-start p-7">
+				<div>
+					<h2 class="h3 mb-3">What we did</h2>
+					<ul role="list" class="flex flex-wrap gap-2">
+						{used.map((p) => <li><a href={p.href} class="inline-block border border-[var(--line-strong)] px-3 py-1.5 text-[14px] font-semibold hover:border-[var(--red)] hover:text-[var(--red-ink)]">{p.name}</a></li>)}
+					</ul>
+				</div>
+				<div>
+					<h2 class="h3 mb-3">Services</h2>
+					<ul role="list" class="grid gap-1.5 body">{d.services.map((s) => <li>– {s}</li>)}</ul>
+				</div>
+				{d.siteUrl
+					? <a href={d.siteUrl} class="link self-start text-[15px]" rel="noopener">Visit the site <span class="arrow" aria-hidden="true">→</span></a>
+					: <p class="body">[Link to the live site, if it’s public]</p>}
+			</aside>
+		</div>
+	</Section>
+
+	{/* ---------- The numbers ---------- */}
+	<Section tone="paper">
+		<h2 class="sr-only">Results</h2>
+		<ul role="list" class="grid gap-10 tab:grid-cols-3">
+			{d.stats.map((s) => (
+				<li class="flex flex-col gap-2 border-t-2 border-[var(--red)] pt-6">
+					<span class="font-serif text-[clamp(56px,7vw,104px)] leading-none">{s.value}</span>
+					<span class="body max-w-[24ch]">{s.label}</span>
+				</li>
+			))}
+		</ul>
+	</Section>
+
+	{/* ---------- Chapters: one per stage of the loop the work went through ---------- */}
+	{chapters.map((ch, i) => (
+		<Section tone={i % 2 ? 'light' : 'paper'} id={`ch-${ch.pillar.id}`}>
+			<div class="grid gap-8 desk:grid-cols-[1fr_2fr] desk:gap-20">
+				<p class="font-serif text-[clamp(36px,4vw,56px)] leading-none">
+					<a href={ch.pillar.href} class="hover:text-[var(--red-ink)]">{ch.pillar.verb}.</a>
+					<span class="mt-3 block font-sans text-[14px] font-semibold uppercase tracking-[0.1em] text-[var(--fg-muted)]">0{ch.n} · {ch.pillar.name}</span>
+				</p>
+				<div>
+					<h2 class="mb-6 max-w-[20ch]">{ch.heading}</h2>
+					<p class="lede max-w-[62ch]">{ch.body}</p>
+				</div>
+			</div>
+			{i % 2 === 0
+				? (
+					<figure class="mt-14">
+						<Placeholder label={`${ch.pillar.name} artifact: full width`} ratio="21/9" src={ch.image} alt={ch.caption} />
+						<figcaption class="body mt-3">{ch.caption}</figcaption>
+					</figure>
+				) : (
+					<div class="mt-14 grid gap-5 tab:grid-cols-2">
+						<figure><Placeholder label={`${ch.pillar.name} artifact: before`} ratio="4/3" /><figcaption class="body mt-3">[Before: what people saw]</figcaption></figure>
+						<figure><Placeholder label={`${ch.pillar.name} artifact: after`} ratio="4/3" src={ch.image} alt={ch.caption} /><figcaption class="body mt-3">{ch.caption}</figcaption></figure>
+					</div>
+				)}
+		</Section>
+	))}
+
+	{/* ---------- Client quote ---------- */}
+	<section class="dark noisy glow-ember relative overflow-hidden py-[clamp(72px,9vw,140px)]">
+		<figure class="wrap relative max-w-[1100px]">
+			<blockquote class="font-serif text-[clamp(30px,3.6vw,52px)] leading-[1.18]">“{d.quote.q}”</blockquote>
+			<figcaption class="mt-8 text-[16px] font-medium text-[var(--fg-muted)]">{d.quote.who}</figcaption>
+		</figure>
+	</section>
+
+	{/* ---------- The ending, and back into the loop ---------- */}
+	<Section tone="light">
+		<SectionHeader before="What " em="changed" after=".">{d.closing}</SectionHeader>
+		<Note class="mt-10">Template placeholder. Every bracketed line comes from caseDetail() in src/data/cases.ts: add a `detail` object to the case to replace them. Each case needs the challenge, approach, result, intro, three numbers, a chapter per pillar with an image, a client quote (with permission), and the ending.</Note>
+	</Section>
+
+	{/* ---------- More work ---------- */}
+	<Section tone="paper">
+		<SectionHeader before="More of our " em="work" after="." />
+		<ul role="list" class="mt-12 grid gap-5 tab:grid-cols-2">
+			{others.map((o) => (
+				<li class="relative isolate flex min-h-[340px] items-end overflow-hidden p-3 pad:p-5">
+					<BgImage label={o.photo} src={o.image} scrim="dark" mood={o.mood} labelAt="tr" />
+					<a href={caseHref(o)} class="glass-dark glass flex w-full flex-col gap-2 p-6 text-[var(--paper-light)]">
+						<span class="text-[14px] font-medium opacity-80">{o.who}</span>
+						<span class="font-serif text-[clamp(24px,2.2vw,30px)] leading-[1.1]">{o.title}</span>
+						<span class="text-[15px] font-semibold">Read the case study <span class="arrow" aria-hidden="true">→</span></span>
+					</a>
+				</li>
+			))}
+		</ul>
+	</Section>
+
+	<Cta heading="Have a problem like " em="this" after="?" />
+</BaseLayout>
