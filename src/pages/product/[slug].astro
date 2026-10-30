@@ -27,12 +27,18 @@ const anyConfirm = d.features.some((f) => f.confirm);
 					<p class="lede max-w-[52ch]">{d.lede}</p>
 					<div class="mt-8 flex flex-wrap gap-3">
 						<a href={`/contact/?topic=${p.slug}`} class="btn max-pad:w-full">{d.cta}</a>
-						<a href="#features" class="btn btn-outline max-pad:w-full">See features</a>
+						{d.site
+							? <a href={d.site.url} class="btn btn-outline max-pad:w-full" target="_blank" rel="noopener">Visit {d.site.label} <span class="arrow" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+							: <a href="#features" class="btn btn-outline max-pad:w-full">See features</a>}
 					</div>
+					{d.usedBy && <p class="body mt-6 text-[14.5px]"><span class="font-semibold">Used by</span> {d.usedBy.join(', ')}, and other federal agencies.</p>}
 				</div>
 				<div class="border border-[var(--line-strong)] p-2">
 					<div class="mb-2 flex gap-1.5" aria-hidden="true"><span class="size-2.5 rounded-full bg-[var(--line-strong)]"></span><span class="size-2.5 rounded-full bg-[var(--line-strong)]"></span><span class="size-2.5 rounded-full bg-[var(--line-strong)]"></span></div>
-					<Placeholder label={`${p.name}: product screenshot`} ratio="16/10" />
+					{d.shot
+						? <Placeholder label={`${p.name}: product screenshot`} ratio={`${d.shot.image.width}/${d.shot.image.height}`} src={d.shot.image} alt={d.shot.alt} sizes="(min-width: 1021px) 560px, 100vw" />
+						: <Placeholder label={`${p.name}: product screenshot`} ratio="16/10" />}
+					{d.shot?.caption && <p class="body mt-2 px-1 text-[13px]">{d.shot.caption}</p>}
 				</div>
 			</div>
 		</div>
@@ -49,13 +55,15 @@ const anyConfirm = d.features.some((f) => f.confirm);
 		<SectionHeader before="What " em={p.name} after=" does." />
 		<div class="mt-12 grid gap-10 desk:grid-cols-2">
 			{d.features.map((f) => (
-				<div class="grid gap-4 pad:grid-cols-[.9fr_1.1fr] pad:items-center">
-					<Placeholder label={`Screen: ${f.t}`} ratio="4/3" />
+				<div class:list={['grid gap-4', !f.image && (d.features.some((x) => x.image) ? 'glass self-start p-8' : 'pad:grid-cols-[.9fr_1.1fr] pad:items-center')]}>
+					{f.image
+						? <Placeholder label={`Screen: ${f.t}`} ratio={`${f.image.width}/${f.image.height}`} src={f.image} alt={f.alt} class="feature-shot" sizes="(min-width: 1021px) 560px, 100vw" />
+						: !d.features.some((x) => x.image) && <Placeholder label={`Screen: ${f.t}`} ratio="4/3" />}
 					<div><h3 class="mb-2">{f.t}</h3><p class="body">{f.d}</p></div>
 				</div>
 			))}
 		</div>
-		{anyConfirm && <Note class="mt-8">Features are inferred from the one-line description. Please have the product owner confirm or replace them.</Note>}
+		{anyConfirm && <Note class="mt-8">These features are inferred from the one-line description. Please have the product owner confirm or replace them.</Note>}
 	</Section>
 
 	<Section tone="light">
@@ -73,7 +81,7 @@ const anyConfirm = d.features.some((f) => f.confirm);
 				<p class="body max-w-[52ch]">{p.name} was built by the same team that runs our research lab and design studio. We test it with real users, and what we learn goes into the next release.</p>
 			</div>
 			{d.pricing ? (
-				<div class="border border-[var(--line-strong)] p-8"><p class="eyebrow mb-2">Pricing</p><p class="h3 mb-4">{d.pricing}</p><a href={`/contact/?topic=${p.slug}`} class="btn max-pad:w-full">{d.cta}</a></div>
+				<div class="border border-[var(--line-strong)] p-8"><p class="eyebrow mb-2">Pricing</p><p class="h3 mb-4">{d.pricing}</p><div class="flex flex-wrap gap-3"><a href={`/contact/?topic=${p.slug}`} class="btn max-pad:w-full">{d.cta}</a>{d.site && <a href={d.site.url} class="btn btn-outline max-pad:w-full" target="_blank" rel="noopener">See plans <span class="arrow" aria-hidden="true">↗</span><span class="sr-only"> on {d.site.label} (opens in a new tab)</span></a>}</div></div>
 			) : (
 				<div class="grid gap-4 self-start  pad:grid-cols-3">
 					{[['Tested', 'with real users in our lab'], ['Supported', 'by the team that built it'], ['Improved', 'from what users tell us']].map(([t, s]) => <div class="glass p-5"><p class="h4">{t}</p><p class="body text-[14.5px]">{s}</p></div>)}

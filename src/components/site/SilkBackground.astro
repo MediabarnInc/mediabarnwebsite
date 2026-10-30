@@ -5,10 +5,13 @@
 // pauses in hidden tabs, draws one still frame under reduced motion, and leaves the fallback
 // (`slot`, e.g. a photo) visible when WebGL2 isn't available. Paper grain comes from the site's
 // global grain layer plus a stronger local one here.
-interface Props { class?: string; fixed?: boolean }
-const { class: cls, fixed = false } = Astro.props;
+// `texture` (an image URL) lays a photo under the silk; the silk is then blended over it (see
+// .silk.textured below) so the photo's light and shadow show through the moving glow.
+interface Props { class?: string; fixed?: boolean; texture?: string }
+const { class: cls, fixed = false, texture } = Astro.props;
 ---
-<div class:list={['silk pointer-events-none overflow-hidden', fixed ? 'fixed inset-0 -z-10' : 'absolute inset-0', cls]} aria-hidden="true">
+<div class:list={['silk pointer-events-none overflow-hidden', fixed ? 'fixed inset-0 -z-10' : 'absolute inset-0', texture && 'textured', cls]} aria-hidden="true">
+	{texture && <img src={texture} alt="" class="silk-texture absolute inset-0 h-full w-full object-cover" decoding="async" fetchpriority="high" />}
 	<div class="silk-fallback absolute inset-0"><slot /></div>
 	<canvas class="silk-canvas absolute inset-0 h-full w-full opacity-0 transition-opacity duration-1000"></canvas>
 	<div class="silk-grain absolute inset-0"></div>
@@ -19,6 +22,8 @@ const { class: cls, fixed = false } = Astro.props;
 	.silk-grain { background-image: var(--grain); background-size: 200px; opacity: .5; mix-blend-mode: soft-light; }
 	.silk.live .silk-canvas { opacity: 1; }
 	.silk.live .silk-fallback { opacity: 0; transition: opacity 1s; }
+	.silk.textured .silk-fallback { display: none; } /* the texture stands in for the fallback photo */
+	.silk.textured.live .silk-canvas { mix-blend-mode: var(--silk-blend, soft-light); opacity: var(--silk-mix, 1); } /* soft light keeps the photo's shadows and grain under the moving glow */
 </style>
 
 <script>

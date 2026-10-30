@@ -7,6 +7,7 @@ import Note from '@/components/site/Note.astro';
 import Placeholder from '@/components/site/Placeholder.astro';
 import Cta from '@/components/site/Cta.astro';
 import { products } from '@/data/site';
+import { details } from '@/data/productDetails';
 ---
 <BaseLayout title="Product" pillar="product" description="Software built and supported by Mediabarn: Chirp, Edjit, CXAlign, and Mediabarn Time.">
 	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
@@ -31,7 +32,9 @@ import { products } from '@/data/site';
 					<p class="lede mb-8 max-w-[48ch]">{p.summary}</p>
 					<div class="flex flex-wrap gap-3"><a href={p.href} class="btn max-pad:w-full">Explore {p.name}</a><a href={`/contact/?topic=${p.slug}`} class="btn btn-outline max-pad:w-full">Request a demo</a></div>
 				</div>
-				<Placeholder label={`${p.name}: product screenshot`} ratio="16/10" />
+				{details[p.slug]?.shot
+					? <Placeholder label={`${p.name}: product screenshot`} ratio={`${details[p.slug].shot!.image.width}/${details[p.slug].shot!.image.height}`} src={details[p.slug].shot!.image} alt={details[p.slug].shot!.alt} sizes="(min-width: 1021px) 560px, 100vw" />
+					: <Placeholder label={`${p.name}: product screenshot`} ratio="16/10" />}
 			</div>
 		</section>
 	))}

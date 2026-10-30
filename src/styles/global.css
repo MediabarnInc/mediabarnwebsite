@@ -226,6 +226,20 @@ html.show-notes .wf-note { display: block; }
 /* Scroll reveal (only with motion + JS; content is always rendered in its end state otherwise) */
 html.motion [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
 html.motion [data-reveal].up { opacity: 1; transform: none; }
+/* data-stagger: its children rise in one after another (set --i on each child for the order) */
+html.motion [data-stagger] > * { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--i, 0) * 110ms); }
+html.motion [data-stagger].up > * { opacity: 1; transform: none; }
+/* data-unveil: a photo uncovers from the bottom while it settles from a slight zoom */
+html.motion [data-unveil] { clip-path: inset(18% 0 0 0); transition: clip-path 1.2s var(--ease); }
+html.motion [data-unveil] img { scale: 1.12; transition: scale 1.6s var(--ease); }
+html.motion [data-unveil].up { clip-path: inset(0); }
+html.motion [data-unveil].up img { scale: 1; }
+/* .parallax: the photo inside drifts a little slower than the page (CSS scroll-driven; still photo elsewhere).
+   Longhands, so the minifier can't fold animation-timeline into the shorthand. */
+@supports (animation-timeline: view()) {
+  html.motion .parallax img { scale: 1.14; animation-name: mb-parallax; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: view(); }
+}
+@keyframes mb-parallax { from { translate: 0 -6%; } to { translate: 0 6%; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

@@ -66,15 +66,15 @@ export const products: Product[] = [
   {
     slug: 'chirp',
     name: 'Chirp',
-    for: 'Country clubs',
-    summary: 'Members, events, and RSVPs in one place, so club staff spend less time on spreadsheets and more time with members.',
+    for: 'Private clubs',
+    summary: 'Member engagement for private clubs: it spots which members are drifting away, why, and what staff should do next.',
     href: '/product/chirp/',
   },
   {
     slug: 'edjit',
     name: 'Edjit',
-    for: 'Government contractors',
-    summary: 'An eLearning platform for building internal courses and tracking who has completed them.',
+    for: 'Government agencies and contractors',
+    summary: 'Workplace learning, just in time: build internal courses, assign them, and track who has completed them.',
     href: '/product/edjit/',
   },
   {

@@ -16,7 +16,7 @@ const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
 	<div class="wrap relative">
 		<SectionHeader before="What changed for the " em="people" after=" we designed for.">Real projects, start to finish: who we worked with, what we did, and what changed for the people on the other side.</SectionHeader>
 		<div class="mt-14 grid gap-5 desk:grid-cols-[1.35fr_1fr] desk:grid-rows-2">
-			{cases.map((c, i) => (
+			{cases.slice(0, 3).map((c, i) => (
 				<article class:list={['relative isolate flex items-end overflow-hidden p-3 pad:p-5', i === 0 ? 'min-h-[440px] desk:row-span-2 desk:min-h-[620px]' : 'min-h-[300px]']}>
 					<BgImage label={c.photo} src={c.image} scrim="dark" mood={c.mood} labelAt="tr" />
 					<div class="glass flex w-full flex-col gap-3 p-6 pad:p-7">
@@ -28,7 +28,19 @@ const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
 				</article>
 			))}
 		</div>
-		<Note class="mt-6">All three stories are placeholders: the current site’s case studies are still “Accordion content goes here!”. We need problem, approach, and outcome for each, plus a photo. Each links to a case study page built from the same template.</Note>
+		<ul role="list" class="mt-5 grid gap-5 tab:grid-cols-3">
+			{cases.slice(3).map((c) => (
+				<li class="relative isolate flex min-h-[260px] items-end overflow-hidden p-3 pad:p-4">
+					<BgImage label={c.photo} src={c.image} scrim="dark" mood={c.mood} labelAt="tr" />
+					<a href={caseHref(c)} class="glass flex w-full flex-col gap-2 p-5">
+						<span class="text-[14px] font-medium text-[var(--fg-muted)]">{c.who}</span>
+						<span class="font-serif text-[clamp(22px,2vw,26px)] leading-[1.1]">{c.title}</span>
+						<span class="text-[15px] font-semibold">Read the case study <span class="arrow" aria-hidden="true">→</span></span>
+					</a>
+				</li>
+			))}
+		</ul>
+		<Note class="mt-6">One story per client in the home page’s logo strip. Each is a draft: who the client is is public; what we did needs Mediabarn to confirm, and results, numbers, and quotes are still in brackets (src/data/cases.ts).</Note>
 		{more && <a href="/design/#work" class="btn btn-light mt-10 max-pad:w-full">More of our work <span class="arrow" aria-hidden="true">→</span></a>}
 	</div>
 </section>

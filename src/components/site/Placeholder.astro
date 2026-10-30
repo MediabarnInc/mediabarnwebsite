@@ -3,8 +3,8 @@
 // label saying what belongs there. `mood` picks the gradient so neighbouring placeholders don't look identical.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-interface Props { label: string; ratio?: string; class?: string; mood?: 'ember' | 'dusk' | 'clay' | 'sand'; src?: ImageMetadata; alt?: string; focus?: string }
-const { label, ratio = '16/9', class: cls, src, alt = '', focus } = Astro.props;
+interface Props { label: string; ratio?: string; class?: string; mood?: 'ember' | 'dusk' | 'clay' | 'sand'; src?: ImageMetadata; alt?: string; focus?: string; sizes?: string }
+const { label, ratio = '16/9', class: cls, src, alt = '', focus, sizes = '(min-width: 1021px) 50vw, 100vw' } = Astro.props;
 // No mood given: pick one from the label, so neighbouring placeholders differ but stay stable between builds
 const keys = ['ember', 'dusk', 'clay', 'sand'] as const;
 const mood = Astro.props.mood ?? keys[[...label].reduce((a, c) => a + c.charCodeAt(0), 0) % 4];
@@ -17,7 +17,7 @@ const moods = {
 ---
 {src ? (
 	<div class:list={['ph w-full', cls]} style={`aspect-ratio:${ratio}`}>
-		<Image src={src} alt={alt} widths={[480, 800, 1200].filter((w) => w < src.width).concat(src.width)} sizes="(min-width: 1021px) 50vw, 100vw" style={focus ? `object-position:${focus}` : undefined} />
+		<Image src={src} alt={alt} widths={[480, 800, 1200, 1600, 2400].filter((w) => w < src.width).concat(src.width)} sizes={sizes} style={focus ? `object-position:${focus}` : undefined} />
 	</div>
 ) : (
 	<div class:list={['ph w-full', cls]} style={`aspect-ratio:${ratio};--ph:${moods[mood]}`} role="img" aria-label={`Image to come: ${label}`}>

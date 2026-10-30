@@ -19,7 +19,9 @@ const c = cases.find((x) => x.slug === Astro.params.slug)!;
 const d = caseDetail(c);
 const used = pillars.filter((p) => c.pillars.includes(p.id));
 const chapters = used.map((p, i) => ({ pillar: p, n: i + 1, ...d.chapters[p.id]! }));
-const others = cases.filter((x) => x.slug !== c.slug);
+// the next four stories, in strip order, wrapping round
+const at = cases.findIndex((x) => x.slug === c.slug);
+const others = [1, 2, 3, 4].map((k) => cases[(at + k) % cases.length]);
 const summary = [
 	{ t: 'Challenge', d: d.challenge },
 	{ t: 'Approach', d: d.approach },
@@ -94,12 +96,25 @@ const summary = [
 					<p class="lede max-w-[62ch]">{ch.body}</p>
 				</div>
 			</div>
-			{i % 2 === 0
+			{/* full width once the chapter has its image; the before/after pair is only a placeholder layout */}
+			{i % 2 === 0 || ch.image
 				? (
-					<figure class="mt-14">
-						<Placeholder label={`${ch.pillar.name} artifact: full width`} ratio="21/9" src={ch.image} alt={ch.caption} />
-						<figcaption class="body mt-3">{ch.caption}</figcaption>
-					</figure>
+					<>
+						<figure class="mt-14">
+							<Placeholder label={`${ch.pillar.name} artifact: full width`} ratio={ch.image ? `${ch.image.width}/${ch.image.height}` : '21/9'} src={ch.image} alt={ch.caption} sizes="(min-width: 1200px) 1100px, 100vw" />
+							<figcaption class="body mt-3">{ch.caption}</figcaption>
+						</figure>
+						{ch.figures && (
+							<div class="mt-10 grid gap-8">
+								{ch.figures.map((f) => (
+									<figure>
+										<Placeholder label={f.caption} ratio={`${f.image.width}/${f.image.height}`} src={f.image} alt={f.alt} sizes="(min-width: 1200px) 1100px, 100vw" />
+										<figcaption class="body mt-3">{f.caption}</figcaption>
+									</figure>
+								))}
+							</div>
+						)}
+					</>
 				) : (
 					<div class="mt-14 grid gap-5 tab:grid-cols-2">
 						<figure><Placeholder label={`${ch.pillar.name} artifact: before`} ratio="4/3" /><figcaption class="body mt-3">[Before: what people saw]</figcaption></figure>
@@ -120,7 +135,7 @@ const summary = [
 	{/* ---------- The ending, and back into the loop ---------- */}
 	<Section tone="light">
 		<SectionHeader before="What " em="changed" after=".">{d.closing}</SectionHeader>
-		<Note class="mt-10">Template placeholder. Every bracketed line comes from caseDetail() in src/data/cases.ts: add a `detail` object to the case to replace them. Each case needs the challenge, approach, result, intro, three numbers, a chapter per pillar with an image, a client quote (with permission), and the ending.</Note>
+		<Note class="mt-10" title="Draft">Who the client is comes from public information. What we did is a draft from what we know: please confirm {c.confirm} Every [bracketed] line (results, numbers, the quote, the live link) still needs the real detail, in this case’s `detail` in src/data/cases.ts.</Note>
 	</Section>
 
 	{/* ---------- More work ---------- */}

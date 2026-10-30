@@ -1,0 +1,78 @@
+---
+// The site nav, from the Figma "Mediabarn alt" hero: logo left; Design, Research, Product and the menu
+// button right. One component, so every page's nav matches.
+//   variant="overlay": inside the home hero, see-through over the silk.
+//   variant="bar": a sticky frosted paper bar at the top of every other page.
+//   reveal: the bar starts hidden and slides down once the visitor scrolls past the home hero
+//           (`[data-nav-trigger]`), so the nav is always in reach on the long home page.
+// The menu button opens the shared panel (AltMenu.astro, rendered once per page by BaseLayout).
+import { pillars, type PillarId } from '@/data/site';
+
+interface Props { variant?: 'overlay' | 'bar'; reveal?: boolean; pillar?: PillarId }
+const { variant = 'bar', reveal = false, pillar } = Astro.props;
+
+const A = '/images/hero-alt';
+// Nav order as designed: Design, Research, Product
+const navOrder = ['design', 'research', 'product'].map((id) => pillars.find((p) => p.id === id)!);
+---
+<header class:list={['alt-nav', `alt-nav-${variant}`, reveal && 'alt-nav-reveal']} data-alt-nav-reveal={reveal || undefined} inert={reveal || undefined}>
+	<div class="alt-nav-in mx-auto flex max-w-[1304px] items-center justify-between">
+		<a href="/" class="alt-logo block" aria-label="Mediabarn home">
+			<img src={`${A}/logo.svg`} alt="" width="161" height="50" class="block h-auto w-full" />
+		</a>
+		<nav aria-label={reveal ? 'Main (scrolled)' : 'Main'} class="flex items-center gap-[clamp(20px,4vw,54px)] pr-[clamp(0px,1vw,37px)]">
+			<ul role="list" class="hidden items-center gap-[54px] tab:flex">
+				{navOrder.map((p) => (
+					<li><a href={p.href} class="alt-link" aria-current={pillar === p.id ? 'page' : undefined}>{p.name}</a></li>
+				))}
+			</ul>
+			<button type="button" class="menu-btn grid size-10 place-items-center -m-3" aria-expanded="false" aria-controls="alt-menu">
+				<img src={`${A}/menu.svg`} alt="" width="15" height="11" />
+				<span class="sr-only">Menu</span>
+			</button>
+		</nav>
+	</div>
+</header>
+
+<style is:global>
+	.alt-nav { --brown: #483933; color: var(--brown); }
+	.alt-nav-in { padding-inline: clamp(16px, 3.2vw, 42px); }
+	.alt-nav-overlay { position: relative; }
+	.alt-nav-overlay .alt-nav-in { padding-top: 30px; align-items: flex-start; }
+
+	/* bar: frosted warm paper with a hairline, the same row as the hero's */
+	.alt-nav-bar { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, #EFE6DA 82%, transparent); backdrop-filter: blur(16px) saturate(1.3); box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--brown) 14%, transparent), 0 10px 30px -22px color-mix(in srgb, var(--espresso) 50%, transparent); }
+	.alt-nav-bar .alt-nav-in { padding-block: 12px; }
+	.alt-nav-reveal { position: fixed; inset: 0 0 auto; translate: 0 -105%; transition: translate .5s var(--ease); }
+	.alt-nav-reveal.shown { translate: none; }
+
+	/* logo steps down at each breakpoint (161 × 50 at desk; the height follows the width); a touch smaller in the bar */
+	.alt-logo { width: 104px; }
+	@media (width < 360px) { .alt-logo { width: 92px; } }
+	@media (width >= 621px) { .alt-logo { width: 122px; } }
+	@media (width >= 761px) { .alt-logo { width: 140px; } }
+	@media (width >= 1021px) { .alt-logo { width: 161px; } .alt-nav-bar .alt-logo { width: 150px; } }
+
+	.alt-link { position: relative; font-weight: 600; font-size: 14px; line-height: 1.204; letter-spacing: -0.05em; color: var(--brown); }
+	.alt-link::after { content: ""; position: absolute; inset: auto 0 -6px; height: 1.5px; background: var(--red); scale: 0 1; transform-origin: left; transition: scale .3s var(--ease); }
+	.alt-link:hover { color: var(--red-ink); }
+	.alt-link:hover::after, .alt-link[aria-current='page']::after { scale: 1 1; }
+	.alt-link[aria-current='page'] { color: var(--red-ink); }
+</style>
+
+{reveal && (
+	<script is:inline>
+		// runs after parsing: the hero comes later in the page than this bar
+		addEventListener('DOMContentLoaded', () => {
+			const bar = document.querySelector('[data-alt-nav-reveal]');
+			const trigger = document.querySelector('[data-nav-trigger]');
+			if (!bar || !trigger || !('IntersectionObserver' in window)) return;
+			// shown once the hero's own nav has scrolled out of view
+			new IntersectionObserver(([e]) => {
+				const show = !e.isIntersecting && e.boundingClientRect.top < 0;
+				bar.classList.toggle('shown', show);
+				bar.inert = !show;
+			}).observe(trigger);
+		});
+	</script>
+)}
