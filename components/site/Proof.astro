@@ -1,0 +1,38 @@
+---
+// Track record: numbers, clients, one quote.
+import Section from './Section.astro';
+import Note from './Note.astro';
+import { photos, clientLogos } from '@/data/images';
+const stats = [
+	{ n: '20+', l: 'years in Human-Centered Design' },
+	{ n: '[0,000]', l: 'research participants recruited' },
+	{ n: '[000]', l: 'usability studies hosted' },
+	{ n: '4', l: 'products built and supported' },
+];
+---
+<Section tone="dark" glow="dusk" bg={{ label: "an empty chair, waiting for the next participant", src: photos.emptyChair, focus: "50% 70%", mood: "dusk" }}>
+	<h2 class="mb-14 max-w-[18ch]">Twenty years of putting real people in the <span class="em">room</span>.</h2>
+	<dl class="grid grid-cols-2 border-t border-[var(--line)] desk:grid-cols-4">
+		{stats.map((s, i) => (
+			<div class:list={['flex flex-col-reverse justify-end gap-3 border-b border-[var(--line)] py-8 pr-6', i % 2 === 1 && 'border-l pl-6 desk:pl-8', i > 0 && 'desk:border-l desk:pl-8']}>
+				<dt class="body max-w-[20ch]">{s.l}</dt>
+				<dd class="font-serif text-[clamp(40px,4.4vw,64px)] leading-none text-[var(--paper-light)]">{s.n}</dd>
+			</div>
+		))}
+	</dl>
+	<Note class="mt-4">Bracketed numbers are placeholders. The research site animates counters for participants, years, and honorarium, but the values didn’t load, so we need the real figures.</Note>
+
+	<h3 class="eyebrow mb-5 mt-16">Clients we’ve worked with</h3>
+	<ul role="list" class="grid grid-cols-2 gap-4 pad:grid-cols-3 desk:grid-cols-5">
+		{clientLogos.map((c) => <li class="glass grid h-24 place-items-center px-6"><img src={c.src} alt={c.name} loading="lazy" class="client-logo max-h-10 max-w-full object-contain" /></li>)}
+	</ul>
+	<Note class="mt-4">Logos from the current site, shown as one-color marks. FDA replaces the placeholder cell. The file named “ua-logo” is actually Uplifting Athletes, not Under Armour, so it’s labelled that way. Confirm the list and that each client has approved logo use.</Note>
+
+	<figure class="mt-20 grid gap-6 desk:grid-cols-[auto_1fr] desk:gap-12">
+		<span class="font-serif text-[120px] leading-[.7] text-[var(--red-glow)]" aria-hidden="true">“</span>
+		<div>
+			<blockquote class="font-serif text-[clamp(24px,2.6vw,36px)] leading-[1.25] text-[var(--paper-light)]">I can honestly say you all have been the 100% best of all the markets in this study. Absolutely no issues, so professional, great respondents, cool facility, & fun to work with on top of all that.</blockquote>
+			<figcaption class="eyebrow mt-6">Lead Researcher, national research study</figcaption>
+		</div>
+	</figure>
+</Section>

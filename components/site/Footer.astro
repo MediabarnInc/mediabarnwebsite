@@ -1,0 +1,40 @@
+---
+import Logo from './Logo.astro';
+import { pillars, products, contact } from '@/data/site';
+const head = 'eyebrow mb-4 !text-[var(--sand)]';
+const lnk = 'text-[var(--paper-light)] hover:text-[var(--red-glow)]';
+---
+<footer class="dark noisy glow-dusk relative overflow-hidden">
+	<div class="wrap relative grid gap-12 py-20 tab:grid-cols-2 desk:grid-cols-[1.5fr_1fr_1fr_1.3fr]">
+		<div>
+			<Logo tone="dark" class="mb-6 h-12 w-auto" />
+			<p class="max-w-[36ch] text-[15px] leading-[1.65] text-[var(--sand)]">Three pillars, one Human-Centered Design practice: research that shows us what people need, design that shapes the experience, and products that keep it working.</p>
+			<p class="mt-6 font-serif text-[30px] leading-tight text-[var(--paper-light)]">Understand. Shape. <span class="text-[var(--red-glow)]">Run.</span></p>
+		</div>
+		<nav aria-label="Pillars, footer">
+			<h2 class={head}>Pillars</h2>
+			<ul role="list" class="grid gap-2.5 text-[15px]">{pillars.map((p, i) => <li><a class={lnk} href={p.href}><span class="mr-2 font-semibold text-[11px] text-[var(--sand)]">0{i + 1}</span>{p.name}</a></li>)}</ul>
+		</nav>
+		<nav aria-label="Products, footer">
+			<h2 class={head}>Products</h2>
+			<ul role="list" class="grid gap-2.5 text-[15px]">{products.map((p) => <li><a class={lnk} href={p.href}>{p.name}</a></li>)}</ul>
+		</nav>
+		<div class="text-[15px] leading-[1.65] text-[var(--sand)]">
+			<h2 class={head}>Get in touch</h2>
+			{contact.offices.map((o) => <p class="mb-4">{o.lines.map((l) => <>{l}<br /></>)}</p>)}
+			<p><a class={lnk} href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.phone}</p>
+			<p class="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] font-semibold uppercase tracking-[0.1em]">
+				<a class={lnk} href="https://www.linkedin.com/company/media-barn-inc-/">LinkedIn</a>
+				<a class={lnk} href="https://www.instagram.com/mediabarninc/">Instagram</a>
+				<a class={lnk} href="https://www.facebook.com/mediabarn/">Facebook</a>
+			</p>
+		</div>
+	</div>
+	<div class="relative border-t border-[var(--line)]">
+		<div class="wrap flex flex-wrap items-center justify-between gap-3 py-5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-[var(--sand)]">
+			<span>© 2026 Mediabarn, Inc.</span>
+			<span aria-hidden="true">38.89° N · 77.09° W</span>
+			<span><a class={lnk} href="/about/">About</a><a class:list={[lnk, 'ml-5']} href="/contact/">Contact</a></span>
+		</div>
+	</div>
+</footer>

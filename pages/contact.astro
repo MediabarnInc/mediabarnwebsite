@@ -1,0 +1,120 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Note from '@/components/site/Note.astro';
+import Placeholder from '@/components/site/Placeholder.astro';
+import { contact, products } from '@/data/site';
+
+// Step 1: four cards (the three pillars, or something else). Step 2, only for the two that branch:
+// what kind of research help, or which product. Without JS the follow-up still appears (CSS :has).
+const areas = [
+	{ v: 'research', l: 'Research', d: 'Studies, recruiting, and our labs' },
+	{ v: 'design', l: 'Design', d: 'Service, customer, and user experience' },
+	{ v: 'product', l: 'Product', d: 'A demo of one of our products' },
+	{ v: 'other', l: 'Something else', d: 'Partnerships, press, or anything else' },
+];
+const researchNeeds = [
+	{ v: 'study', l: 'Plan a research study' },
+	{ v: 'lab', l: 'Book the lab or focus group room' },
+	{ v: 'recruit', l: 'Recruit participants' },
+];
+const productChoices = [...products.map((p) => ({ v: p.slug, l: p.name })), { v: 'unsure', l: 'Not sure yet' }];
+const field = 'w-full border border-[var(--line-strong)] bg-[var(--card)] px-3 py-2.5 text-[16px] focus:border-[var(--line-strong)]';
+---
+<BaseLayout title="Contact" description="Start a conversation with Mediabarn about research, design, or product.">
+	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<div class="wrap grid gap-14 desk:grid-cols-[1.2fr_.8fr]">
+			<div>
+				<h1 class="mb-6 max-w-[14ch]">Start the <span class="em">conversation</span>.</h1>
+				<p class="lede mb-10 max-w-[52ch]">Tell us what you’re working on. One form reaches all three pillars, and we’ll route it to the right people.</p>
+
+				<form action="#" method="post" class="grid gap-6">
+					<fieldset>
+						<legend class="h4 mb-3">What can we help with?</legend>
+						<div class="grid gap-2 pad:grid-cols-2">
+							{areas.map((a) => (
+								<label class="area">
+									<input type="radio" name="area" value={a.v} id={`area-${a.v}`} required class="sr-radio" />
+									<span class="area-l">{a.l}</span>
+									<span class="area-d">{a.d}</span>
+									<span class="area-tick" aria-hidden="true"></span>
+								</label>
+							))}
+						</div>
+					</fieldset>
+
+					<fieldset class="follow fu-research" data-for="research">
+						<legend class="mb-3 text-[14px] font-semibold">What kind of research help?</legend>
+						<div class="flex flex-wrap gap-2">
+							{researchNeeds.map((o, i) => <label class="chip"><input type="radio" name="research_need" value={o.v} checked={i === 0} class="sr-radio" />{o.l}</label>)}
+						</div>
+					</fieldset>
+					<fieldset class="follow fu-product" data-for="product">
+						<legend class="mb-3 text-[14px] font-semibold">Which product?</legend>
+						<div class="flex flex-wrap gap-2">
+							{productChoices.map((o, i) => <label class="chip"><input type="radio" name="product" value={o.v} checked={i === productChoices.length - 1} class="sr-radio" />{o.l}</label>)}
+						</div>
+					</fieldset>
+					<div class="grid gap-4 pad:grid-cols-2">
+						<label class="grid gap-1.5 text-[14px] font-semibold">Name<input class={field} name="name" autocomplete="name" /></label>
+						<label class="grid gap-1.5 text-[14px] font-semibold">Work email <span class="sr-only">(required)</span><input class={field} type="email" name="email" autocomplete="email" required /></label>
+						<label class="grid gap-1.5 text-[14px] font-semibold">Organization<input class={field} name="org" autocomplete="organization" /></label>
+						<label class="grid gap-1.5 text-[14px] font-semibold">Phone<input class={field} type="tel" name="phone" autocomplete="tel" /></label>
+					</div>
+					<label class="grid gap-1.5 text-[14px] font-semibold">Tell us a little more<textarea class={field} rows="5" name="message"></textarea></label>
+					<button type="submit" class="btn justify-self-start max-pad:w-full">Send</button>
+				</form>
+				<Note class="mt-8">Two steps instead of eight options: pick an area, then (for Research and Product only) a quick follow-up. The form sends `area`, plus `research_need` or `product`. Links across the site still add ?topic= to preselect: research, lab, design, or a product slug (chirp, edjit, cx-align, time). The form isn’t wired yet; the TrustLedger site’s HubSpot setup can be reused, routing on `area`.</Note>
+			</div>
+			<aside class="grid content-start gap-8 desk:pt-28">
+				{contact.offices.map((o) => <div><h2 class="eyebrow mb-2">{o.name}</h2><p class="text-[17px] leading-[1.6]">{o.lines.map((l) => <>{l}<br /></>)}</p></div>)}
+				<div><h2 class="eyebrow mb-2">Email and phone</h2><p class="text-[17px] leading-[1.6]"><a class="underline underline-offset-4" href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.phone}</p></div>
+				<Placeholder label="Map: Arlington and Virginia Beach" ratio="4/3" mood="sand" />
+			</aside>
+		</div>
+	</section>
+</BaseLayout>
+<style>
+	/* the real radio stays focusable and readable to screen readers; the label is the visible control */
+	.sr-radio { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+	.area { position: relative; display: grid; gap: 4px; cursor: pointer; border: 1px solid var(--line); background: color-mix(in srgb, var(--paper-light) 55%, transparent); padding: 16px 44px 16px 18px; transition: border-color .2s, background-color .2s, transform .2s var(--ease); }
+	.area:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+	.area-l { font-family: var(--font-serif); font-size: 24px; line-height: 1.1; }
+	.area-d { font-size: 14px; line-height: 1.45; color: var(--fg-muted); }
+	.area-tick { position: absolute; right: 16px; top: 18px; width: 16px; height: 16px; border: 1px solid var(--line-strong); border-radius: 50%; }
+	.area:has(:checked) { border-color: var(--red); background: var(--paper-light); }
+	.area:has(:checked) .area-tick { border-color: var(--red); background: radial-gradient(circle, var(--red) 0 4px, transparent 4.5px); }
+	.area:has(:checked) .area-l { color: var(--red-ink); }
+	.area:has(:focus-visible), .chip:has(:focus-visible) { outline: 2px solid var(--red-deep); outline-offset: 3px; }
+
+	.chip { cursor: pointer; border: 1px solid var(--line); padding: 8px 14px; font-size: 14.5px; transition: border-color .2s, background-color .2s, color .2s; }
+	.chip:hover { border-color: var(--line-strong); }
+	.chip:has(:checked) { border-color: var(--ink); background: var(--ink); color: var(--paper-light); }
+
+	/* the follow-up for the chosen area only */
+	.follow { display: none; }
+	form:has(#area-research:checked) .fu-research, form:has(#area-product:checked) .fu-product { display: block; }
+	@media (prefers-reduced-motion: no-preference) {
+		form:has(#area-research:checked) .fu-research, form:has(#area-product:checked) .fu-product { animation: fu-in .4s var(--ease); }
+	}
+	@keyframes fu-in { from { opacity: 0; transform: translateY(-6px); } }
+</style>
+<script is:inline>
+	(() => {
+		try {
+			const form = document.querySelector('form:has([name=area])');
+			const pick = (name, value) => { const r = form.querySelector(`input[name=${name}][value="${CSS.escape(value)}"]`); if (r) r.checked = true; return !!r; };
+			// ?topic= from links across the site: an area, a research need, or a product
+			const t = new URLSearchParams(location.search).get('topic');
+			if (t) {
+				if (pick('area', t)) {}
+				else if (t === 'lab' || t === 'study' || t === 'recruit') { pick('area', 'research'); pick('research_need', t); }
+				else if (pick('product', t)) pick('area', 'product');
+			}
+			// only send the follow-up that belongs to the chosen area
+			const sync = () => form.querySelectorAll('.follow').forEach((f) => { f.disabled = !form.querySelector(`#area-${f.dataset.for}:checked`); });
+			form.addEventListener('change', sync);
+			sync();
+		} catch {}
+	})();
+</script>

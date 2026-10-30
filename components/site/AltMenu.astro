@@ -1,0 +1,49 @@
+---
+// The menu panel every nav's menu button opens (AltNav.astro). Rendered once per page by BaseLayout.
+import { pillars, products } from '@/data/site';
+---
+<div id="alt-menu" class="alt-menu fixed inset-0 z-50" hidden>
+	<div class="alt-menu-scrim absolute inset-0" data-close></div>
+	<nav aria-label="Menu" class="alt-menu-panel absolute inset-y-0 right-0 flex w-[min(420px,100%)] flex-col gap-10 overflow-y-auto p-8 pt-7">
+		<div class="flex items-center justify-between">
+			<span class="eyebrow">Menu</span>
+			<button type="button" class="grid size-10 place-items-center -m-2 text-[22px] leading-none" data-close aria-label="Close menu">×</button>
+		</div>
+		<ul role="list" class="grid gap-3">
+			{pillars.map((p, i) => <li><a href={p.href} class="flex items-baseline gap-4 font-serif text-[40px] leading-tight hover:text-[var(--red-ink)]"><span class="font-mono text-[12px] text-[var(--red-ink)]">0{i + 1}</span>{p.name}</a></li>)}
+		</ul>
+		<div>
+			<p class="eyebrow mb-3">Products</p>
+			<ul role="list" class="grid gap-2 text-[16px]">{products.map((p) => <li><a href={p.href} class="hover:text-[var(--red-ink)]">{p.name}</a></li>)}</ul>
+		</div>
+		<ul role="list" class="mt-auto grid gap-2 text-[16px] font-semibold">
+			<li><a href="/about/" class="hover:text-[var(--red-ink)]">About</a></li>
+			<li><a href="/contact/" class="btn mt-2">Contact us <span class="arrow" aria-hidden="true">→</span></a></li>
+		</ul>
+	</nav>
+</div>
+
+<style is:global>
+	.alt-menu-scrim { background: color-mix(in srgb, var(--espresso) 35%, transparent); backdrop-filter: blur(6px); }
+	.alt-menu-panel { background: var(--paper-light); color: var(--ink); box-shadow: -20px 0 60px -30px rgba(30, 18, 14, .5); }
+	html.motion .alt-menu:not([hidden]) .alt-menu-panel { animation: mb-panel-in .45s var(--ease); }
+	@keyframes mb-panel-in { from { transform: translateX(40px); opacity: 0; } }
+</style>
+
+<script is:inline>
+	(() => {
+		const menu = document.getElementById('alt-menu');
+		const btns = [...document.querySelectorAll('.menu-btn')];
+		if (!menu || !btns.length) return;
+		let opener = btns[0];
+		const open = (on) => {
+			menu.hidden = !on;
+			btns.forEach((b) => b.setAttribute('aria-expanded', String(on)));
+			document.documentElement.style.overflow = on ? 'hidden' : '';
+			(on ? menu.querySelector('a') : opener)?.focus();
+		};
+		btns.forEach((b) => b.addEventListener('click', () => { opener = b; open(menu.hidden); }));
+		menu.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', () => open(false)));
+		addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) open(false); });
+	})();
+</script>

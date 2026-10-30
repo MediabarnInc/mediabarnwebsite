@@ -1,0 +1,28 @@
+---
+// Section: a faint rule across the top and a tone, optionally over a background photo. Content fades up on scroll.
+import BgImage from './BgImage.astro';
+import type { ImageMetadata } from 'astro';
+interface Props {
+	/** full-bleed background photo (placeholder until supplied) */
+	bg?: { label: string; src?: ImageMetadata; focus?: string; mood?: 'ember' | 'dusk' | 'clay' | 'sand' };
+	id?: string;
+	tone?: 'paper' | 'light' | 'dark' | 'rust';
+	/** noisy gradient behind the section (dark/rust/paper) */
+	glow?: 'ember' | 'dusk' | 'clay' | 'paper';
+	class?: string;
+	reveal?: boolean;
+}
+const { id, tone = 'paper', glow, bg, class: cls, reveal = true } = Astro.props;
+const scrim = tone === 'dark' ? 'dark' : tone === 'rust' ? 'rust' : 'light';
+---
+<section id={id} class:list={[
+	'rule noisy relative py-[clamp(64px,8vw,128px)]',
+	{ 'bg-[var(--paper-light)]': tone === 'light', dark: tone === 'dark', rust: tone === 'rust', fibers: tone === 'paper' || tone === 'light' },
+	glow && `glow-${glow}`,
+	cls,
+]}>
+	{bg && <BgImage label={bg.label} src={bg.src} focus={bg.focus} mood={bg.mood} scrim={scrim} labelAt="tr" />}
+	<div class="wrap relative">
+		<div data-reveal={reveal || undefined}><slot /></div>
+	</div>
+</section>

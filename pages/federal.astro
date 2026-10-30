@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/site/Section.astro';
+import SectionHeader from '@/components/site/SectionHeader.astro';
+import Placeholder from '@/components/site/Placeholder.astro';
+import Note from '@/components/site/Note.astro';
+import Engage from '@/components/site/Engage.astro';
+import Cta from '@/components/site/Cta.astro';
+
+const services = [
+	{ t: 'Human-Centered Design (HCD)', d: 'Providing a good experience begins with listening to your audience. We involve users throughout the process and build usability and accessibility in from the start.' },
+	{ t: 'Customer Experience (CX)', d: 'Our CX work supports the Executive Order on Transforming Federal Customer Experience, using human-centered research and design to improve how the public experiences government services.' },
+	{ t: 'User research', d: 'Usability testing, focus groups, interviews, and surveys, in our labs in the Washington, DC and Virginia Beach areas, or remotely.', link: '/research/' },
+	{ t: 'Service Design (SD)', d: 'We design and test digital and non-digital interactions together. We connect the dots so the public doesn’t have to.' },
+	{ t: 'UX governance', d: 'Organized governance keeps experiences consistent across programs, whether that means evolving existing guidelines or creating a new framework.' },
+	{ t: 'Agile friendly', d: 'Our HCD approach fits Agile cycles, with research-informed designs delivered in iterations your team can build on.' },
+];
+---
+<BaseLayout title="Federal" pillar="design" description="Human-Centered Design for federal agencies: CX, user research, service design, and UX governance.">
+	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<div class="wrap grid gap-10 desk:grid-cols-[1.1fr_.9fr] desk:items-end">
+			<div>
+				<nav aria-label="Breadcrumb" class="crumbs mb-4"><a href="/design/">Design</a> / <span aria-current="page">Federal</span></nav>
+				<h1 class="mb-6 max-w-[16ch]">Government services that work for the <span class="em">public</span>.</h1>
+				<p class="lede max-w-[54ch]">We bring Human-Centered Design (HCD) to federal agencies, so their digital products and services are more useful for the public and for federal employees.</p>
+				<div class="mt-8 flex flex-wrap gap-3"><a href="/contact/" class="btn max-pad:w-full">Talk to our federal team</a><a href="#engage" class="btn btn-outline max-pad:w-full">Contract vehicles</a></div>
+			</div>
+			<Placeholder label="Federal photo" ratio="4/3" />
+		</div>
+	</section>
+
+	<Section bg={{ label: "a service design workshop with agency staff", mood: "sand" }}>
+		<SectionHeader before="Research and design built for " em="agencies" after="." />
+		<div class="mt-12 grid gap-4 tab:grid-cols-2 desk:grid-cols-3">
+			{services.map((s) => <div class="flex flex-col gap-3 glass p-7"><h3>{s.t}</h3><p class="body grow">{s.d}</p>{s.link && <a href={s.link} class="link self-start text-[14.5px] font-semibold">See Research →</a>}</div>)}
+		</div>
+	</Section>
+
+	<Section tone="light">
+		<SectionHeader before="Start with a project, or build a " em="practice" after="." />
+		<div class="mt-12 grid gap-6 desk:grid-cols-2">
+			<div class="border border-[var(--line)] glass p-7"><h3 class="mb-3">Specialized HCD</h3><p class="body">Project-based work with a defined scope: a usability study, a journey map, a redesign of one service.</p></div>
+			<div class="border border-[var(--line)] glass p-7"><h3 class="mb-3">CX Centers of Excellence (CoE)</h3><p class="body">We help agencies centralize CX strategy, governance, and execution, so good practice spreads across programs instead of living in one team.</p></div>
+		</div>
+	</Section>
+
+	<Engage />
+	<div class="wrap"><Note class="my-6">Copy rewritten from the current /federal page. Contract vehicles are verbatim. Please confirm they’re all current.</Note></div>
+	<Cta />
+</BaseLayout>

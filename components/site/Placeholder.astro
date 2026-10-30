@@ -1,0 +1,28 @@
+---
+// Media slot: the photo when we have one (`src` + `alt`), otherwise a noisy gradient field with drafting corners and a
+// label saying what belongs there. `mood` picks the gradient so neighbouring placeholders don't look identical.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { label: string; ratio?: string; class?: string; mood?: 'ember' | 'dusk' | 'clay' | 'sand'; src?: ImageMetadata; alt?: string; focus?: string; sizes?: string }
+const { label, ratio = '16/9', class: cls, src, alt = '', focus, sizes = '(min-width: 1021px) 50vw, 100vw' } = Astro.props;
+// No mood given: pick one from the label, so neighbouring placeholders differ but stay stable between builds
+const keys = ['ember', 'dusk', 'clay', 'sand'] as const;
+const mood = Astro.props.mood ?? keys[[...label].reduce((a, c) => a + c.charCodeAt(0), 0) % 4];
+const moods = {
+	ember: 'radial-gradient(70% 80% at 30% 25%, var(--clay), transparent 70%), radial-gradient(60% 70% at 85% 85%, var(--red), transparent 70%), var(--cocoa)',
+	dusk: 'radial-gradient(80% 70% at 50% 100%, var(--rust), transparent 70%), radial-gradient(60% 60% at 20% 10%, var(--sand), transparent 70%), var(--espresso)',
+	clay: 'radial-gradient(90% 80% at 70% 30%, var(--clay), transparent 75%), radial-gradient(60% 60% at 10% 90%, var(--cocoa), transparent 70%), var(--rust)',
+	sand: 'radial-gradient(80% 80% at 50% 60%, var(--cocoa), transparent 65%), radial-gradient(90% 90% at 50% 50%, var(--sand), transparent 90%), var(--paper-deep)',
+};
+---
+{src ? (
+	<div class:list={['ph w-full', cls]} style={`aspect-ratio:${ratio}`}>
+		<Image src={src} alt={alt} widths={[480, 800, 1200, 1600, 2400].filter((w) => w < src.width).concat(src.width)} sizes={sizes} style={focus ? `object-position:${focus}` : undefined} />
+	</div>
+) : (
+	<div class:list={['ph w-full', cls]} style={`aspect-ratio:${ratio};--ph:${moods[mood]}`} role="img" aria-label={`Image to come: ${label}`}>
+		<span class="ph-corner left-3 top-3 border-l border-t"></span>
+		<span class="ph-corner right-3 top-3 border-r border-t"></span>
+		<span class="ph-label">{label}</span>
+	</div>
+)}

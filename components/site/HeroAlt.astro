@@ -1,0 +1,135 @@
+---
+// Hero for /alt/, from Figma "MB UX Assets" › "Mediabarn alt" (node 2023:12997, frame 1304 × 735).
+// Layers, back to front: the photo (fallback under the live silk), the interactive brand wave lines,
+// the nav, the centered headline and line, and the client card strip along the bottom.
+// The strip runs wider than the screen in the design, so it scrolls as a slow marquee
+// (paused on hover or focus; a plain sideways scroller under reduced motion).
+import SilkBackground from './SilkBackground.astro';
+import WaveLines from './WaveLines.astro';
+import { clientCards } from '@/data/clientCards';
+import AltNav from './AltNav.astro';
+
+const A = '/images/hero-alt';
+// The subheading's last word cycles, as on mediabarninc.com
+const audiences = ['customers', 'subscribers', 'taxpayers', 'citizens', 'users'];
+---
+<section class="hero-alt relative isolate overflow-hidden" aria-labelledby="hero-alt-h">
+	<SilkBackground texture={`${A}/hero-texture.jpg`}>
+		{/* Figma "image 5": mirrored, warm overlay. Shown when the silk can't run. */}
+		<div class="hero-photo absolute">
+			<img src={`${A}/hero-photo.png`} alt="" class="absolute inset-0 h-full w-full object-cover object-bottom" />
+			<div class="absolute inset-0 bg-[rgba(241,214,188,0.76)] mix-blend-overlay"></div>
+		</div>
+	</SilkBackground>
+
+	{/* Figma "Abstract Element Dark": interactive lines over the silk glow, under the copy */}
+	<WaveLines fallback={`${A}/waves.png`} />
+
+	<div class="relative mx-auto max-w-[1304px]">
+		<AltNav variant="overlay" />
+
+
+		{/* headline + line */}
+		<div data-nav-trigger class="px-[var(--gut)] pt-[calc(clamp(48px,6.2vw,79px)+40px)] pb-10 text-center">
+			<h1 id="hero-alt-h" class="hero-h mx-auto max-w-[1000px]">Creating Experiences the Human&#8209;Centered Way.</h1>
+			<p class="hero-sub mx-auto mt-[19px] max-w-[552px]"><span class="block">We specialize in HCD to deliver the best</span> <span class="block">digital experiences for your <strong class="rot" data-rot><span class="sr-only">customers, subscribers, taxpayers, citizens, and users.</span><span class="rot-box" aria-hidden="true">{audiences.map((w, i) => <span class:list={['rot-word', i === 0 && 'on']}>{w}.</span>)}</span></strong></span></p>
+		</div>
+	</div>
+
+	{/* client strip: each card links to its case study */}
+	<div class="strip relative mt-[clamp(48px,6.2vw,80px)]" aria-label="Clients we’ve worked with" role="region">
+		<ul role="list" class="strip-track flex w-max">
+			{[0, 1].map((copy) => clientCards.map((c) => (
+				<li class="card relative shrink-0" aria-hidden={copy === 1 ? 'true' : undefined}>
+					<a href={`/work/${c.slug}/`} class="card-link absolute inset-0 block overflow-hidden" tabindex={copy === 1 ? -1 : undefined}>
+						<img src={c.photo} alt="" class="card-photo absolute inset-0 h-full w-full object-cover" loading="lazy" />
+						<div class="absolute overflow-clip" style={c.box}>
+							{c.inner
+								? <div class="absolute" style={`inset:${c.inner}`}><img src={c.logo} alt={copy === 0 ? c.name : ''} class="absolute inset-0 block h-full w-full" /></div>
+								: <img src={c.logo} alt={copy === 0 ? c.name : ''} class="absolute inset-0 block h-full w-full" />}
+						</div>
+						<span class="card-cta" aria-hidden="true">Case study <span class="arrow">→</span></span>
+						{copy === 0 && <span class="sr-only"> case study</span>}
+					</a>
+				</li>
+			)))}
+		</ul>
+	</div>
+</section>
+
+<style is:global>
+	/* global (prefixed): Astro doesn't scope elements produced by the nested map below */
+	.hero-alt { --brown: #483933; color: var(--brown); }
+	.hero-alt .hero-photo { left: -1.92%; top: -25.48%; width: 103.84%; height: 145.39%; transform: scaleX(-1); }
+
+
+	.hero-alt .hero-h { font-family: Didot, 'Bodoni Moda Variable', 'Bodoni 72', serif; font-weight: 700; font-size: clamp(44px, 7.06vw, 92px); line-height: .95; letter-spacing: -0.05em; color: rgba(237, 1, 9, .7); text-wrap: balance; }
+	.hero-alt .hero-sub { font-weight: 300; font-size: clamp(18px, 1.85vw, 24px); line-height: 1.204; letter-spacing: -0.05em; color: var(--brown); text-wrap: balance; }
+	.hero-alt .hero-sub strong { font-weight: 600; }
+	/* two fixed lines (the second ends in the rotating word), so the break never moves as the word changes */
+	.hero-alt .hero-sub > span { text-wrap: wrap; }
+
+	/* rotating audience word: without the script (or with reduced motion) only “customers.” shows.
+	   With it, the words stack in one box whose width eases to the current word, so the centered
+	   line slides gently instead of jumping; the old word rises out as the new one rises in. */
+	.hero-alt .rot-box { display: inline-block; position: relative; vertical-align: bottom; white-space: nowrap; }
+	.hero-alt .rot-word:not(.on) { display: none; }
+	.hero-alt .rot-box.live { overflow: hidden; transition: width .6s var(--ease); padding-bottom: .12em; margin-bottom: -.12em; }
+	.hero-alt .rot-box.live .rot-word { display: inline-block; }
+	.hero-alt .rot-box.live .rot-word:not(:first-child) { position: absolute; left: 0; top: 0; }
+	.hero-alt .rot-box.live .rot-word { opacity: 0; translate: 0 .9em; transition: opacity .5s var(--ease), translate .6s var(--ease); }
+	.hero-alt .rot-box.live .rot-word.on { opacity: 1; translate: 0 0; }
+	.hero-alt .rot-box.live .rot-word.out { opacity: 0; translate: 0 -.9em; }
+
+	.hero-alt .card { width: var(--card-size, clamp(150px, 18.8vw, 245px)); aspect-ratio: 1; background: #d9d9d9; }
+	.hero-alt .card-photo { transition: scale .7s var(--ease); }
+	.hero-alt .card-link:hover .card-photo, .hero-alt .card-link:focus-visible .card-photo { scale: 1.05; }
+	.hero-alt .card-cta { position: absolute; left: 14px; top: 14px; padding: 6px 10px; background: color-mix(in srgb, #F6F1E3 92%, transparent); color: #483933; font: 600 12px/1 var(--font-sans); letter-spacing: .02em; opacity: 0; translate: 0 -6px; transition: opacity .3s var(--ease), translate .3s var(--ease); }
+	.hero-alt .card-link:hover .card-cta, .hero-alt .card-link:focus-visible .card-cta { opacity: 1; translate: none; }
+	.hero-alt .card-link:focus-visible { outline: 2px solid var(--red-deep); outline-offset: -4px; }
+	.hero-alt .strip { overflow: hidden; }
+	.hero-alt .strip:focus-visible { outline-offset: -3px; }
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-alt .strip-track { animation: mb-strip 60s linear infinite; }
+		.hero-alt .strip:hover .strip-track, .hero-alt .strip:focus-within .strip-track { animation-play-state: paused; }
+	}
+	@keyframes mb-strip { to { transform: translateX(-50%); } }
+	@media (prefers-reduced-motion: reduce) {
+		.hero-alt .strip { overflow-x: auto; }
+		.hero-alt .strip-track > [aria-hidden='true'] { display: none; }
+	}
+
+</style>
+
+<script is:inline>
+	// Cycle the audience word (customers → subscribers → taxpayers → citizens → users → …).
+	// Only with motion; on any error the first word simply stays.
+	(() => {
+		if (!document.documentElement.classList.contains('motion')) return;
+		const box = document.querySelector('.hero-alt .rot-box');
+		if (!box) return;
+		try {
+			const words = [...box.children];
+			let i = 0;
+			box.classList.add('live');
+			// the first word stays in the flow (it sets the line height); size the box to the current word
+			const fit = () => { box.style.width = words[i].offsetWidth + 'px'; };
+			fit();
+			addEventListener('resize', fit);
+			let hidden = false;
+			document.addEventListener('visibilitychange', () => { hidden = document.hidden; });
+			setInterval(() => {
+				if (hidden) return;
+				const prev = words[i];
+				i = (i + 1) % words.length;
+				prev.classList.remove('on'); prev.classList.add('out');
+				words[i].classList.remove('out');
+				// start the incoming word below, then let it rise in
+				words[i].style.transition = 'none'; words[i].offsetWidth; words[i].style.transition = '';
+				words[i].classList.add('on');
+				fit();
+				setTimeout(() => prev.classList.remove('out'), 650);
+			}, 2400);
+		} catch { box.classList.remove('live'); }
+	})();
+</script>
