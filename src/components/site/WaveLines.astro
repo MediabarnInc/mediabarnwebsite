@@ -29,8 +29,8 @@ const { fallback } = Astro.props;
 	const SPRING = 0.04;    // pull back toward the resting shape
 	const DAMPING = 0.78;   // velocity kept each frame (lower settles faster; at 0.78 the lines ease back with almost no wobble)
 	const MAX_OFFSET = 36;  // a point never strays further than this
-	const DRIFT = 5;        // idle drift: how far points wander (frame px)
-	const DRIFT_SPEED = 0.35; // idle drift: how fast (lower is calmer)
+	const DRIFT = 9;        // idle drift: how far points wander (frame px)
+	const DRIFT_SPEED = 0.42; // idle drift: how fast (lower is calmer)
 
 	function decode(s: string) {
 		const v = s.split(',').map(Number);

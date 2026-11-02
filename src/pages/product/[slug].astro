@@ -5,6 +5,7 @@ import SectionHeader from '@/components/site/SectionHeader.astro';
 import Note from '@/components/site/Note.astro';
 import Placeholder from '@/components/site/Placeholder.astro';
 import Cta from '@/components/site/Cta.astro';
+import SilkBackground from '@/components/site/SilkBackground.astro';
 import { products } from '@/data/site';
 import { details } from '@/data/productDetails';
 
@@ -18,12 +19,14 @@ const others = products.filter((x) => x.slug !== slug);
 const anyConfirm = d.features.some((f) => f.confirm);
 ---
 <BaseLayout title={p.name} pillar="product" description={d.lede}>
-	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+	{/* the home hero’s background: the textured silk glow (without the wave lines) */}
+	<section class="page-hero relative isolate overflow-hidden py-[clamp(48px,6vw,96px)]">
+		<SilkBackground texture="/images/hero-alt/hero-texture.jpg" />
 		<div class="wrap">
 			<nav aria-label="Breadcrumb" class="crumbs mb-4"><a href="/product/">Product</a> / <span aria-current="page">{p.name}</span></nav>
-			<div class="grid gap-10 desk:grid-cols-[1fr_1fr] desk:items-end">
+			<div class="grid gap-10 desk:grid-cols-[1fr_1fr] desk:items-center">
 				<div>
-					<h1 class="mb-6 max-w-[17ch]">{d.headlineBefore}<span class="em">{d.headlineEm}</span>{d.headlineAfter}</h1>
+					<h1 class="product-h mb-6 max-w-[17ch]">{d.headlineBefore}<span class="em">{d.headlineEm}</span>{d.headlineAfter}</h1>
 					<p class="lede max-w-[52ch]">{d.lede}</p>
 					<div class="mt-8 flex flex-wrap gap-3">
 						<a href={`/contact/?topic=${p.slug}`} class="btn max-pad:w-full">{d.cta}</a>
@@ -44,14 +47,14 @@ const anyConfirm = d.features.some((f) => f.confirm);
 		</div>
 	</section>
 
-	<Section tone="light">
+	<Section tone="light" glow="mist" fibers={false}>
 		<div class="grid gap-8 desk:grid-cols-[1fr_1fr] desk:gap-16">
 			<div><h2 class="max-w-[20ch]">{d.problemTitle}</h2></div>
 			<div class="grid gap-4">{d.problem.map((x) => <p class="lede">{x}</p>)}</div>
 		</div>
 	</Section>
 
-	<Section id="features">
+	<Section id="features" glow="paper" fibers={false}>
 		<SectionHeader before="What " em={p.name} after=" does." />
 		<div class="mt-12 grid gap-10 desk:grid-cols-2">
 			{d.features.map((f) => (
@@ -66,14 +69,14 @@ const anyConfirm = d.features.some((f) => f.confirm);
 		{anyConfirm && <Note class="mt-8">These features are inferred from the one-line description. Please have the product owner confirm or replace them.</Note>}
 	</Section>
 
-	<Section tone="light">
+	<Section glow="sand" fibers={false}>
 		<SectionHeader before="Built for the people who " em="use" after=" it." />
 		<div class="mt-12 grid gap-6 desk:grid-cols-3">
-			{d.audience.map((a) => <div class="border border-[var(--line)] glass p-7"><h3 class="mb-3">{a.t}</h3><p class="body">{a.d}</p></div>)}
+			{d.audience.map((a) => <div class="border border-[var(--line)] bg-[var(--paper-light)] p-7 shadow-[0_18px_40px_-28px_rgba(72,57,51,.5)]"><h3 class="mb-3">{a.t}</h3><p class="body">{a.d}</p></div>)}
 		</div>
 	</Section>
 
-	<Section>
+	<Section glow="paper" class="glow-flip" fibers={false}>
 		<div class="grid gap-8 desk:grid-cols-2 desk:gap-16">
 			<div>
 				
@@ -91,7 +94,7 @@ const anyConfirm = d.features.some((f) => f.confirm);
 		{d.note && <Note class="mt-8">{d.note}</Note>}
 	</Section>
 
-	<Section tone="light">
+	<Section tone="light" glow="mist" class="glow-flip" fibers={false}>
 		<p class="eyebrow mb-6">More from Mediabarn Product</p>
 		<ul role="list" class="grid gap-4 desk:grid-cols-3">
 			{others.map((o) => <li><a href={o.href} class="flex h-full flex-col gap-2 glass p-6 hover:border-[var(--red)]"><span class="h3">{o.name} →</span><span class="eyebrow">{o.for}</span><span class="body text-[15px]">{o.summary}</span></a></li>)}
@@ -100,3 +103,10 @@ const anyConfirm = d.features.some((f) => f.confirm);
 
 	<Cta heading="See " em={p.name} after=" in action." body={`Tell us a little about your organization and we’ll walk you through ${p.name}.`} />
 </BaseLayout>
+
+<style>
+	/* a smaller headline than other page heroes, so the screenshot sits beside it on desktop */
+	.page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }
+	/* the hero copy and screenshot sit above the silk */
+	.page-hero > .wrap { position: relative; }
+</style>
