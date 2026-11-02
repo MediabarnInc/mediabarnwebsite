@@ -18,10 +18,10 @@ export interface ClientCard {
 const A = '/images/hero-alt';
 
 export const clientCards: ClientCard[] = [
-	{ name: 'Navy Federal Credit Union', slug: 'navy-federal', photo: `${A}/card-navy-federal.png`, logo: `${A}/logo-navy-federal.svg`, box: 'inset:42.43% 26.7% -6.72% 9.01%', inner: '24.74% 1.47%' },
-	{ name: 'United States Postal Service', slug: 'usps', photo: `${A}/card-usps.png`, logo: `${A}/logo-usps.svg`, box: 'inset:37.27% 15.93% 5.3% 15.93%' },
-	{ name: 'IRS', slug: 'irs', photo: `${A}/card-irs.png`, logo: `${A}/logo-irs.svg`, box: 'inset:66.25% 7.43% 4.79% 7.14%' },
-	{ name: 'Sentara', slug: 'sentara', photo: `${A}/card-sentara.png`, logo: `${A}/logo-sentara.svg`, box: 'inset:77.57% 8.14% 8.29% 7.86%' },
-	{ name: 'City of Virginia Beach', slug: 'virginia-beach', photo: `${A}/card-virginia-beach.png`, logo: `${A}/logo-virginia-beach.svg`, box: 'top:64.82%;bottom:5.3%;left:50%;translate:-50% 0;aspect-ratio:210/73.21' },
-	{ name: 'Uplifting Athletes', slug: 'uplifting-athletes', photo: `${A}/card-uplifting-athletes.png`, logo: `${A}/logo-uplifting-athletes.svg`, box: 'top:74.47%;bottom:8.39%;left:50%;translate:-50% 0;aspect-ratio:70/42' },
+	{ name: 'Navy Federal Credit Union', slug: 'navy-federal', photo: `${A}/card-navy-federal.webp`, logo: `${A}/logo-navy-federal.svg`, box: 'inset:42.43% 26.7% -6.72% 9.01%', inner: '24.74% 1.47%' },
+	{ name: 'United States Postal Service', slug: 'usps', photo: `${A}/card-usps.webp`, logo: `${A}/logo-usps.svg`, box: 'inset:37.27% 15.93% 5.3% 15.93%' },
+	{ name: 'IRS', slug: 'irs', photo: `${A}/card-irs.webp`, logo: `${A}/logo-irs.svg`, box: 'inset:66.25% 7.43% 4.79% 7.14%' },
+	{ name: 'Sentara', slug: 'sentara', photo: `${A}/card-sentara.webp`, logo: `${A}/logo-sentara.svg`, box: 'inset:77.57% 8.14% 8.29% 7.86%' },
+	{ name: 'City of Virginia Beach', slug: 'virginia-beach', photo: `${A}/card-virginia-beach.webp`, logo: `${A}/logo-virginia-beach.svg`, box: 'top:64.82%;bottom:5.3%;left:50%;translate:-50% 0;aspect-ratio:210/73.21' },
+	{ name: 'Uplifting Athletes', slug: 'uplifting-athletes', photo: `${A}/card-uplifting-athletes.webp`, logo: `${A}/logo-uplifting-athletes.svg`, box: 'top:74.47%;bottom:8.39%;left:50%;translate:-50% 0;aspect-ratio:70/42' },
 ];
