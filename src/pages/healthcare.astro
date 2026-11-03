@@ -6,6 +6,7 @@ import Placeholder from '@/components/site/Placeholder.astro';
 import Note from '@/components/site/Note.astro';
 import Engage from '@/components/site/Engage.astro';
 import Cta from '@/components/site/Cta.astro';
+import SilkBackground from '@/components/site/SilkBackground.astro';
 import { photos } from '@/data/images';
 
 const pillarsHc = [
@@ -21,15 +22,21 @@ const people = [
 ];
 ---
 <BaseLayout title="Healthcare" pillar="design" description="Enterprise customer experience for patients, practitioners, and payers.">
-	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
-		<div class="wrap grid gap-10 desk:grid-cols-[1.1fr_.9fr] desk:items-end">
-			<div>
-				<nav aria-label="Breadcrumb" class="crumbs mb-4"><a href="/design/">Design</a> / <span aria-current="page">Healthcare</span></nav>
-				<h1 class="mb-6 max-w-[17ch]">Aligning experiences for patients, providers, and <span class="em">payers</span>.</h1>
-				<p class="lede max-w-[56ch]">Healthcare journeys cross digital and traditional channels, and aligning them takes time. We provide enterprise customer experience (CX) strategy, planning, and execution that improves those journeys step by step as your CX practice matures.</p>
-				<div class="mt-8 flex flex-wrap gap-3"><a href="/contact/" class="btn max-pad:w-full">Talk to our healthcare team</a><a href="/product/cx-align/" class="btn btn-outline max-pad:w-full">See CXAlign</a></div>
+	{/* the same hero as the product pages: the textured silk glow, a smaller headline, the photo beside it */}
+	<section class="page-hero relative isolate overflow-hidden py-[clamp(48px,6vw,96px)]">
+		<SilkBackground texture="/images/hero-alt/hero-texture.webp" />
+		<div class="wrap">
+			<nav aria-label="Breadcrumb" class="crumbs mb-4"><a href="/design/">Design</a> / <span aria-current="page">Healthcare</span></nav>
+			<div class="grid gap-10 desk:grid-cols-[1fr_1fr] desk:items-center">
+				<div>
+					<h1 class="product-h mb-6 max-w-[18ch]">Aligning experiences for patients, providers, and <span class="em">payers</span>.</h1>
+					<p class="lede max-w-[56ch]">Healthcare journeys cross digital and traditional channels, and aligning them takes time. We provide enterprise customer experience (CX) strategy, planning, and execution that improves those journeys step by step as your CX practice matures.</p>
+					<div class="mt-8 flex flex-wrap gap-3"><a href="/contact/" class="btn max-pad:w-full">Talk to our healthcare team</a><a href="/product/cx-align/" class="btn btn-outline max-pad:w-full">See CXAlign</a></div>
+				</div>
+				<div class="border border-[var(--line-strong)] p-2">
+					<Placeholder label="Healthcare photo" ratio="4/3" src={photos.telehealthNurse} alt="A nurse on a telehealth call" focus="50% 30%" sizes="(min-width: 1021px) 560px, 100vw" />
+				</div>
 			</div>
-			<Placeholder label="Healthcare photo" ratio="4/3" src={photos.telehealthNurse} alt="A nurse on a telehealth call" focus="50% 30%" />
 		</div>
 	</section>
 

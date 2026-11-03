@@ -7,6 +7,7 @@ import SectionHeader from '@/components/site/SectionHeader.astro';
 import Note from '@/components/site/Note.astro';
 import Placeholder from '@/components/site/Placeholder.astro';
 import Cta from '@/components/site/Cta.astro';
+import VennDiagram from '@/components/site/VennDiagram.astro';
 import { photos } from '@/data/images';
 
 const terms = [
@@ -41,14 +42,15 @@ const why = [
 	<CaseStudies />
 
 	<Section tone="light" id="think">
-		<SectionHeader before="CX, UX, and Service Design are " em="not" after=" the same thing.">These terms are often used interchangeably. We provide all three, and we think it’s worth explaining the difference.</SectionHeader>
-		<div class="mt-12 grid gap-10 desk:grid-cols-[.8fr_1.2fr] desk:items-start">
-			<Placeholder label="Diagram: CX / UX / SD Venn (existing art)" ratio="1/1" />
-			<dl class="grid gap-8">
-				{terms.map((x) => <div class="border-t border-[var(--line)] pt-5"><dt class="h3 mb-2">{x.t}</dt><dd class="body">{x.d}</dd></div>)}
+		{/* one grid, three places: phone: heading, diagram, definitions; tablet: the diagram beside the
+		    heading; desktop: heading across the top, the diagram beside the definitions */}
+		<div class="think-grid">
+			<SectionHeader class="think-head" before="CX, UX, and Service Design are " em="not" after=" the same thing.">These terms are often used interchangeably. We provide all three, and we think it’s worth explaining the difference.</SectionHeader>
+			<div class="think-venn"><VennDiagram /></div>
+			<dl class="think-defs grid gap-8">
+				{terms.map((x, i) => <div class="border-t border-[var(--line)] pt-5" data-term={['cx', 'ux', 'sd'][i]}><dt class="h3 mb-2">{x.t}</dt><dd class="body">{x.d}</dd></div>)}
 			</dl>
 		</div>
-		<Note class="mt-8">Interaction idea for later: make the Venn diagram the control. Hover or tap a circle to highlight its definition. Copy stays as is (lightly tightened from the current site).</Note>
 	</Section>
 
 	<Section id="what">
@@ -90,3 +92,20 @@ const why = [
 
 	<Cta />
 </BaseLayout>
+
+<style>
+	.think-grid { display: grid; gap: 40px; grid-template-areas: "head" "venn" "defs"; }
+	.think-grid > :global(.think-head) { grid-area: head; }
+	.think-venn { grid-area: venn; }
+	.think-defs { grid-area: defs; }
+	/* tablet: the diagram fills the space to the right of the heading */
+	@media (761px <= width < 1021px) {
+		.think-grid { grid-template-columns: 1.15fr .85fr; grid-template-areas: "head venn" "defs defs"; column-gap: 32px; align-items: center; }
+		/* the heading spans the same width as the intro beneath it */
+		.think-grid > :global(.think-head) :global(h2) { max-width: none; text-wrap: pretty; }
+	}
+	/* desktop: heading across the top, the diagram beside the definitions */
+	@media (width >= 1021px) {
+		.think-grid { grid-template-columns: .8fr 1.2fr; grid-template-areas: "head head" "venn defs"; column-gap: 40px; row-gap: 48px; align-items: center; }
+	}
+</style>

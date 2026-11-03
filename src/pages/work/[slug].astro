@@ -32,7 +32,7 @@ const summary = [
 	{/* ---------- Hero: the story's photo, title low on the frame ---------- */}
 	<section class="dark noisy relative overflow-hidden" aria-labelledby="case-h">
 		<BgImage label={c.photo} src={c.image} scrim="dark" mood={c.mood} />
-		<div class="wrap relative flex min-h-[min(720px,calc(100svh-var(--nav-h)))] flex-col justify-end py-16 desk:py-24">
+		<div class="wrap relative flex min-h-[420px] flex-col justify-end py-16 tab:min-h-[min(720px,calc(100svh-var(--nav-h)))] desk:py-24">
 			<nav aria-label="Breadcrumb" class="crumbs mb-5"><a href="/design/#work">Our work</a> / <span aria-current="page">{c.who}</span></nav>
 			<h1 id="case-h" class="mb-6 max-w-[18ch]">{c.title}</h1>
 			<p class="text-[17px] font-medium text-[var(--fg-muted)]">{c.who} · {used.map((p) => p.name).join(' + ')}</p>
@@ -52,7 +52,7 @@ const summary = [
 
 		<div class="mt-20 grid gap-12 desk:grid-cols-[1.5fr_1fr] desk:gap-20">
 			<p class="font-serif text-[clamp(24px,2.4vw,34px)] leading-[1.3]">{d.intro}</p>
-			<aside class="glass flex flex-col gap-6 self-start p-7">
+			<div class="glass flex flex-col gap-6 self-start p-7">
 				<div>
 					<h2 class="h3 mb-3">What we did</h2>
 					<ul role="list" class="flex flex-wrap gap-2">
@@ -66,7 +66,7 @@ const summary = [
 				{d.siteUrl
 					? <a href={d.siteUrl} class="link self-start text-[15px]" rel="noopener">Visit the site <span class="arrow" aria-hidden="true">→</span></a>
 					: <p class="body">[Link to the live site, if it’s public]</p>}
-			</aside>
+			</div>
 		</div>
 	</Section>
 

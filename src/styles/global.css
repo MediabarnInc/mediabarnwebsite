@@ -150,6 +150,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .glow-sand { --bg: #E2D5C6; --glow: radial-gradient(60% 80% at 85% 15%, color-mix(in srgb, var(--clay) 28%, transparent), transparent 70%), radial-gradient(50% 70% at 10% 90%, color-mix(in srgb, var(--sand) 55%, transparent), transparent 70%), radial-gradient(40% 50% at 45% 50%, color-mix(in srgb, var(--paper-light) 45%, transparent), transparent 70%); }
 /* the glow, mirrored (its warm light on the other side) */
 .glow-flip::before { transform: scaleX(-1); }
+/* sections that pick their glow automatically alternate sides down the page */
+main > section.auto-glow:nth-of-type(even)::before { transform: scaleX(-1); }
 
 /* Paper fibers on light sections */
 .fibers { background-image: var(--fibers); background-size: 2560px 600px; background-repeat: repeat-y; background-position: center top; }
@@ -255,6 +257,8 @@ html.motion [data-unveil].up img { scale: 1; }
 /* Page heroes: paper with a warm noisy glow */
 .page-hero > .wrap { position: relative; }
 .page-hero h1 { font-size: clamp(44px, 6.4vw, 92px); }
+/* a smaller hero headline for heroes with an image beside it (product, Federal, Healthcare) */
+.page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }
 
 /* Confetti dots thrown off by a hard mouse jiggle (SquareCursor.astro) */
 .confetti { position: fixed; z-index: 81; border-radius: 50%; pointer-events: none; box-shadow: 0 2px 5px color-mix(in srgb, var(--espresso) 35%, transparent); }

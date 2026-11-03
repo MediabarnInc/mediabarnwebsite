@@ -18,6 +18,8 @@ interface Props {
 	nav?: 'bar' | 'hero';
 }
 const { title, description = 'Mediabarn brings research, design, and product together, using Human-Centered Design.', pillar, nav = 'bar' } = Astro.props;
+// search results show about 155 characters: trim longer descriptions at a word, with an ellipsis
+const desc = description.length > 158 ? description.slice(0, 155).replace(/\s+\S*$/, '').replace(/[,;:]$/, '') + '…' : description;
 ---
 
 <html lang="en">
@@ -25,7 +27,13 @@ const { title, description = 'Mediabarn brings research, design, and product tog
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title} | Mediabarn</title>
-		<meta name="description" content={description} />
+		<meta name="description" content={desc} />
+		{/* share card: title and description for links pasted into Slack, LinkedIn, texts */}
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Mediabarn" />
+		<meta property="og:title" content={`${title} | Mediabarn`} />
+		<meta property="og:description" content={desc} />
+		<meta name="twitter:card" content="summary" />
 		<meta name="theme-color" content="#EAE4D7" />
 		<meta name="robots" content="noindex" />{/* pre-launch */}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
