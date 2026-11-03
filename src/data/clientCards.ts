@@ -1,7 +1,8 @@
 // Client cards for the home hero strip, from Figma "MB UX Assets" › "Mediabarn alt" (node 2023:12997),
 // in the design's left-to-right order. Assets supplied 2026-10-28 (public/images/hero-alt):
 // the card photos come with their color tint already applied, so no overlay is added here.
-// Each logo sits in the box the Figma layout gives it, as % insets of the 245 × 245 card (top right bottom left).
+// Each logo sits in the box the Figma layout gives it (Uplifting Athletes: the full wordmark supplied
+// 2026-11-03, 270 × 54, along the bottom), as % insets of the 245 × 245 card (top right bottom left).
 
 export interface ClientCard {
 	name: string;
@@ -23,5 +24,5 @@ export const clientCards: ClientCard[] = [
 	{ name: 'IRS', slug: 'irs', photo: `${A}/card-irs.webp`, logo: `${A}/logo-irs.svg`, box: 'inset:66.25% 7.43% 4.79% 7.14%' },
 	{ name: 'Sentara', slug: 'sentara', photo: `${A}/card-sentara.webp`, logo: `${A}/logo-sentara.svg`, box: 'inset:77.57% 8.14% 8.29% 7.86%' },
 	{ name: 'City of Virginia Beach', slug: 'virginia-beach', photo: `${A}/card-virginia-beach.webp`, logo: `${A}/logo-virginia-beach.svg`, box: 'top:64.82%;bottom:5.3%;left:50%;translate:-50% 0;aspect-ratio:210/73.21' },
-	{ name: 'Uplifting Athletes', slug: 'uplifting-athletes', photo: `${A}/card-uplifting-athletes.webp`, logo: `${A}/logo-uplifting-athletes.svg`, box: 'top:74.47%;bottom:8.39%;left:50%;translate:-50% 0;aspect-ratio:70/42' },
+	{ name: 'Uplifting Athletes', slug: 'uplifting-athletes', photo: `${A}/card-uplifting-athletes.webp`, logo: `${A}/logo-uplifting-athletes.svg`, box: 'left:12%;right:12%;bottom:9%;aspect-ratio:270/54' },
 ];
