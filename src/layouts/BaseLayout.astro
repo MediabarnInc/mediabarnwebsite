@@ -67,7 +67,7 @@ const desc = description.length > 158 ? description.slice(0, 155).replace(/\s+\S
 		<AltNav variant="bar" pillar={pillar} reveal={nav === 'hero'} />
 		<main id="main">
 			<slot />
-			{pillar && <NextLens current={pillar} />}
+			{pillar && <NextLens current={pillar} light={pillar === 'research'} />}
 		</main>
 		<Footer />
 		<AltMenu />
