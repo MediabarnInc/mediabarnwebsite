@@ -9,6 +9,11 @@ import nfcuColorTokens from '@/assets/cases/nfcu-color-tokens.png';
 import nfcuBrandAndUi from '@/assets/cases/nfcu-brand-and-ui.png';
 import sentaraSite from '@/assets/cases/sentara-site.png';
 import sentaraWorkshop from '@/assets/cases/sentara-workshop.jpg';
+import upliftingDrills from '@/assets/cases/uplifting-athletes-drills.jpg';
+import vbBoardwalk from '@/assets/cases/virginia-beach-boardwalk.jpg';
+import uspsMail from '@/assets/cases/usps-mail.jpg';
+import sentaraCampus from '@/assets/cases/sentara-campus.jpg';
+import nfcuBranch from '@/assets/cases/navy-federal-branch.jpg';
 
 export interface CaseStudy {
 	who: string;
@@ -80,7 +85,7 @@ export const cases: CaseStudy[] = [
 		slug: 'navy-federal', who: 'Navy Federal Credit Union', pillars: ['design'],
 		title: 'Moving a design system to Figma',
 		outcome: 'We moved Navy Federal’s design system from Adobe XD to Figma, and helped design CMD+R, the guidelines site that keeps design and code consistent.',
-		photo: 'banking on a laptop and phone', mood: 'dusk', image: photos.laptopAndPhone,
+		photo: 'a Navy Federal branch: staff helping a service member', mood: 'dusk', image: nfcuBranch,
 		confirm: 'a measurable result if there is one (components, tokens, or screens migrated; designers trained; teams using CMD+R), a quote, whether the CMD+R site is public, and that the two design system images are cleared to publish.',
 		detail: {
 			intro: 'Navy Federal is the largest credit union in the United States, serving service members, veterans, Department of Defense civilians, and their families. Its digital teams design for millions of members across web, mobile, and marketing.',
@@ -112,7 +117,7 @@ export const cases: CaseStudy[] = [
 		slug: 'usps', who: 'United States Postal Service', pillars: ['research', 'design'],
 		title: 'Postal services everyone can use',
 		outcome: 'Testing with the public, so the Postal Service’s digital services work for every kind of customer.',
-		photo: 'wireframes sketched during a study', mood: 'ember', image: photos.wireframeSketch,
+		photo: 'someone opening their mail', mood: 'ember', image: uspsMail,
 		confirm: 'which USPS service or site the work covered, the scope (research, design, accessibility), and the dates.',
 		detail: {
 			intro: 'The United States Postal Service delivers to every address in the country. Its customers are everyone: people shipping a package for the first time, small businesses printing labels, and people who rely on assistive technology.',
@@ -175,7 +180,7 @@ export const cases: CaseStudy[] = [
 		slug: 'sentara', who: 'Sentara Health', pillars: ['research', 'design'],
 		title: 'Complete care, simplified',
 		outcome: 'Since 2019, research and design that took Sentara from an outdated website and no app to a relaunched patient portal and mobile app suite.',
-		photo: 'a care team meeting', mood: 'clay', image: photos.healthMeeting,
+		photo: 'Sentara Williamsburg Regional Medical Center', mood: 'clay', image: sentaraCampus,
 		confirm: 'a quote, whether Sentara Health Plans was part of the work, and that the palliative care example can be shared.',
 		detail: {
 			intro: 'Sentara Health is a not-for-profit health system serving Virginia and northeastern North Carolina, with hospitals, medical groups, and its own health plans. Its patients and members move between many teams, buildings, and systems in a single episode of care.',
@@ -211,7 +216,7 @@ export const cases: CaseStudy[] = [
 		slug: 'virginia-beach', who: 'City of Virginia Beach', pillars: ['research', 'design'],
 		title: 'City services built around residents',
 		outcome: 'Listening to residents, so the city’s services are easier to find and use.',
-		photo: 'journey mapping on the wall', mood: 'dusk', image: photos.stickyNotes,
+		photo: 'the Virginia Beach boardwalk at sunrise', mood: 'dusk', image: vbBoardwalk,
 		confirm: 'which city department or service the work covered, the scope, and the dates.',
 		detail: {
 			intro: 'Virginia Beach is the most populous city in Virginia, and Mediabarn’s home for our second office and research lab. Its residents use city services for everything from permits and utilities to parks and public safety.',
@@ -236,7 +241,7 @@ export const cases: CaseStudy[] = [
 		slug: 'uplifting-athletes', who: 'Uplifting Athletes', pillars: ['design'],
 		title: 'Telling the story of a cause',
 		outcome: 'A digital presence that connects college football fans and players with the rare disease community.',
-		photo: 'a design team at the wall', mood: 'ember', image: photos.designWorkshop,
+		photo: 'athletes running agility drills', mood: 'ember', image: upliftingDrills,
 		confirm: 'what the work was (website, brand, campaign), whether research was part of it, and the dates.',
 		detail: {
 			intro: 'Uplifting Athletes is a nonprofit that aligns college football with the rare disease community. Through player-led chapters, it raises awareness and funds for rare disease research and gives patients and families a team behind them.',
