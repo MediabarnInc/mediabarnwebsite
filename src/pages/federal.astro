@@ -37,7 +37,7 @@ const services = [
 		</div>
 	</section>
 
-	<Section bg={{ label: "a service design workshop with agency staff", mood: "sand" }}>
+	<Section bg={{ label: "a service design workshop with agency staff", src: photos.workshopNotes, mood: "sand" }}>
 		<SectionHeader before="Research and design built for " em="agencies" after="." />
 		<div class="mt-12 grid gap-4 tab:grid-cols-2 desk:grid-cols-3">
 			{services.map((s) => <div class="flex flex-col gap-3 glass p-7"><h3>{s.t}</h3><p class="body grow">{s.d}</p>{s.link && <a href={s.link} class="link self-start text-[14.5px] font-semibold">See Research →</a>}</div>)}

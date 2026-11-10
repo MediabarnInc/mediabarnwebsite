@@ -98,6 +98,7 @@ export const cases: CaseStudy[] = [
 				{ value: '[00]', label: '[components and tokens migrated]' },
 			],
 			services: ['Design system migration (Adobe XD to Figma)', 'Design tokens and color themes', 'Guidelines website design', 'Figma training and support', 'Accessibility'],
+			siteUrl: 'https://www.navyfederal.org/',
 			chapters: {
 				design: {
 					heading: 'One system, one source of truth',

@@ -23,7 +23,7 @@ const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
 						<p class="text-[14px] font-medium text-[var(--fg-muted)]">{c.who} · {c.pillars.map(pillarName).join(' + ')}</p>
 						<h3 class:list={['font-serif font-normal leading-[1.08]', i === 0 ? 'text-[clamp(30px,3.4vw,46px)]' : 'text-[clamp(26px,2.4vw,32px)]']}>{c.title}</h3>
 						<p class="body max-w-[52ch]">{c.outcome}</p>
-						<a href={caseHref(c)} class="link mt-1 self-start text-[15px]">Read the case study <span class="arrow" aria-hidden="true">→</span></a>
+						<a href={caseHref(c)} class="link mt-1 self-start text-[15px]">View case study <span class="arrow" aria-hidden="true">→</span></a>
 					</div>
 				</article>
 			))}
@@ -35,7 +35,7 @@ const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
 					<a href={caseHref(c)} class="glass flex w-full flex-col gap-2 p-5">
 						<span class="text-[14px] font-medium text-[var(--fg-muted)]">{c.who}</span>
 						<span class="font-serif text-[clamp(22px,2vw,26px)] leading-[1.1]">{c.title}</span>
-						<span class="text-[15px] font-semibold">Read the case study <span class="arrow" aria-hidden="true">→</span></span>
+						<span class="text-[15px] font-semibold">View case study <span class="arrow" aria-hidden="true">→</span></span>
 					</a>
 				</li>
 			))}
