@@ -108,7 +108,7 @@ const quotes = [
 	<Section>
 		<SectionHeader before="From question to " em="answer" after=", in four steps." />
 		<ol role="list" class="mt-12 grid gap-4 tab:grid-cols-2 desk:grid-cols-4">
-			{steps.map((s, i) => <li class="glass p-7"><span class="font-semibold text-[13px] text-[var(--red-ink)]">0{i + 1}</span><h3 class="mb-2 mt-2">{s.t}</h3><p class="body">{s.d}</p></li>)}
+			{steps.map((s, i) => <li class="glass p-7"><span class="font-semibold text-[13px] text-[var(--red-ink)]">{i + 1}</span><h3 class="mb-2 mt-2">{s.t}</h3><p class="body">{s.d}</p></li>)}
 		</ol>
 	</Section>
 

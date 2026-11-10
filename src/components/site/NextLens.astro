@@ -24,7 +24,7 @@ const links = [
 	<div class="grid gap-4 tab:grid-cols-2">
 		{links.map(({ p, n, rel, line }) => (
 			<a href={p.href} class:list={['group flex flex-col gap-4 p-8', light ? 'border border-[var(--line)] bg-[var(--paper-light)] shadow-[0_18px_40px_-28px_rgba(72,57,51,.5)] transition-colors hover:border-[var(--red)]' : 'glass']}>
-				<span class="eyebrow">{rel} / 0{n + 1}</span>
+				<span class="eyebrow">{rel} / {n + 1}</span>
 				<span class:list={['font-serif text-[clamp(30px,3vw,40px)] leading-none', light ? 'text-[var(--ink)]' : 'text-[var(--paper-light)]']}>{p.name}<span class={light ? 'text-[var(--red-ink)]' : 'text-[var(--red-glow)]'}>.</span> <span class:list={['arrow text-[0.7em]', light ? 'text-[var(--red-ink)]' : 'text-[var(--red-glow)]']} aria-hidden="true">→</span></span>
 				<span class="body">{line}</span>
 			</a>

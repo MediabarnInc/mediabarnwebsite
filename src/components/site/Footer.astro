@@ -13,7 +13,7 @@ const lnk = 'text-[var(--paper-light)] hover:text-[var(--red-glow)]';
 		</div>
 		<nav aria-label="Pillars, footer">
 			<h2 class={head}>Pillars</h2>
-			<ul role="list" class="grid gap-2.5 text-[15px]">{pillars.map((p, i) => <li><a class={lnk} href={p.href}><span class="mr-2 font-semibold text-[11px] text-[var(--sand)]">0{i + 1}</span>{p.name}</a></li>)}</ul>
+			<ul role="list" class="grid gap-2.5 text-[15px]">{pillars.map((p, i) => <li><a class={lnk} href={p.href}><span class="mr-2 font-semibold text-[11px] text-[var(--sand)]">{i + 1}</span>{p.name}</a></li>)}</ul>
 		</nav>
 		<nav aria-label="Products, footer">
 			<h2 class={head}>Products</h2>

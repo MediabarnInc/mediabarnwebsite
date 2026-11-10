@@ -61,7 +61,7 @@ const summary = [
 				</div>
 				<div>
 					<h2 class="h3 mb-3">Services</h2>
-					<ul role="list" class="grid gap-1.5 body">{d.services.map((s) => <li>– {s}</li>)}</ul>
+					<ul role="list" class="grid gap-1.5 body">{d.services.map((s) => <li class="flex items-baseline gap-2.5"><span aria-hidden="true" class="size-1.5 shrink-0 translate-y-[-0.1em] rounded-full bg-[var(--red-ink)]"></span><span>{s}</span></li>)}</ul>
 				</div>
 				{d.siteUrl
 					? <a href={d.siteUrl} class="link self-start text-[15px]" rel="noopener">Visit the site <span class="arrow" aria-hidden="true">→</span></a>
@@ -89,7 +89,7 @@ const summary = [
 			<div class="grid gap-8 desk:grid-cols-[1fr_2fr] desk:gap-20">
 				<p class="font-serif text-[clamp(36px,4vw,56px)] leading-none">
 					<a href={ch.pillar.href} class="hover:text-[var(--red-ink)]">{ch.pillar.verb}.</a>
-					<span class="mt-3 block font-sans text-[14px] font-semibold uppercase tracking-[0.1em] text-[var(--fg-muted)]">0{ch.n} · {ch.pillar.name}</span>
+					<span class="mt-3 block font-sans text-[14px] font-semibold uppercase tracking-[0.1em] text-[var(--fg-muted)]">{ch.n} · {ch.pillar.name}</span>
 				</p>
 				<div>
 					<h2 class="mb-6 max-w-[20ch]">{ch.heading}</h2>
