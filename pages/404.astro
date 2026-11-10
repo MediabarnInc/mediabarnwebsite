@@ -1,9 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import SilkBackground from '@/components/site/SilkBackground.astro';
 import { pillars } from '@/data/site';
 ---
 <BaseLayout title="Page not found">
-	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+	{/* the same hero background as the product pages: the textured silk glow */}
+	<section class="page-hero relative isolate overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<SilkBackground texture="/images/hero-alt/hero-texture.webp" />
 		<div class="wrap">
 		<h1 class="mb-6">This page isn’t <span class="em">here</span>.</h1>
 		<p class="lede mb-8">Try one of our three pillars, or head back home.</p>

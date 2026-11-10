@@ -68,7 +68,8 @@ const quotes = [
 		<Note class="mt-6">New section. The old site mixed these two audiences (researchers renting space, and clients who want us to do the research). Splitting them up front lets each find their path in one click.</Note>
 	</Section>
 
-	<Section id="services">
+	{/* the dark interview-photo background (moved here from the loop band at the end of the page) */}
+	<Section id="services" tone="dark" glow="ember" bg={{ label: "a research interview being recorded", src: photos.interviewCamera, mood: "ember" }}>
 		<SectionHeader before="Research " em="services" after=".">A selection of what we offer. There are plenty more, and yes, we serve delicious cookies.</SectionHeader>
 		<div class="mt-12 grid gap-4 tab:grid-cols-2 desk:grid-cols-3">
 			{services.map((s) => <div class="glass p-7"><h3 class="mb-3">{s.t}</h3><p class="body">{s.d}</p></div>)}
@@ -76,7 +77,8 @@ const quotes = [
 		<Note class="mt-6">Eye tracking and moderation only appeared as keywords on the current site, so their descriptions are new. Please confirm eye tracking is still offered.</Note>
 	</Section>
 
-	<Section tone="light" id="facility" bg={{ label: "the Arlington office", src: photos.officeLobby, mood: "sand" }}>
+	{/* no background photo here: text sat over the busy lobby photo (the lab photos below show the space) */}
+	<Section tone="light" id="facility" glow="sand">
 		<SectionHeader before="A lab built for " em="watching" after=" people work.">Our Arlington suite has a dedicated usability lab and a full-service focus group facility with a large two-way mirror, a short walk from the Clarendon Metro.</SectionHeader>
 		{/* the Arlington lab, photos supplied 2026-10-29 */}
 		<div class="mt-12 grid gap-3 tab:grid-cols-4 tab:grid-rows-[repeat(2,clamp(170px,17vw,250px))]">
@@ -110,7 +112,8 @@ const quotes = [
 		</ol>
 	</Section>
 
-	<Section tone="light">
+	{/* the Arlington office photo, moved here from the lab section: a dark scrim keeps the quotes readable */}
+	<Section tone="dark" bg={{ label: "the Arlington office", src: photos.officeLobby, mood: "sand" }}>
 		<SectionHeader before="Researchers keep coming " em="back" after="." />
 		<div class="mt-12 grid gap-6 desk:grid-cols-3">
 			{quotes.map((q) => (

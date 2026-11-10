@@ -8,17 +8,23 @@ interface Props {
 	id?: string;
 	tone?: 'paper' | 'light' | 'dark' | 'rust';
 	/** noisy gradient behind the section (dark/rust/paper) */
-	glow?: 'ember' | 'dusk' | 'clay' | 'paper';
+	glow?: 'ember' | 'dusk' | 'clay' | 'paper' | 'mist' | 'sand';
+	/** paper fibers on light sections; off by default (sections use noisy gradients instead, 2026-11-02) */
+	fibers?: boolean;
 	class?: string;
 	reveal?: boolean;
 }
-const { id, tone = 'paper', glow, bg, class: cls, reveal = true } = Astro.props;
+const { id, tone = 'paper', glow, bg, class: cls, reveal = true, fibers = false } = Astro.props;
+// no glow given: a soft noisy gradient by tone (paper glow on paper, a quiet clay haze on light), unless a
+// photo fills the section; alternate sections mirror it (global.css), so neighbours don't repeat
+const autoGlow = !glow && !bg && (tone === 'paper' || tone === 'light') ? (tone === 'light' ? 'mist' : 'paper') : undefined;
 const scrim = tone === 'dark' ? 'dark' : tone === 'rust' ? 'rust' : 'light';
 ---
 <section id={id} class:list={[
 	'rule noisy relative py-[clamp(64px,8vw,128px)]',
-	{ 'bg-[var(--paper-light)]': tone === 'light', dark: tone === 'dark', rust: tone === 'rust', fibers: tone === 'paper' || tone === 'light' },
+	{ 'bg-[var(--paper-light)]': tone === 'light', dark: tone === 'dark', rust: tone === 'rust', fibers: fibers && (tone === 'paper' || tone === 'light') },
 	glow && `glow-${glow}`,
+	autoGlow && `glow-${autoGlow} auto-glow`,
 	cls,
 ]}>
 	{bg && <BgImage label={bg.label} src={bg.src} focus={bg.focus} mood={bg.mood} scrim={scrim} labelAt="tr" />}

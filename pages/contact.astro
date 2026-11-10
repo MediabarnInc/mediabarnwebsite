@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import SilkBackground from '@/components/site/SilkBackground.astro';
 import Note from '@/components/site/Note.astro';
 import Placeholder from '@/components/site/Placeholder.astro';
 import { contact, products } from '@/data/site';
@@ -21,7 +22,9 @@ const productChoices = [...products.map((p) => ({ v: p.slug, l: p.name })), { v:
 const field = 'w-full border border-[var(--line-strong)] bg-[var(--card)] px-3 py-2.5 text-[16px] focus:border-[var(--line-strong)]';
 ---
 <BaseLayout title="Contact" description="Start a conversation with Mediabarn about research, design, or product.">
-	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+	{/* the same hero background as the product pages: the textured silk glow */}
+	<section class="page-hero relative isolate overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<SilkBackground texture="/images/hero-alt/hero-texture.webp" />
 		<div class="wrap grid gap-14 desk:grid-cols-[1.2fr_.8fr]">
 			<div>
 				<h1 class="mb-6 max-w-[14ch]">Start the <span class="em">conversation</span>.</h1>
@@ -65,11 +68,11 @@ const field = 'w-full border border-[var(--line-strong)] bg-[var(--card)] px-3 p
 				</form>
 				<Note class="mt-8">Two steps instead of eight options: pick an area, then (for Research and Product only) a quick follow-up. The form sends `area`, plus `research_need` or `product`. Links across the site still add ?topic= to preselect: research, lab, design, or a product slug (chirp, edjit, cx-align, time). The form isn’t wired yet; the TrustLedger site’s HubSpot setup can be reused, routing on `area`.</Note>
 			</div>
-			<aside class="grid content-start gap-8 desk:pt-28">
+			<div class="grid content-start gap-8 desk:pt-28">
 				{contact.offices.map((o) => <div><h2 class="eyebrow mb-2">{o.name}</h2><p class="text-[17px] leading-[1.6]">{o.lines.map((l) => <>{l}<br /></>)}</p></div>)}
 				<div><h2 class="eyebrow mb-2">Email and phone</h2><p class="text-[17px] leading-[1.6]"><a class="underline underline-offset-4" href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.phone}</p></div>
 				<Placeholder label="Map: Arlington and Virginia Beach" ratio="4/3" mood="sand" />
-			</aside>
+			</div>
 		</div>
 	</section>
 </BaseLayout>

@@ -116,7 +116,10 @@ void main() {
 		const uStir = gl.getUniformLocation(prog, 'uStir');
 
 		const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		const SCALE = 0.42; // render at ~40% resolution: smooth, soft, and cheap
+		// low-power devices and phones: fewer pixels and frames; it's a soft, slow field, so it still looks the same
+		const lowPower = (navigator.hardwareConcurrency || 8) <= 4 || ((navigator as any).deviceMemory || 8) <= 4 || innerWidth < 761;
+		const SCALE = lowPower ? 0.3 : 0.42; // render at 30–40% resolution: smooth, soft, and cheap
+		const FRAME = 1000 / (lowPower ? 20 : 30); // the silk moves slowly, so 20–30 frames a second is plenty
 		const resize = () => {
 			const w = Math.max(1, Math.round(root.clientWidth * SCALE));
 			const h = Math.max(1, Math.round(root.clientHeight * SCALE));
@@ -138,17 +141,23 @@ void main() {
 			}, { passive: true });
 		}
 
-		let raf = 0, t0 = performance.now(), visible = true;
+		let raf = 0, t0 = performance.now(), visible = true, last = 0;
 		const draw = (now: number) => {
 			resize();
-			cur.x += (target.x - cur.x) * .04; cur.y += (target.y - cur.y) * .04;
-			stir *= .965;
+			// easing per 60fps frame, scaled to the real time step so it feels the same at any frame rate
+			const n = Math.min(4, last ? (now - last) / 16.7 : 1);
+			const k = 1 - Math.pow(1 - .04, n);
+			cur.x += (target.x - cur.x) * k; cur.y += (target.y - cur.y) * k;
+			stir *= Math.pow(.965, n);
 			gl.uniform1f(uTime, still ? 18 : (now - t0) / 1000 + 18);
 			gl.uniform2f(uMouse, cur.x, cur.y);
 			gl.uniform1f(uStir, stir);
 			gl.drawArrays(gl.TRIANGLES, 0, 3);
 		};
-		const loop = (now: number) => { draw(now); raf = visible && !document.hidden ? requestAnimationFrame(loop) : 0; };
+		const loop = (now: number) => {
+			if (now - last >= FRAME) { draw(now); last = now; }
+			raf = visible && !document.hidden ? requestAnimationFrame(loop) : 0;
+		};
 		const start = () => { if (!raf && !still) raf = requestAnimationFrame(loop); };
 
 		draw(performance.now());

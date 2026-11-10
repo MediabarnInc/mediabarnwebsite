@@ -30,14 +30,13 @@ const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.la
 	{/* ---------- Three ways in ---------- */}
 	<section class="alt-sec bg-[var(--paper-light)]" aria-labelledby="ways-h">
 		<div class="wrap">
-			<h2 id="ways-h" data-reveal class="mx-auto max-w-[22ch] text-center">Research tells us what people need. Design shapes it. Products keep it <span class="em">working</span>.</h2>
+			<h2 id="ways-h" data-reveal class="mx-auto max-w-[22ch] text-center">Research, design, and product. Start with one, or bring us in for all <span class="em">three</span>.</h2>
 			<ol role="list" data-stagger class="mt-16 grid gap-6 desk:grid-cols-3">
 				{pillars.map((p, i) => (
 					<li style={`--i:${i}`}>
-						<a href={p.href} class="group flex h-full flex-col border border-[var(--line)] bg-[var(--paper)] transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[var(--red)]">
-							<div data-unveil><Placeholder label={`${p.name}: photography`} ratio="4/3" src={pillarPhotos[i]} /></div>
-							<div class="flex grow flex-col gap-3 p-7">
-								<span class="eyebrow">0{i + 1} / {p.verb}</span>
+						<a href={p.href} class="pillar-card group flex h-full flex-col border border-[var(--line)] bg-[var(--paper)] transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[var(--red)]">
+							<div data-unveil class="pillar-img"><Placeholder label={`${p.name}: photography`} ratio="4/3" src={pillarPhotos[i]} /></div>
+							<div class="flex grow flex-col justify-center gap-3 p-7">
 								<h3 class="font-serif !text-[34px] !font-normal leading-none">{p.name}</h3>
 								<p class="body grow">{p.oneLiner}</p>
 								<span class="link self-start">Explore {p.name.toLowerCase()} <span class="arrow" aria-hidden="true">→</span></span>
@@ -115,6 +114,14 @@ const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.la
 </BaseLayout>
 
 <style>
+	/* pillar cards on tablets and large phones (621–1020px): photo beside the text instead of a full-width
+	   4:3 photo above it, so each card is about a third as tall */
+	@media (621px <= width < 1021px) {
+		.pillar-card { flex-direction: row; }
+		.pillar-img { flex: 0 0 38%; }
+		.pillar-img :global(.ph) { aspect-ratio: auto !important; height: 100%; min-height: 200px; }
+		.pillar-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+	}
 	.alt-sec { padding-block: clamp(72px, 9vw, 140px); color: #483933; }
 	.alt-sec h2 { color: #483933; }
 </style>

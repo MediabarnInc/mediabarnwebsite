@@ -5,12 +5,16 @@
 // place with almost no wobble. Untouched, the lines still drift slowly (a soft, wide wave through
 // the whole drawing), so the hero never sits completely still; the drift pauses off-screen and in hidden tabs.
 // Sits above the silk glow and below the hero copy. Decorative (aria-hidden).
-// Without JS, or under reduced motion, the static PNG of the same artwork shows instead.
+// Without JS, or under reduced motion, a still image of the same artwork shows instead; it is only
+// downloaded in those cases (the noscript copy, or the script setting its src), never alongside the canvas.
+// The idle drift redraws at most 30 times a second (15 on low-power devices) and only where a mouse can
+// reach the lines; on touch screens they're drawn once. The pointer's pull runs at the full frame rate.
 interface Props { fallback: string }
 const { fallback } = Astro.props;
 ---
 <div class="wave-lines pointer-events-none absolute inset-0" aria-hidden="true">
-	<img src={fallback} alt="" class="wave-lines-fallback absolute inset-0 h-full w-full object-cover" />
+	<img data-src={fallback} alt="" class="wave-lines-fallback absolute inset-0 h-full w-full object-cover" />
+	<noscript><img src={fallback} alt="" class="absolute inset-0 h-full w-full object-cover" /></noscript>
 	<canvas class="wave-lines-canvas absolute inset-0 h-full w-full"></canvas>
 </div>
 
@@ -29,8 +33,8 @@ const { fallback } = Astro.props;
 	const SPRING = 0.04;    // pull back toward the resting shape
 	const DAMPING = 0.78;   // velocity kept each frame (lower settles faster; at 0.78 the lines ease back with almost no wobble)
 	const MAX_OFFSET = 36;  // a point never strays further than this
-	const DRIFT = 5;        // idle drift: how far points wander (frame px)
-	const DRIFT_SPEED = 0.35; // idle drift: how fast (lower is calmer)
+	const DRIFT = 9;        // idle drift: how far points wander (frame px)
+	const DRIFT_SPEED = 0.42; // idle drift: how fast (lower is calmer)
 
 	function decode(s: string) {
 		const v = s.split(',').map(Number);
@@ -66,14 +70,18 @@ const { fallback } = Astro.props;
 			ctx.clearRect(0, 0, W, H);
 			ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * ox, dpr * oy);
 			ctx.lineCap = 'round';
-			ctx.lineJoin = 'round';
+			// many tiny segments: bevel joins look the same at this size and cost far less than round ones
+			ctx.lineJoin = 'bevel';
+			// while the lines only drift, every other point is plenty (the curves are gentle); full detail
+			// while the pointer is pulling them
+			const stride = moving ? 2 : 4;
 			for (let l = 0; l < rest.length; l++) {
 				const r = rest[l], o = off[l], s = waveStyles[l], ph = l * 0.23;
 				ctx.strokeStyle = `rgba(${WAVE_COLOR}, ${(s.a * WAVE_GROUP_OPACITY).toFixed(3)})`;
 				ctx.lineWidth = s.w;
 				ctx.setLineDash(s.dash ?? []);
 				ctx.beginPath();
-				for (let i = 0; i < r.length; i += 2) {
+				for (let i = 0; i < r.length; i = i + stride < r.length || i === r.length - 2 ? i + stride : r.length - 2) {
 					// idle drift: two slow waves, varying across the drawing and between lines
 					const rx = r[i], ry = r[i + 1];
 					const x = rx + o[i] + DRIFT * Math.sin(t * 0.7 + ry * 0.011 + ph);
@@ -115,8 +123,16 @@ const { fallback } = Astro.props;
 			}
 		};
 
-		let raf = 0, inView = true, moving = false, t = 0;
+		let raf = 0, inView = true, moving = false, t = 0, last = 0;
+		const lowPower = (navigator.hardwareConcurrency || 8) <= 4 || ((navigator as any).deviceMemory || 8) <= 4;
+		const IDLE_FRAME = 1000 / (lowPower ? 15 : 30);
+		// phones and tablets can't move the lines (no hover), so there the lines are drawn once and stay still:
+		// the drift is the costliest part of the hero, and it's the slow devices that would pay for it
+		const canHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
 		const loop = (now: number) => {
+			// drifting alone is slow, so it doesn't need every frame
+			if (!moving && now - last < IDLE_FRAME) { raf = inView && !document.hidden ? requestAnimationFrame(loop) : 0; return; }
+			last = now;
 			t = (now / 1000) * DRIFT_SPEED;
 			// spring physics only while the pointer has left something to settle
 			if (moving && step() < 0.3) {
@@ -127,7 +143,7 @@ const { fallback } = Astro.props;
 			draw();
 			raf = inView && !document.hidden ? requestAnimationFrame(loop) : 0;
 		};
-		const kick = () => { if (!raf && inView && !document.hidden) raf = requestAnimationFrame(loop); };
+		const kick = () => { if (!raf && inView && !document.hidden && (canHover || moving)) raf = requestAnimationFrame(loop); };
 
 		hero.addEventListener('pointermove', (e) => {
 			if (e.pointerType === 'touch') return;
@@ -149,7 +165,11 @@ const { fallback } = Astro.props;
 		document.addEventListener('visibilitychange', kick);
 	}
 
-	if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-		document.querySelectorAll<HTMLElement>('.wave-lines').forEach((el) => { try { init(el); } catch { /* the PNG stays */ } });
-	}
+	// the still image, loaded only when the canvas won't run
+	const still = (el: HTMLElement) => { const img = el.querySelector<HTMLImageElement>('.wave-lines-fallback'); if (img?.dataset.src && !img.src) img.src = img.dataset.src; };
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	document.querySelectorAll<HTMLElement>('.wave-lines').forEach((el) => {
+		if (reduced) return still(el);
+		try { init(el); if (!el.classList.contains('live')) still(el); } catch { still(el); }
+	});
 </script>

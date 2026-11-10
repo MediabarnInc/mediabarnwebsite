@@ -57,7 +57,7 @@ const navOrder = ['design', 'research', 'product'].map((id) => pillars.find((p) 
 	.alt-link::after { content: ""; position: absolute; inset: auto 0 -6px; height: 1.5px; background: var(--red); scale: 0 1; transform-origin: left; transition: scale .3s var(--ease); }
 	.alt-link:hover { color: var(--red-ink); }
 	.alt-link:hover::after, .alt-link[aria-current='page']::after { scale: 1 1; }
-	.alt-link[aria-current='page'] { color: var(--red-ink); }
+	.alt-link[aria-current='page'] { color: #8E1016; } /* deeper than --red-ink so it passes 4.5:1 on the frosted bar */
 </style>
 
 {reveal && (

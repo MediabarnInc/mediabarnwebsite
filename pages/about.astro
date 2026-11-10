@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import SilkBackground from '@/components/site/SilkBackground.astro';
 import Section from '@/components/site/Section.astro';
 import SectionHeader from '@/components/site/SectionHeader.astro';
 import Note from '@/components/site/Note.astro';
@@ -17,7 +18,9 @@ const leaders = [
 ];
 ---
 <BaseLayout title="About" description="Mediabarn’s customer-centric philosophy, leadership, and history.">
-	<section class="page-hero noisy glow-paper fibers relative overflow-hidden py-[clamp(56px,8vw,120px)]">
+	{/* the same hero background as the product pages: the textured silk glow */}
+	<section class="page-hero relative isolate overflow-hidden py-[clamp(56px,8vw,120px)]">
+		<SilkBackground texture="/images/hero-alt/hero-texture.webp" />
 		<div class="wrap grid gap-10 desk:grid-cols-[1.1fr_.9fr] desk:items-end">
 			<div>
 				<h1 class="mb-6 max-w-[16ch]">A customer-centric philosophy defines <span class="em">who</span> we are.</h1>

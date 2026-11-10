@@ -144,6 +144,15 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .glow-clay { --glow: radial-gradient(80% 90% at 15% 10%, color-mix(in srgb, var(--clay) 85%, transparent), transparent 70%), radial-gradient(60% 70% at 95% 90%, color-mix(in srgb, var(--espresso) 55%, transparent), transparent 70%); }
 .glow-paper { --glow: radial-gradient(60% 70% at 88% 18%, color-mix(in srgb, var(--clay) 30%, transparent), transparent 70%), radial-gradient(45% 55% at 70% 40%, color-mix(in srgb, var(--red) 12%, transparent), transparent 70%), radial-gradient(70% 60% at 0% 100%, color-mix(in srgb, var(--paper-deep) 90%, transparent), transparent 70%); }
 
+/* Gradient-only glows for the product pages (no fibers, no photo texture): the grain from .noisy
+   over soft brand light. mist: a quiet clay haze; sand: the home page's products sand, lit warm. */
+.glow-mist { --glow: radial-gradient(55% 80% at 8% 20%, color-mix(in srgb, var(--clay) 16%, transparent), transparent 70%), radial-gradient(60% 70% at 100% 100%, color-mix(in srgb, var(--paper-deep) 95%, transparent), transparent 70%); }
+.glow-sand { --bg: #E2D5C6; --glow: radial-gradient(60% 80% at 85% 15%, color-mix(in srgb, var(--clay) 28%, transparent), transparent 70%), radial-gradient(50% 70% at 10% 90%, color-mix(in srgb, var(--sand) 55%, transparent), transparent 70%), radial-gradient(40% 50% at 45% 50%, color-mix(in srgb, var(--paper-light) 45%, transparent), transparent 70%); }
+/* the glow, mirrored (its warm light on the other side) */
+.glow-flip::before { transform: scaleX(-1); }
+/* sections that pick their glow automatically alternate sides down the page */
+main > section.auto-glow:nth-of-type(even)::before { transform: scaleX(-1); }
+
 /* Paper fibers on light sections */
 .fibers { background-image: var(--fibers); background-size: 2560px 600px; background-repeat: repeat-y; background-position: center top; }
 
@@ -174,7 +183,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(4px); }
 .scrim-light::after { background: linear-gradient(90deg, color-mix(in srgb, var(--paper) 95%, transparent) 0%, color-mix(in srgb, var(--paper) 88%, transparent) 42%, color-mix(in srgb, var(--paper) 35%, transparent) 72%, color-mix(in srgb, var(--paper) 12%, transparent) 100%); }
 @media (width < 1021px) { .scrim-light::after { background: color-mix(in srgb, var(--paper) 86%, transparent); } }
 .scrim-dark::after { background: linear-gradient(180deg, color-mix(in srgb, var(--espresso) 55%, transparent), color-mix(in srgb, var(--espresso) 82%, transparent)); }
-.scrim-rust::after { background: linear-gradient(180deg, color-mix(in srgb, var(--rust) 72%, transparent), color-mix(in srgb, var(--rust) 90%, transparent)); }
+/* the get-in-touch sections' overlay: brand red #FF2D34 (was rust #9C3B22, 2026-11-03) */
+.scrim-rust::after { background: linear-gradient(180deg, color-mix(in srgb, #FF2D34 72%, transparent), color-mix(in srgb, #FF2D34 90%, transparent)); }
 .bg-image-label { position: absolute; right: 16px; bottom: 14px; z-index: 1; max-width: calc(100% - 32px); text-align: right; font: 600 11px/1.3 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: color-mix(in srgb, var(--paper-light) 75%, transparent); }
 .scrim-light .bg-image-label { color: var(--ink-muted); }
 .bg-image-label.at-tr { top: 14px; bottom: auto; }
@@ -248,6 +258,8 @@ html.motion [data-unveil].up img { scale: 1; }
 /* Page heroes: paper with a warm noisy glow */
 .page-hero > .wrap { position: relative; }
 .page-hero h1 { font-size: clamp(44px, 6.4vw, 92px); }
+/* a smaller hero headline for heroes with an image beside it (product, Federal, Healthcare) */
+.page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }
 
 /* Confetti dots thrown off by a hard mouse jiggle (SquareCursor.astro) */
 .confetti { position: fixed; z-index: 81; border-radius: 50%; pointer-events: none; box-shadow: 0 2px 5px color-mix(in srgb, var(--espresso) 35%, transparent); }

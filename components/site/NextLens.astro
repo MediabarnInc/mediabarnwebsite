@@ -4,8 +4,12 @@
 import { pillars, type PillarId } from '@/data/site';
 import Section from './Section.astro';
 import { photos } from '@/data/images';
-interface Props { current: PillarId }
-const { current } = Astro.props;
+interface Props { current: PillarId; light?: boolean }
+const { current, light = false } = Astro.props;
+// default: dark, over the interview photo; `light`: a light sand gradient instead (Research page, 2026-11-03)
+const look = light
+	? { tone: 'light' as const, glow: 'sand' as const, bg: undefined }
+	: { tone: 'dark' as const, glow: 'ember' as const, bg: { label: 'a research interview being recorded', src: photos.interviewCamera, mood: 'ember' as const } };
 const i = pillars.findIndex((p) => p.id === current);
 const here = pillars[i];
 const next = pillars[(i + 1) % 3];
@@ -15,13 +19,13 @@ const links = [
 	{ p: next, n: (i + 1) % 3, rel: 'After this', line: here.handoff },
 ];
 ---
-<Section tone="dark" glow="ember" bg={{ label: "a research interview being recorded", src: photos.interviewCamera, mood: "ember" }}>
+<Section tone={look.tone} glow={look.glow} bg={look.bg}>
 	<h2 class="mb-12 max-w-[20ch]">{here.name} is one part of the <span class="em em-loop">loop</span>.</h2>
 	<div class="grid gap-4 tab:grid-cols-2">
 		{links.map(({ p, n, rel, line }) => (
-			<a href={p.href} class="group flex flex-col gap-4 glass p-8">
+			<a href={p.href} class:list={['group flex flex-col gap-4 p-8', light ? 'border border-[var(--line)] bg-[var(--paper-light)] shadow-[0_18px_40px_-28px_rgba(72,57,51,.5)] transition-colors hover:border-[var(--red)]' : 'glass']}>
 				<span class="eyebrow">{rel} / 0{n + 1}</span>
-				<span class="font-serif text-[clamp(30px,3vw,40px)] leading-none text-[var(--paper-light)]">{p.name}<span class="text-[var(--red-glow)]">.</span> <span class="arrow text-[0.7em] text-[var(--red-glow)]" aria-hidden="true">→</span></span>
+				<span class:list={['font-serif text-[clamp(30px,3vw,40px)] leading-none', light ? 'text-[var(--ink)]' : 'text-[var(--paper-light)]']}>{p.name}<span class={light ? 'text-[var(--red-ink)]' : 'text-[var(--red-glow)]'}>.</span> <span class:list={['arrow text-[0.7em]', light ? 'text-[var(--red-ink)]' : 'text-[var(--red-glow)]']} aria-hidden="true">→</span></span>
 				<span class="body">{line}</span>
 			</a>
 		))}

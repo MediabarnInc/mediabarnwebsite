@@ -1,6 +1,6 @@
 ---
 // Hero for /alt/, from Figma "MB UX Assets" › "Mediabarn alt" (node 2023:12997, frame 1304 × 735).
-// Layers, back to front: the photo (fallback under the live silk), the interactive brand wave lines,
+// Layers, back to front: the textured silk glow (its texture photo is the fallback), the interactive brand wave lines,
 // the nav, the centered headline and line, and the client card strip along the bottom.
 // The strip runs wider than the screen in the design, so it scrolls as a slow marquee
 // (paused on hover or focus; a plain sideways scroller under reduced motion).
@@ -14,16 +14,11 @@ const A = '/images/hero-alt';
 const audiences = ['customers', 'subscribers', 'taxpayers', 'citizens', 'users'];
 ---
 <section class="hero-alt relative isolate overflow-hidden" aria-labelledby="hero-alt-h">
-	<SilkBackground texture={`${A}/hero-texture.jpg`}>
-		{/* Figma "image 5": mirrored, warm overlay. Shown when the silk can't run. */}
-		<div class="hero-photo absolute">
-			<img src={`${A}/hero-photo.png`} alt="" class="absolute inset-0 h-full w-full object-cover object-bottom" />
-			<div class="absolute inset-0 bg-[rgba(241,214,188,0.76)] mix-blend-overlay"></div>
-		</div>
-	</SilkBackground>
+	{/* the texture photo is also what shows when the silk can’t run */}
+	<SilkBackground texture={`${A}/hero-texture.webp`} />
 
 	{/* Figma "Abstract Element Dark": interactive lines over the silk glow, under the copy */}
-	<WaveLines fallback={`${A}/waves.png`} />
+	<WaveLines fallback={`${A}/waves.webp`} />
 
 	<div class="relative mx-auto max-w-[1304px]">
 		<AltNav variant="overlay" />
@@ -60,10 +55,9 @@ const audiences = ['customers', 'subscribers', 'taxpayers', 'citizens', 'users']
 <style is:global>
 	/* global (prefixed): Astro doesn't scope elements produced by the nested map below */
 	.hero-alt { --brown: #483933; color: var(--brown); }
-	.hero-alt .hero-photo { left: -1.92%; top: -25.48%; width: 103.84%; height: 145.39%; transform: scaleX(-1); }
 
 
-	.hero-alt .hero-h { font-family: Didot, 'Bodoni Moda Variable', 'Bodoni 72', serif; font-weight: 700; font-size: clamp(44px, 7.06vw, 92px); line-height: .95; letter-spacing: -0.05em; color: rgba(237, 1, 9, .7); text-wrap: balance; }
+	.hero-alt .hero-h { font-family: Didot, 'Bodoni Moda Variable', 'Bodoni 72', serif; font-weight: 700; font-size: clamp(44px, 7.06vw, 92px); line-height: .95; letter-spacing: -0.05em; color: rgba(255, 31, 38, .9); text-wrap: balance; } /* #FF1F26 at 90% */
 	.hero-alt .hero-sub { font-weight: 300; font-size: clamp(18px, 1.85vw, 24px); line-height: 1.204; letter-spacing: -0.05em; color: var(--brown); text-wrap: balance; }
 	.hero-alt .hero-sub strong { font-weight: 600; }
 	/* two fixed lines (the second ends in the rotating word), so the break never moves as the word changes */
