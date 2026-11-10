@@ -154,7 +154,7 @@ export const cases: CaseStudy[] = [
 			stats: [
 				{ value: '12', label: 'taxpayers in one round of A/B testing, on desktop and mobile' },
 				{ value: '80%+', label: 'missed a key notice in the original design' },
-				{ value: '11 of 12', label: 'knew what needed action once we regrouped it' },
+				{ value: '11/12', label: 'knew what needed action once we regrouped it' },
 			],
 			services: ['Taxpayer research', 'Comparative analysis', 'A/B usability testing', 'UI design', 'IRS design system', 'Developer handoff'],
 			siteUrl: 'https://www.irs.gov/',

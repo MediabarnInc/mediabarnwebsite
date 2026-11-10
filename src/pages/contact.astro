@@ -4,6 +4,7 @@ import SilkBackground from '@/components/site/SilkBackground.astro';
 import Note from '@/components/site/Note.astro';
 import Placeholder from '@/components/site/Placeholder.astro';
 import { contact, products } from '@/data/site';
+import mapArlington from '@/assets/photos/map-arlington.png';
 
 // Step 1: four cards (the three pillars, or something else). Step 2, only for the two that branch:
 // what kind of research help, or which product. Without JS the follow-up still appears (CSS :has).
@@ -71,7 +72,10 @@ const field = 'w-full border border-[var(--line-strong)] bg-[var(--card)] px-3 p
 			<div class="grid content-start gap-8 desk:pt-28">
 				{contact.offices.map((o) => <div><h2 class="eyebrow mb-2">{o.name}</h2><p class="text-[17px] leading-[1.6]">{o.lines.map((l) => <>{l}<br /></>)}</p></div>)}
 				<div><h2 class="eyebrow mb-2">Email and phone</h2><p class="text-[17px] leading-[1.6]"><a class="underline underline-offset-4" href={`mailto:${contact.email}`}>{contact.email}</a><br />{contact.phone}</p></div>
-				<Placeholder label="Map: Arlington and Virginia Beach" ratio="4/3" mood="sand" />
+				<a href="https://www.google.com/maps/search/?api=1&query=Mediabarn%2C+2200+Clarendon+Blvd%2C+Arlington%2C+VA+22201" target="_blank" rel="noopener" class="group block" aria-label="Open Mediabarn's Arlington office in Google Maps">
+					<Placeholder label="Map: Arlington office" ratio="9/8" src={mapArlington} alt="Map of Courthouse, Arlington, with a pin on Mediabarn at 2200 Clarendon Blvd" sizes="(min-width: 1021px) 440px, 100vw" />
+					<span class="mt-2 inline-block text-[14px] font-semibold underline underline-offset-4">Open in Google Maps <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1">→</span></span>
+				</a>
 			</div>
 		</div>
 	</section>
