@@ -10,22 +10,24 @@ const A = '/images/hero-alt';
 // The subheading's last word cycles, as on mediabarninc.com
 const audiences = ['customers', 'subscribers', 'taxpayers', 'citizens', 'users'];
 ---
-<section class="hero-alt relative isolate overflow-hidden" aria-labelledby="hero-alt-h">
+<section class="hero-alt relative isolate flex min-h-[100svh] flex-col overflow-hidden" aria-labelledby="hero-alt-h">
 	{/* the texture photo is also what shows when the silk can’t run */}
 	<SilkBackground texture={`${A}/hero-texture.webp`} />
 
 	{/* Figma "Abstract Element Dark": interactive lines over the silk glow, under the copy */}
 	<WaveLines fallback={`${A}/waves.webp`} />
 
-	<div class="relative mx-auto max-w-[1304px]">
+	<div class="relative mx-auto flex w-full max-w-[1304px] grow flex-col">
 		<AltNav variant="overlay" />
 
 
 		{/* headline + line */}
-		<div data-nav-trigger class="px-[var(--gut)] pt-[calc(clamp(48px,6.2vw,79px)+40px)] pb-[clamp(56px,7vw,96px)] text-center">
-			<h1 id="hero-alt-h" class="hero-h mx-auto max-w-[1000px]">Creating Experiences the Human&#8209;Centered Way.</h1>
+		<div data-nav-trigger class="flex grow flex-col justify-center px-[var(--gut)] pt-[clamp(48px,6.2vw,79px)] pb-[clamp(56px,7vw,96px)] text-center">
+			<h1 id="hero-alt-h" class="hero-h mx-auto max-w-[1060px]">Creating Experiences the Human&#8209;Centered Way.</h1>
 			<p class="hero-sub mx-auto mt-[19px] max-w-[552px]"><span class="block">We specialize in HCD to deliver the best</span> <span class="block">digital experiences for your <strong class="rot" data-rot><span class="sr-only">customers, subscribers, taxpayers, citizens, and users.</span><span class="rot-box" aria-hidden="true">{audiences.map((w, i) => <span class:list={['rot-word', i === 0 && 'on']}>{w}.</span>)}</span></strong></span></p>
 		</div>
+		{/* scroll cue: a small red dot at the bottom edge */}
+		<a href="#ways-h" class="scroll-dot absolute bottom-7 left-1/2 -translate-x-1/2" aria-label="Scroll to see more"><span class="block size-2.5 rounded-full bg-[var(--red)]"></span></a>
 	</div>
 
 </section>
@@ -33,6 +35,10 @@ const audiences = ['customers', 'subscribers', 'taxpayers', 'citizens', 'users']
 <style is:global>
 	/* global (prefixed): Astro doesn't scope elements produced by the nested map below */
 	.hero-alt { --brown: #483933; color: var(--brown); }
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-alt .scroll-dot span { animation: mb-dot 2.2s var(--ease) infinite; }
+	}
+	@keyframes mb-dot { 0%, 100% { transform: translateY(0); opacity: .9; } 50% { transform: translateY(8px); opacity: .5; } }
 
 
 	.hero-alt .hero-h { font-family: Didot, 'Bodoni Moda Variable', 'Bodoni 72', serif; font-weight: 700; font-size: clamp(44px, 7.06vw, 92px); line-height: .95; letter-spacing: -0.05em; color: rgba(255, 31, 38, .9); text-wrap: balance; } /* #FF1F26 at 90% */
