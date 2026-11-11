@@ -5,38 +5,44 @@ import { cases, caseHref } from '@/data/cases';
 ---
 <div id="alt-menu" class="alt-menu fixed inset-0 z-50" hidden>
 	<div class="alt-menu-scrim absolute inset-0" data-close></div>
-	<nav aria-label="Menu" class="alt-menu-panel absolute inset-y-0 right-0 flex w-[min(420px,100%)] flex-col gap-10 overflow-y-auto p-8 pt-7">
-		<div class="flex items-center justify-between">
-			<span class="eyebrow">Menu</span>
-			<button type="button" class="grid size-10 place-items-center -m-2 text-[22px] leading-none" data-close aria-label="Close menu">×</button>
+	<nav aria-label="Menu" class="alt-menu-panel absolute inset-y-0 right-0 flex w-[min(420px,100%)] flex-col gap-10 overflow-y-auto py-8 pr-8 pl-[clamp(48px,14vw,80px)]">
+		<div class="flex items-center justify-end">
+			<button type="button" class="grid size-12 place-items-center -m-1 text-[32px] leading-none" data-close aria-label="Close menu">×</button>
 		</div>
-		<ul role="list" class="grid gap-3">
-			{pillars.map((p) => <li><a href={p.href} class="font-serif text-[40px] leading-tight hover:text-[var(--red-ink)]">{p.name}</a></li>)}
+		<ul role="list" class="mt-6 grid gap-8">
+			{pillars.filter((p) => p.id !== 'product').map((p) => <li><a href={p.href} class="menu-item dotted">{p.name}</a></li>)}
+			<li>
+				<details class="menu-drop">
+					<summary class="menu-item dotted cursor-pointer list-none">Product <svg class="drop-chev" width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M1 1l7 7 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+					<ul role="list" class="mt-5 grid gap-4 pl-6">
+						{products.map((x) => <li><a href={x.href} class="menu-sub">{x.name}</a></li>)}
+					</ul>
+				</details>
+			</li>
 		</ul>
-		<div class="grid gap-4">
+		<div class="mt-auto grid gap-8 pb-2">
 			<details class="menu-drop">
-				<summary class="flex cursor-pointer list-none items-center justify-between font-serif text-[26px] leading-tight hover:text-[var(--red-ink)]">Work <span class="drop-chev text-[18px] text-[var(--fg-muted)]" aria-hidden="true">↓</span></summary>
-				<ul role="list" class="mt-3 grid gap-2 text-[16px]">
-					<li><a href="/work/" class="font-semibold hover:text-[var(--red-ink)]">All case studies <span class="arrow" aria-hidden="true">→</span></a></li>
-					{cases.map((c) => <li><a href={caseHref(c)} class="hover:text-[var(--red-ink)]">{c.who}</a></li>)}
+				<summary class="menu-item cursor-pointer list-none">Work <svg class="drop-chev" width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M1 1l7 7 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+				<ul role="list" class="mt-5 grid gap-4 pl-6">
+					<li><a href="/work/" class="menu-sub">All case studies</a></li>
+					{cases.map((c) => <li><a href={caseHref(c)} class="menu-sub">{c.who}</a></li>)}
 				</ul>
 			</details>
-			<details class="menu-drop">
-				<summary class="flex cursor-pointer list-none items-center justify-between font-serif text-[26px] leading-tight hover:text-[var(--red-ink)]">Products <span class="drop-chev text-[18px] text-[var(--fg-muted)]" aria-hidden="true">↓</span></summary>
-				<ul role="list" class="mt-3 grid gap-2 text-[16px]">{products.map((p) => <li><a href={p.href} class="hover:text-[var(--red-ink)]">{p.name}</a></li>)}</ul>
-			</details>
+			<a href="/about/" class="menu-item">About</a>
+			<a href="/contact/" class="menu-item">Contact</a>
 		</div>
-		<ul role="list" class="mt-auto grid gap-2 text-[16px] font-semibold">
-			<li><a href="/about/" class="hover:text-[var(--red-ink)]">About</a></li>
-			<li><a href="/contact/" class="btn mt-2">Contact us <span class="arrow" aria-hidden="true">→</span></a></li>
-		</ul>
 	</nav>
 </div>
 
 <style is:global>
 	.alt-menu-scrim { background: color-mix(in srgb, var(--espresso) 35%, transparent); backdrop-filter: blur(6px); }
 	.alt-menu-panel { background: var(--paper-light); color: var(--ink); box-shadow: -20px 0 60px -30px rgba(30, 18, 14, .5); }
-	.menu-drop { border-top: 1px solid var(--line); padding-top: 14px; }
+	.menu-item { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-sans); font-size: 20px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink); }
+	.menu-item:hover { color: var(--red-ink); }
+	.menu-item.dotted { position: relative; }
+	.menu-item.dotted::before { content: ''; position: absolute; top: -4px; left: -12px; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+	.menu-sub { font-family: var(--font-sans); font-size: 17px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 62%, var(--paper-light)); }
+	.menu-sub:hover { color: var(--red-ink); }
 	.menu-drop summary::-webkit-details-marker { display: none; }
 	.menu-drop .drop-chev { transition: rotate .3s var(--ease); }
 	.menu-drop[open] .drop-chev { rotate: 180deg; }
