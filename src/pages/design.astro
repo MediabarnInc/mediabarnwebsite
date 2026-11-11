@@ -59,9 +59,9 @@ const why = [
 		<div class="mt-14 grid gap-12 desk:grid-cols-3 desk:gap-8">
 			{capabilities.map((c, i) => (
 				<div>
-					<div class="relative pt-11">
-						<span aria-hidden="true" class:list={['pointer-events-none absolute -left-3 top-0 size-[clamp(72px,7vw,92px)] bg-[color-mix(in_srgb,var(--red)_32%,var(--espresso))] select-none', i === 1 && 'rounded-[24px]', i === 2 && 'rounded-full']}></span>
-						<h3 class="relative font-[family-name:var(--font-sans)]! text-[clamp(25px,2.5vw,33px)]! font-normal! leading-tight! tracking-normal!">{c.t}</h3>
+					<div class="relative pt-[clamp(40px,3.8vw,52px)]">
+						<span aria-hidden="true" class="pointer-events-none absolute -left-4 top-0 size-[clamp(76px,7.2vw,96px)] bg-[color-mix(in_srgb,var(--red)_32%,var(--espresso))] select-none"></span>
+						<h3 class="relative font-[family-name:var(--font-sans)]! text-[clamp(16px,1.6vw,20px)]! font-medium! uppercase! leading-tight! tracking-[0.08em]!">{c.t}</h3>
 					</div>
 					<div class="mt-6 mb-6 border-t border-[color-mix(in_srgb,var(--paper)_35%,transparent)]"></div>
 					<ul role="list" class="grid gap-3 body">{c.items.map((x) => <li>{x}</li>)}</ul>
