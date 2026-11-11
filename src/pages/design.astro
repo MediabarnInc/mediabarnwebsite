@@ -16,7 +16,7 @@ const terms = [
 	{ t: 'Service Design (SD)', d: 'Service Design unifies the entire system. It connects the front-end touchpoints customers interact with to the behind-the-scenes people, processes, and content that deliver the service.' },
 ];
 const capabilities = [
-	{ t: 'Strategy and planning', items: ['Product strategy', 'CX and UX strategy', 'Agile ceremonies', 'Content strategy', 'Design thinking and elaboration', 'Project management'] },
+	{ t: 'Planning & Strategy', items: ['Product strategy', 'CX and UX strategy', 'Agile ceremonies', 'Content strategy', 'Design thinking and elaboration', 'Project management'] },
 	{ t: 'Research', items: ['Persona development', 'Usability testing', 'Card sorts and tree tests', 'Participant recruitment', 'Ethnography', 'Heuristic evaluations'], link: { href: '/research/', label: 'Full research services' } },
 	{ t: 'Design', items: ['Journey maps and service blueprints', 'Information architecture', 'UI and interaction design', 'Interactive prototypes (Figma, HTML/CSS)', 'Design systems and governance', 'Accessibility and Section 508 compliance'] },
 ];
@@ -53,24 +53,23 @@ const why = [
 		</div>
 	</Section>
 
-	<Section id="what">
+	<Section id="what" tone="dark">
 		<SectionHeader before="Strategy, research, and " em="design" after=", under one roof.">A full range of capabilities, from the first stakeholder interview to a tested, accessible design.</SectionHeader>
-		<div class="mt-12 grid gap-10 desk:grid-cols-3">
-			{/* tablet: each group is a row, its title on the left and its items in two columns on the right */}
-			{capabilities.map((c) => (
-				<div class="border-t border-[var(--line-strong)] pt-5 tab:max-desk:grid tab:max-desk:grid-cols-[180px_1fr] tab:max-desk:gap-x-8">
-					<div>
-						<h3 class="mb-4">{c.t}</h3>
-						{c.link && <a href={c.link.href} class="link mb-4 hidden text-[14.5px] font-semibold tab:max-desk:inline-block">{c.link.label} →</a>}
+		{/* the dark board: a muted red shape (square, rounded, circle) sits behind each group name (2026-11-11) */}
+		<div class="mt-14 grid gap-12 desk:grid-cols-3 desk:gap-8">
+			{capabilities.map((c, i) => (
+				<div>
+					<div class="relative pt-11">
+						<span aria-hidden="true" class:list={['pointer-events-none absolute -left-3 top-0 size-[clamp(72px,7vw,92px)] bg-[color-mix(in_srgb,var(--red)_32%,var(--espresso))] select-none', i === 1 && 'rounded-[24px]', i === 2 && 'rounded-full']}></span>
+						<h3 class="relative font-[family-name:var(--font-sans)]! text-[clamp(25px,2.5vw,33px)]! font-normal! leading-tight! tracking-normal!">{c.t}</h3>
 					</div>
-					<div>
-						<ul role="list" class="grid gap-2 body tab:max-desk:grid-cols-2 tab:max-desk:gap-x-8">{c.items.map((i) => <li class="border-b border-[var(--line)] pb-2">{i}</li>)}</ul>
-						{c.link && <a href={c.link.href} class="link mt-4 inline-block text-[14.5px] font-semibold tab:max-desk:hidden">{c.link.label} →</a>}
-					</div>
+					<div class="mt-6 mb-6 border-t border-[color-mix(in_srgb,var(--paper)_35%,transparent)]"></div>
+					<ul role="list" class="grid gap-3 body">{c.items.map((x) => <li>{x}</li>)}</ul>
+					{c.link && <a href={c.link.href} class="link mt-6 inline-block text-[14.5px] font-semibold">{c.link.label} →</a>}
 				</div>
 			))}
 		</div>
-		<p class="body mt-10 max-w-[60ch]">This is a partial list. If you don’t see what you’re looking for, ask us. Chances are it’s in our wheelhouse.</p>
+		<p class="body mt-12 max-w-[60ch]">This is a partial list. If you don’t see what you’re looking for, ask us. Chances are it’s in our wheelhouse.</p>
 	</Section>
 
 	<Section tone="light" id="why" bg={{ label: "a designer at work", src: photos.cafeLaptop, focus: "50% 60%", mood: "sand" }}>
