@@ -56,14 +56,14 @@ const why = [
 	<Section id="what" tone="dark">
 		<SectionHeader before="Strategy, research, and " em="design" after=", under one roof.">A full range of capabilities, from the first stakeholder interview to a tested, accessible design.</SectionHeader>
 		{/* the dark board: a muted red shape (square, rounded, circle) sits behind each group name (2026-11-11) */}
-		<div class="mt-14 grid gap-12 desk:grid-cols-3 desk:gap-8">
+		<div class="mt-[clamp(56px,6vw,88px)] grid gap-12 desk:grid-cols-3 desk:gap-16">
 			{capabilities.map((c, i) => (
 				<div>
-					<div class="relative pt-[clamp(40px,3.8vw,52px)]">
-						<span aria-hidden="true" class="pointer-events-none absolute -left-4 top-0 size-[clamp(76px,7.2vw,96px)] bg-[color-mix(in_srgb,var(--red)_32%,var(--espresso))] select-none"></span>
-						<h3 class="relative font-[family-name:var(--font-sans)]! text-[clamp(16px,1.6vw,20px)]! font-medium! uppercase! leading-tight! tracking-[0.08em]!">{c.t}</h3>
+					<div class="relative flex min-h-[clamp(76px,7.2vw,96px)] items-center">
+						<span aria-hidden="true" class="pointer-events-none absolute top-0 left-0 size-[clamp(76px,7.2vw,96px)] bg-[color-mix(in_srgb,var(--red)_32%,var(--espresso))] select-none"></span>
+						<h3 class="relative pl-[clamp(16px,1.8vw,24px)] font-[family-name:var(--font-sans)]! text-[clamp(16px,1.6vw,20px)]! font-medium! uppercase! leading-tight! tracking-[0.08em]!">{c.t}</h3>
 					</div>
-					<div class="mt-6 mb-6 border-t border-[color-mix(in_srgb,var(--paper)_35%,transparent)]"></div>
+					<div class="mt-8 mb-7 border-t border-[color-mix(in_srgb,var(--paper)_35%,transparent)]"></div>
 					<ul role="list" class="grid gap-3 body">{c.items.map((x) => <li>{x}</li>)}</ul>
 					{c.link && <a href={c.link.href} class="link mt-6 inline-block text-[14.5px] font-semibold">{c.link.label} →</a>}
 				</div>

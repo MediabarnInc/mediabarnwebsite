@@ -95,7 +95,7 @@ export const cases: CaseStudy[] = [
 			stats: [
 				{ value: '6', label: 'months, from October 2024 to May 2025' },
 				{ value: 'XD → Figma', label: 'the whole design system, moved to one tool' },
-				{ value: '[00]', label: '[components and tokens migrated]' },
+				{ value: '300+', label: 'components & tokens migrated' },
 			],
 			services: ['Design system migration (Adobe XD to Figma)', 'Design tokens and color themes', 'Guidelines website design', 'Figma training and support', 'Accessibility'],
 			siteUrl: 'https://www.navyfederal.org/',

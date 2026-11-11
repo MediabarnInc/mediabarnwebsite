@@ -132,5 +132,7 @@ const quotes = [
 <style>
 	.lab-shot :global(.ph) { height: 100%; }
 	.lab-shot :global(img) { width: 100%; height: 100%; object-fit: cover; }
-	.lab-cap { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px); padding: 5px 9px; background: color-mix(in srgb, var(--paper-light) 90%, transparent); color: var(--ink); font-size: 12.5px; font-weight: 600; line-height: 1.3; }
+	/* a frosted bar across the bottom edge: the blur and wash fade out toward the top (2026-11-10) */
+	.lab-cap { position: absolute; inset: auto 0 0 0; isolation: isolate; padding: 30px 14px 12px; color: var(--ink); font-size: 12.5px; font-weight: 600; line-height: 1.3; }
+	.lab-cap::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--paper-light) 55%, transparent) 42%, color-mix(in srgb, var(--paper-light) 78%, transparent)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); mask-image: linear-gradient(180deg, transparent, #000 60%); -webkit-mask-image: linear-gradient(180deg, transparent, #000 60%); }
 </style>
