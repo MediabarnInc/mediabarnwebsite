@@ -6,24 +6,24 @@ import SectionHeader from './SectionHeader.astro';
 import Note from './Note.astro';
 import { cases, caseHref } from '@/data/cases';
 import { pillars } from '@/data/site';
-interface Props { id?: string; more?: boolean }
-const { id = 'work', more = false } = Astro.props;
+interface Props { id?: string; more?: boolean; limit?: number; featured?: boolean }
+const { id = 'work', more = false, limit = 3, featured = true } = Astro.props;
 const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
-const shown = cases.slice(0, 3);
+const shown = cases.slice(0, limit);
 ---
 <section id={id} class="bg-[var(--paper-light)] py-[clamp(72px,9vw,140px)]" aria-labelledby={`${id}-h`}>
 	<div class="wrap">
 		<SectionHeader before="What changed for the " em="people" after=" we designed for.">Real projects, start to finish: who we worked with, what we did, and what changed for the people on the other side.</SectionHeader>
 		<div class="mt-16 grid gap-x-8 gap-y-16 desk:grid-cols-2">
 			{shown.map((c, i) => (
-				<article class:list={['case-card group', i === 0 && 'desk:col-span-2']}>
+				<article class:list={['case-card group', featured && i === 0 && 'desk:col-span-2']}>
 					<a href={caseHref(c)} class="block">
-						<div class:list={['overflow-hidden border border-[var(--line-strong)]', i === 0 ? 'aspect-[21/10] max-pad:aspect-[4/3]' : 'aspect-[4/3]']}>
-							<Image src={c.image} alt={c.photo} widths={[640, 1024, 1600, 2400].filter((w) => w < c.image.width).concat(c.image.width)} sizes={i === 0 ? '(min-width: 1021px) 92vw, 100vw' : '(min-width: 1021px) 46vw, 100vw'} class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+						<div class:list={['overflow-hidden border border-[var(--line-strong)]', featured && i === 0 ? 'aspect-[21/10] max-pad:aspect-[4/3]' : 'aspect-[4/3]']}>
+							<Image src={c.image} alt={c.photo} widths={[640, 1024, 1600, 2400].filter((w) => w < c.image.width).concat(c.image.width)} sizes={featured && i === 0 ? '(min-width: 1021px) 92vw, 100vw' : '(min-width: 1021px) 46vw, 100vw'} class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
 						</div>
 						<div class="mt-6 flex flex-col gap-2.5">
 							<p class="text-[14px] font-medium text-[var(--fg-muted)]">{c.who} · {c.pillars.map(pillarName).join(' + ')}</p>
-							<h3 class:list={['font-serif font-normal leading-[1.1] text-[var(--fg)]', i === 0 ? 'text-[clamp(28px,3vw,42px)]' : 'text-[clamp(24px,2.2vw,30px)]']}>{c.title}</h3>
+							<h3 class:list={['font-serif font-normal leading-[1.1] text-[var(--fg)]', featured && i === 0 ? 'text-[clamp(28px,3vw,42px)]' : 'text-[clamp(24px,2.2vw,30px)]']}>{c.title}</h3>
 							<p class="body max-w-[58ch]">{c.outcome}</p>
 							<span class="link mt-1 self-start text-[15px] font-semibold">View case study <span class="arrow" aria-hidden="true">→</span></span>
 						</div>
