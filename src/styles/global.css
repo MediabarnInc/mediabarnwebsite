@@ -255,9 +255,10 @@ html.motion [data-unveil].up img { scale: 1; }
   *, ::before, ::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-/* Page heroes: paper with a warm noisy glow */
+/* Page heroes: paper with a warm noisy glow — fill the viewport like the home hero */
+.page-hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
 .page-hero > .wrap { position: relative; }
-.page-hero h1 { font-size: clamp(44px, 6.4vw, 92px); }
+.page-hero h1 { font-size: clamp(44px, 6.4vw, 86px); font-weight: 700; }
 /* a smaller hero headline for heroes with an image beside it (product, Federal, Healthcare) */
 .page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }
 
