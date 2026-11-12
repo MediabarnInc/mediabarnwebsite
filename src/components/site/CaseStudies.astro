@@ -17,15 +17,19 @@ const shown = cases.slice(0, limit);
 		<div class="mt-16 grid gap-x-8 gap-y-16 desk:grid-cols-2">
 			{shown.map((c, i) => (
 				<article class:list={['case-card group', featured && i === 0 && 'desk:col-span-2']}>
-					<a href={caseHref(c)} class="block">
-						<div class:list={['overflow-hidden border border-[var(--line-strong)]', featured && i === 0 ? 'aspect-[21/10] max-pad:aspect-[4/3]' : 'aspect-[4/3]']}>
+					{/* the whole card is one link: photo, title, summary and tags. Hovering the photo shows a
+					    "View case study" label that follows the pointer (case-cta, script below). */}
+					<a href={caseHref(c)} class="case-link block">
+						<div class:list={['case-photo relative overflow-hidden border border-[var(--line-strong)]', featured && i === 0 ? 'aspect-[21/10] max-pad:aspect-[4/3]' : 'aspect-[4/3]']}>
 							<Image src={c.image} alt={c.photo} widths={[640, 1024, 1600, 2400].filter((w) => w < c.image.width).concat(c.image.width)} sizes={featured && i === 0 ? '(min-width: 1021px) 92vw, 100vw' : '(min-width: 1021px) 46vw, 100vw'} class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+							<span class="case-cta" aria-hidden="true">View case study</span>
 						</div>
-						<div class="mt-6 flex flex-col gap-2.5">
-							<p class="text-[14px] font-medium text-[var(--fg-muted)]">{c.who} · {c.pillars.map(pillarName).join(' + ')}</p>
-							<h3 class:list={['font-serif font-normal leading-[1.1] text-[var(--fg)]', featured && i === 0 ? 'text-[clamp(28px,3vw,42px)]' : 'text-[clamp(24px,2.2vw,30px)]']}>{c.title}</h3>
-							<p class="body max-w-[58ch]">{c.outcome}</p>
-							<span class="link mt-1 self-start text-[15px] font-semibold">View case study <span class="arrow" aria-hidden="true">→</span></span>
+						<div class="mt-5 flex flex-col gap-2">
+							<h3 class:list={['case-title font-serif leading-[1.1] text-[var(--fg)]', featured && i === 0 ? 'text-[clamp(28px,3vw,42px)]' : 'text-[clamp(24px,2.2vw,30px)]']}>{c.title}</h3>
+							<p class="max-w-[58ch] text-[16px] leading-[1.55] text-[var(--fg)]">{c.outcome}</p>
+							<ul class="case-tags mt-1" aria-label="Client and services">
+								{[c.who, ...c.pillars.map(pillarName)].map((t) => <li>{t}</li>)}
+							</ul>
 						</div>
 					</a>
 				</article>
@@ -35,3 +39,37 @@ const shown = cases.slice(0, limit);
 		{more && <a href="/design/#work" class="btn mt-10 max-pad:w-full">More of our work <span class="arrow" aria-hidden="true">→</span></a>}
 	</div>
 </section>
+
+<style>
+	/* "View case study" label: hidden until the photo is hovered, then follows the pointer.
+	   Without a pointer (touch) it never shows; the whole card is still the link. */
+	.case-cta {
+		position: absolute; left: var(--cx, 50%); top: var(--cy, 50%); z-index: 1;
+		translate: -50% -50%; scale: .92; opacity: 0; pointer-events: none; white-space: nowrap;
+		padding: 12px 18px; background: var(--ink); color: var(--paper-light);
+		font-size: 15.5px; font-weight: 500; line-height: 1.2;
+		transition: opacity .2s var(--ease), scale .2s var(--ease);
+	}
+	@media (hover: hover) {
+		.case-photo:hover .case-cta { opacity: 1; scale: 1; }
+		.case-photo:hover { cursor: pointer; }
+	}
+	/* keyboard: show the label centered on the focused card */
+	.case-link:focus-visible .case-cta { opacity: 1; scale: 1; left: 50%; top: 50%; }
+	.case-link:hover .case-title { text-decoration: underline; text-decoration-color: var(--em); text-decoration-thickness: 1.5px; text-underline-offset: 6px; }
+
+	/* client + services as a muted row, separated by middle dots */
+	.case-tags { display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 14.5px; font-weight: 500; color: var(--fg-muted); }
+	.case-tags li + li::before { content: "·"; margin-inline: 12px; }
+</style>
+
+<script>
+	// keep the hover label under the pointer (position relative to the photo)
+	for (const photo of document.querySelectorAll<HTMLElement>('.case-photo')) {
+		photo.addEventListener('pointermove', (e) => {
+			const r = photo.getBoundingClientRect();
+			photo.style.setProperty('--cx', `${e.clientX - r.left}px`);
+			photo.style.setProperty('--cy', `${e.clientY - r.top}px`);
+		});
+	}
+</script>
