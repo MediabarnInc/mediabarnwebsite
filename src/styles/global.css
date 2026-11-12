@@ -257,6 +257,10 @@ html.motion [data-unveil].up img { scale: 1; }
 
 /* Page heroes: generous breathing room without forcing full-viewport height */
 .page-hero > .wrap { position: relative; padding-top: clamp(100px,12vw,200px); padding-bottom: clamp(72px,8vw,120px); }
+/* design, research and product overview: 70px less top padding */
+.page-hero.page-hero-tight > .wrap { padding-top: calc(clamp(100px,12vw,200px) - 70px); }
+/* product detail pages (Chirp, Edjit, etc.): 145px less top padding, never below zero */
+.page-hero.page-hero-product > .wrap { padding-top: max(0px, calc(clamp(100px,12vw,200px) - 145px)); }
 .page-hero h1 { font-size: clamp(44px, 6.4vw, 86px); font-weight: 700; }
 /* a smaller hero headline for heroes with an image beside it (product, Federal, Healthcare) */
 .page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }
