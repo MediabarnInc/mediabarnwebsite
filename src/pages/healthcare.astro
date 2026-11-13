@@ -102,7 +102,7 @@ const edges = [
 	   width is left, so their photos bleed off the screen. Below desktop: one column, edges hidden. */
 	.partner-grid { display: grid; gap: 24px; padding-inline: var(--gut); }
 	.partner-edge { display: none; }
-	.partner-photo { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--line-strong); }
+	.partner-photo { aspect-ratio: 1; overflow: hidden; }
 	.partner-text { align-self: center; }
 	@media (min-width: 1021px) {
 		.partner-grid { padding-inline: 0; grid-template-columns: minmax(0, 1fr) repeat(3, minmax(0, 340px)) minmax(0, 1fr); }
