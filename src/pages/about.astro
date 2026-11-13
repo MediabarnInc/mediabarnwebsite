@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import SilkBackground from '@/components/site/SilkBackground.astro';
+import BgImage from '@/components/site/BgImage.astro';
 import Section from '@/components/site/Section.astro';
 import SectionHeader from '@/components/site/SectionHeader.astro';
 import Note from '@/components/site/Note.astro';
@@ -19,14 +19,14 @@ const leaders = [
 ---
 <BaseLayout title="About" description="Mediabarn’s customer-centric philosophy, leadership, and history.">
 	{/* the same hero background as the product pages: the textured silk glow */}
-	<section class="page-hero relative isolate overflow-hidden py-[clamp(56px,8vw,120px)]">
-		<SilkBackground texture="/images/hero-alt/hero-texture.webp" />
-		<div class="wrap grid gap-10 desk:grid-cols-[1.1fr_.9fr] desk:items-end">
+	{/* same hero as the Design page: the studio photo full-bleed on the right, fading into the paper behind the copy */}
+	<section class="page-hero noisy relative overflow-hidden">
+		<BgImage label="the Mediabarn studio, with the red barn wall" src={photos.officeLobby} scrim="light" mood="sand" focus="75% 50%" side />
+		<div class="wrap">
 			<div>
-				<h1 class="mb-6 max-w-[16ch]">A customer-centric philosophy defines <span class="em">who</span> we are.</h1>
-				<p class="lede max-w-[56ch]">We are committed to applying Human-Centered Design (HCD) methods to understand customer needs, collect feedback, and use that feedback to improve services and products. Whether the people are customers, citizens, or employees, our goal is to improve the experience of every person involved.</p>
+				<h1 class="mb-6 max-w-[11ch]">A customer-centric philosophy defines <span class="em">who</span> we are.</h1>
+				<p class="lede max-w-[46ch]">We are committed to applying Human-Centered Design (HCD) methods to understand customer needs, collect feedback, and use that feedback to improve services and products. Whether the people are customers, citizens, or employees, our goal is to improve the experience of every person involved.</p>
 			</div>
-			<Placeholder label="Team photo" ratio="4/3" src={photos.officeLobby} alt="The Mediabarn office, with the red barn wall" />
 		</div>
 	</section>
 

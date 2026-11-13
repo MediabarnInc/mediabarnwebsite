@@ -2,11 +2,13 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/site/Section.astro';
 import SectionHeader from '@/components/site/SectionHeader.astro';
-import Placeholder from '@/components/site/Placeholder.astro';
 import Note from '@/components/site/Note.astro';
 import Engage from '@/components/site/Engage.astro';
 import Cta from '@/components/site/Cta.astro';
 import SilkBackground from '@/components/site/SilkBackground.astro';
+import WaveLines from '@/components/site/WaveLines.astro';
+import { Image } from 'astro:assets';
+import capitol from '@/assets/federal/capitol.png';
 import { photos } from '@/data/images';
 
 const services = [
@@ -20,19 +22,18 @@ const services = [
 ---
 <BaseLayout title="Federal" pillar="design" description="Human-Centered Design for federal agencies: CX, user research, service design, and UX governance.">
 	{/* the same hero as the product pages: the textured silk glow, a smaller headline, the photo beside it */}
-	<section class="page-hero relative isolate overflow-hidden py-[clamp(48px,6vw,96px)]">
+	{/* hero, after mediabarninc.com/federal: no photo; the silk glow, the home hero's interactive wave lines,
+	    and the Capitol drawn large in the bottom-right corner, behind the copy (decorative) */}
+	<section class="page-hero fed-hero relative isolate overflow-hidden py-[clamp(48px,6vw,96px)]">
 		<SilkBackground texture="/images/hero-alt/hero-texture.webp" />
+		<WaveLines fallback="/images/hero-alt/waves.webp" />
+		<Image src={capitol} alt="" aria-hidden="true" widths={[480, 960, 1440]} sizes="(min-width: 1021px) 46vw, 80vw" class="fed-mark pointer-events-none absolute" loading="eager" />
 		<div class="wrap">
 			<nav aria-label="Breadcrumb" class="crumbs mb-4"><a href="/design/">Design</a> / <span aria-current="page">Federal</span></nav>
-			<div class="grid gap-10 desk:grid-cols-[1fr_1fr] desk:items-center">
-				<div>
-					<h1 class="product-h mb-6 max-w-[17ch]">Government services that work for the <span class="em">public</span>.</h1>
-					<p class="lede max-w-[54ch]">We bring Human-Centered Design (HCD) to federal agencies, so their digital products and services are more useful for the public and for federal employees.</p>
-					<div class="mt-8 flex flex-wrap gap-3"><a href="/contact/" class="btn max-pad:w-full">Talk to our federal team</a><a href="#engage" class="btn btn-outline max-pad:w-full">Contract vehicles</a></div>
-				</div>
-				<div class="border border-[var(--line-strong)] p-2">
-					<Placeholder label="Federal photo" ratio="4/3" src={photos.federalBuilding} alt="" focus="45% 50%" sizes="(min-width: 1021px) 560px, 100vw" />
-				</div>
+			<div class="max-w-[600px]">
+				<h1 class="mb-6 max-w-[17ch]">Government services that work for the <span class="em">public</span>.</h1>
+				<p class="lede max-w-[54ch]">We bring Human-Centered Design (HCD) to federal agencies, so their digital products and services are more useful for the public and for federal employees.</p>
+				<div class="mt-8 flex flex-wrap gap-3"><a href="/contact/" class="btn max-pad:w-full">Talk to our federal team</a><a href="#engage" class="btn btn-outline max-pad:w-full">Contract vehicles</a></div>
 			</div>
 		</div>
 	</section>
@@ -56,3 +57,10 @@ const services = [
 	<div class="wrap"><Note class="my-6">Copy rewritten from the current /federal page. Contract vehicles are verbatim. Please confirm they’re all current.</Note></div>
 	<Cta />
 </BaseLayout>
+
+<style>
+	/* hero Capitol: sits on the bottom-right corner and rises behind the copy; on phones smaller and fainter */
+	.fed-mark { z-index: 0; right: 0; bottom: 0; width: clamp(420px, 46vw, 720px); height: auto; }
+	.fed-hero > .wrap { z-index: 1; }
+	@media (max-width: 1020px) { .fed-mark { width: 80vw; opacity: .55; } }
+</style>
