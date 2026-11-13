@@ -259,12 +259,10 @@ html.motion [data-unveil].up img { scale: 1; }
   *, ::before, ::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-/* Page heroes: generous breathing room without forcing full-viewport height */
-.page-hero > .wrap { position: relative; padding-top: clamp(100px,12vw,200px); padding-bottom: clamp(72px,8vw,120px); }
-/* design, research and product overview: 70px less top padding */
-.page-hero.page-hero-tight > .wrap { padding-top: calc(clamp(100px,12vw,200px) - 70px); }
-/* product detail pages, About and Contact: 145px less top padding, never below zero */
-.page-hero.page-hero-trim > .wrap { padding-top: max(0px, calc(clamp(100px,12vw,200px) - 145px)); }
+/* Page heroes: every subpage starts its content 40px below the nav (desktop and mobile alike).
+   The section's own top padding is dropped (some heroes set py-* utilities); the wrap carries the 40px. */
+.page-hero { padding-top: 0 !important; }
+.page-hero > .wrap { position: relative; padding-top: 40px; padding-bottom: clamp(72px,8vw,120px); }
 .page-hero h1 { font-size: clamp(44px, 6.4vw, 86px); font-weight: 700; }
 /* a smaller hero headline for heroes with an image beside it (product, Federal, Healthcare) */
 .page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }

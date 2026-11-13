@@ -6,12 +6,13 @@ import SectionHeader from './SectionHeader.astro';
 import Note from './Note.astro';
 import { cases, caseHref } from '@/data/cases';
 import { pillars } from '@/data/site';
-interface Props { id?: string; more?: boolean; limit?: number; featured?: boolean }
-const { id = 'work', more = false, limit = 3, featured = true } = Astro.props;
+interface Props { id?: string; more?: boolean; limit?: number; featured?: boolean; first?: boolean }
+const { id = 'work', more = false, limit = 3, featured = true, first = false } = Astro.props;
 const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
 const shown = cases.slice(0, limit);
 ---
-<section id={id} class="bg-[var(--paper-light)] py-[clamp(72px,9vw,140px)]" aria-labelledby={`${id}-h`}>
+{/* first: it opens the page (the Work page), so it starts 40px below the nav like every subpage */}
+<section id={id} class:list={['bg-[var(--paper-light)]', first ? 'pt-[40px] pb-[clamp(72px,9vw,140px)]' : 'py-[clamp(72px,9vw,140px)]']} aria-labelledby={`${id}-h`}>
 	<div class="wrap">
 		<SectionHeader before="What changed for the " em="people" after=" we designed for.">Real projects, start to finish: who we worked with, what we did, and what changed for the people on the other side.</SectionHeader>
 		<div class="mt-16 grid gap-x-8 gap-y-16 desk:grid-cols-2">

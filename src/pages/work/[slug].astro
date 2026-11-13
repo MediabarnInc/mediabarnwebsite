@@ -29,10 +29,10 @@ const summary = [
 ];
 ---
 <BaseLayout title={`${c.title} · ${c.who}`} description={d.result}>
-	{/* ---------- Hero: the story's photo, title low on the frame ---------- */}
+	{/* ---------- Hero: the story's photo, title 40px below the nav like every subpage ---------- */}
 	<section class="dark noisy relative overflow-hidden" aria-labelledby="case-h">
 		<BgImage label={c.photo} src={c.image} scrim="dark" mood={c.mood} />
-		<div class="wrap relative flex min-h-[420px] flex-col justify-end py-16 tab:min-h-[min(720px,calc(100svh-var(--nav-h)))] desk:py-24">
+		<div class="wrap relative flex min-h-[420px] flex-col justify-start pt-[40px] pb-16 tab:min-h-[min(720px,calc(100svh-var(--nav-h)))] desk:pb-24">
 			<nav aria-label="Breadcrumb" class="crumbs mb-5"><a href="/design/#work">Our work</a> / <span aria-current="page">{c.who}</span></nav>
 			<h1 id="case-h" class="mb-6 max-w-[18ch]">{c.title}</h1>
 			<p class="text-[17px] font-medium text-[var(--fg-muted)]">{c.who} · {used.map((p) => p.name).join(' + ')}</p>

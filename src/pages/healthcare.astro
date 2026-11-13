@@ -7,18 +7,34 @@ import Note from '@/components/site/Note.astro';
 import Engage from '@/components/site/Engage.astro';
 import Cta from '@/components/site/Cta.astro';
 import SilkBackground from '@/components/site/SilkBackground.astro';
+import RibbonLines from '@/components/site/RibbonLines.astro';
+import { Image } from 'astro:assets';
 import { photos } from '@/data/images';
 
 const pillarsHc = [
 	{ t: 'Outcome focused', d: 'We tie the work to your organization’s goals. We help set measures such as customer effort, satisfaction, and Net Promoter Score (NPS), and assess the business value of key journeys.' },
 	{ t: 'Enterprise CX', d: 'Service design connects front-stage and back-stage activity, so care works as one service across departments instead of a set of separate ones.' },
-	{ t: 'Research', d: 'Journey maps, data-driven personas, and qualitative and quantitative research, in two research labs with strict protocols and HIPAA compliance.' },
-	{ t: 'Every touchpoint', d: 'We design for the whole experience, including in-person moments, not only websites and apps.' },
 ];
-const people = [
-	{ t: 'Patients', d: 'The people receiving care. We use patient-friendly language, so no one needs medical expertise to navigate their own care.' },
-	{ t: 'Practitioners', d: 'The people providing care, whose tools and workflows shape what patients experience.' },
-	{ t: 'Payers', d: 'The people covering the cost, whose processes patients feel in every bill and approval.' },
+// "Your experience partner": a checkerboard after the section of the same name on mediabarninc.com/healthcare.
+// Row 1: text, photo, text. Row 2: three photos. Row 3: text, photo, text. Faded photos bleed off both edges.
+// Photos marked (stand-in) replace the current site's (img-tablet, img-pulse, img-onlaptop, img-runner, img-bg)
+// until those files are added.
+const partner = [
+	{ t: 'Healthcare experience', d: 'Our clients include hospital systems, health insurers, medical equipment makers, and federal health agencies. That industry knowledge lets us work smoothly with your teams and deliver high-value outcomes.' },
+	{ img: photos.telehealthNurse, alt: 'A nurse on a telehealth call', focus: '50% 30%' },
+	{ t: 'Research', d: 'Journey maps, data-driven personas, and qualitative and quantitative research. Our two dedicated research labs support work under strict protocols and HIPAA compliance.' },
+	{ img: photos.careConversation, alt: 'Two people in conversation', focus: '50% 40%', row2: true }, /* (stand-in) */
+	{ img: photos.healthMeeting, alt: 'A care team meeting around a table', focus: '50% 50%', row2: true },
+	{ img: photos.researchInterview, alt: 'A woman taking notes in an interview', focus: '55% 40%', row2: true }, /* (stand-in) */
+	{ t: 'Patients, practitioners, and payers', d: 'We design for the people receiving care, the people providing it, and the people paying for it. No one should need to learn medical terms to take charge of their own care.' },
+	{ img: photos.cafeLaptop, alt: 'Someone working on a laptop', focus: '50% 60%' }, /* (stand-in) */
+	{ t: 'Customer experience', d: 'Much of what patients and staff experience doesn’t happen on a website or app, so we consider every touchpoint. We design digital products that support the care you provide, and improve in-person experiences too.' },
+];
+// the faded photos bleeding off the left and right edge of each row
+const edges = [
+	[photos.healthMeeting, photos.designWorkshop],
+	[photos.teamAtWall, photos.healthMeeting],
+	[photos.designWorkshop, photos.teamAtWall],
 ];
 ---
 <BaseLayout title="Healthcare" pillar="design" description="Enterprise customer experience for patients, practitioners, and payers.">
@@ -47,12 +63,27 @@ const people = [
 		</div>
 	</Section>
 
-	<Section tone="light">
-		<SectionHeader before="Patients, practitioners, and " em="payers" after=".">Our clients include hospital systems, health insurers, medical equipment makers, and federal health agencies.</SectionHeader>
-		<div class="mt-12 grid gap-6 desk:grid-cols-3">
-			{people.map((p) => <div class="border border-[var(--line)] glass p-7"><h3 class="mb-3">{p.t}</h3><p class="body">{p.d}</p></div>)}
+	{/* Your experience partner: wavy white lines across the top (interactive, like the home hero),
+	    then a text/photo checkerboard with faded photos bleeding off both edges */}
+	<section class="partner rule relative isolate overflow-hidden bg-[var(--paper)] py-[clamp(64px,8vw,128px)]" aria-labelledby="partner-h">
+		<RibbonLines class="top-[clamp(0px,2vw,40px)] h-[clamp(260px,30vw,420px)]" />
+		<div class="wrap relative">
+			<h2 id="partner-h" class="max-w-[10ch]">Your experience <span class="em">partner</span>.</h2>
 		</div>
-	</Section>
+		<div class="partner-grid relative mt-[clamp(40px,5vw,72px)]">
+			{[0, 1, 2].map((row) => (
+				<>
+					<div class="partner-edge partner-edge-l" aria-hidden="true"><Image src={edges[row][0]} alt="" widths={[400, 800]} sizes="340px" class="h-full w-full object-cover" /></div>
+					{partner.slice(row * 3, row * 3 + 3).map((c) =>
+						c.img
+							? <div class:list={['partner-photo', c.row2 && 'max-desk:hidden']}><Image src={c.img} alt={c.alt} widths={[400, 800]} sizes="(min-width: 1021px) 340px, 100vw" class="h-full w-full object-cover" style={`object-position: ${c.focus}`} /></div>
+							: <div class="partner-text"><h3 class="mb-3">{c.t}</h3><p class="body">{c.d}</p></div>
+					)}
+					<div class="partner-edge partner-edge-r" aria-hidden="true"><Image src={edges[row][1]} alt="" widths={[400, 800]} sizes="340px" class="h-full w-full object-cover" /></div>
+				</>
+			))}
+		</div>
+	</section>
 
 	<Section>
 		<div class="grid gap-8 border border-[var(--line-strong)] p-8 desk:grid-cols-[1.2fr_.8fr] desk:items-center">
@@ -65,3 +96,19 @@ const people = [
 	<div class="wrap"><Note class="my-6">Copy rewritten from the current /healthcare page. The CXAlign callout is new and is where the Design and Product pillars meet.</Note></div>
 	<Cta />
 </BaseLayout>
+
+<style>
+	/* five columns: a faded edge photo, three square cells, a faded edge photo; the edge columns take whatever
+	   width is left, so their photos bleed off the screen. Below desktop: one column, edges hidden. */
+	.partner-grid { display: grid; gap: 24px; padding-inline: var(--gut); }
+	.partner-edge { display: none; }
+	.partner-photo { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--line-strong); }
+	.partner-text { align-self: center; }
+	@media (min-width: 1021px) {
+		.partner-grid { padding-inline: 0; grid-template-columns: minmax(0, 1fr) repeat(3, minmax(0, 340px)) minmax(0, 1fr); }
+		.partner-edge { display: block; aspect-ratio: 1; width: 340px; overflow: hidden; opacity: .35; }
+		.partner-edge-l { justify-self: end; mask-image: linear-gradient(to left, #000 30%, transparent); }
+		.partner-edge-r { justify-self: start; mask-image: linear-gradient(to right, #000 30%, transparent); }
+		.partner-text { padding: 8px 12px; }
+	}
+</style>
