@@ -1,0 +1,76 @@
+---
+// Case studies band, reworked 2026-11-11 after the dark version read as murky: a light, gallery-style grid
+// in the manner of clay.global/work — clean photos with the story below each one, three studies only.
+import { Image } from 'astro:assets';
+import SectionHeader from './SectionHeader.astro';
+import Note from './Note.astro';
+import { cases, caseHref } from '@/data/cases';
+import { pillars } from '@/data/site';
+interface Props { id?: string; more?: boolean; limit?: number; featured?: boolean; first?: boolean }
+const { id = 'work', more = false, limit = 3, featured = true, first = false } = Astro.props;
+const pillarName = (pid: string) => pillars.find((p) => p.id === pid)?.name;
+const shown = cases.slice(0, limit);
+---
+{/* first: it opens the page (the Work page), so it starts 40px below the nav like every subpage */}
+<section id={id} class:list={['bg-[var(--paper-light)]', first ? 'pt-[40px] pb-[clamp(72px,9vw,140px)]' : 'py-[clamp(72px,9vw,140px)]']} aria-labelledby={`${id}-h`}>
+	<div class="wrap">
+		<SectionHeader before="What changed for the " em="people" after=" we designed for.">Real projects, start to finish: who we worked with, what we did, and what changed for the people on the other side.</SectionHeader>
+		<div class="mt-16 grid gap-x-8 gap-y-16 desk:grid-cols-2">
+			{shown.map((c, i) => (
+				<article class:list={['case-card group', featured && i === 0 && 'desk:col-span-2']}>
+					{/* the whole card is one link: photo, title, summary and tags. Hovering the photo shows a
+					    "View case study" label that follows the pointer (case-cta, script below). */}
+					<a href={caseHref(c)} class="case-link block">
+						<div class:list={['case-photo relative overflow-hidden border border-[var(--line-strong)]', featured && i === 0 ? 'aspect-[21/10] max-pad:aspect-[4/3]' : 'aspect-[4/3]']}>
+							<Image src={c.image} alt={c.photo} widths={[640, 1024, 1600, 2400].filter((w) => w < c.image.width).concat(c.image.width)} sizes={featured && i === 0 ? '(min-width: 1021px) 92vw, 100vw' : '(min-width: 1021px) 46vw, 100vw'} class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+							<span class="case-cta" aria-hidden="true">View case study</span>
+						</div>
+						<div class="mt-5 flex flex-col gap-2">
+							<h3 class:list={['case-title font-serif leading-[1.1] text-[var(--fg)]', featured && i === 0 ? 'text-[clamp(28px,3vw,42px)]' : 'text-[clamp(24px,2.2vw,30px)]']}>{c.title}</h3>
+							<p class="max-w-[58ch] text-[16px] leading-[1.55] text-[var(--fg)]">{c.outcome}</p>
+							<ul class="case-tags mt-1" aria-label="Client and services">
+								{[c.who, ...c.pillars.map(pillarName)].map((t) => <li>{t}</li>)}
+							</ul>
+						</div>
+					</a>
+				</article>
+			))}
+		</div>
+		<Note class="mt-10">One story per client in the home page’s logo strip. Each is a draft: who the client is is public; what we did needs Mediabarn to confirm, and results, numbers, and quotes are still in brackets (src/data/cases.ts). The other three studies are reachable from each study’s “more work” cards and the menu.</Note>
+		{more && <a href="/design/#work" class="btn mt-10 max-pad:w-full">More of our work <span class="arrow" aria-hidden="true">→</span></a>}
+	</div>
+</section>
+
+<style>
+	/* "View case study" label: hidden until the photo is hovered, then follows the pointer.
+	   Without a pointer (touch) it never shows; the whole card is still the link. */
+	.case-cta {
+		position: absolute; left: var(--cx, 50%); top: var(--cy, 50%); z-index: 1;
+		translate: -50% -50%; scale: .92; opacity: 0; pointer-events: none; white-space: nowrap;
+		padding: 12px 18px; background: var(--ink); color: var(--paper-light);
+		font-size: 15.5px; font-weight: 500; line-height: 1.2;
+		transition: opacity .2s var(--ease), scale .2s var(--ease);
+	}
+	@media (hover: hover) {
+		.case-photo:hover .case-cta { opacity: 1; scale: 1; }
+		.case-photo:hover { cursor: pointer; }
+	}
+	/* keyboard: show the label centered on the focused card */
+	.case-link:focus-visible .case-cta { opacity: 1; scale: 1; left: 50%; top: 50%; }
+	.case-link:hover .case-title { text-decoration: underline; text-decoration-color: var(--em); text-decoration-thickness: 1.5px; text-underline-offset: 6px; }
+
+	/* client + services as a muted row, separated by middle dots */
+	.case-tags { display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 14.5px; font-weight: 500; color: var(--fg-muted); }
+	.case-tags li + li::before { content: "·"; margin-inline: 12px; }
+</style>
+
+<script>
+	// keep the hover label under the pointer (position relative to the photo)
+	for (const photo of document.querySelectorAll<HTMLElement>('.case-photo')) {
+		photo.addEventListener('pointermove', (e) => {
+			const r = photo.getBoundingClientRect();
+			photo.style.setProperty('--cx', `${e.clientX - r.left}px`);
+			photo.style.setProperty('--cy', `${e.clientY - r.top}px`);
+		});
+	}
+</script>

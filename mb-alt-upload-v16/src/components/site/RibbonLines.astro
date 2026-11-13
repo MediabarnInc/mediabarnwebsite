@@ -1,0 +1,154 @@
+---
+// A few long, horizontal wavy white lines across a band of a section (after the "Your Experience Partner"
+// band on mediabarninc.com/healthcare, without its red strip). They behave like the home hero's WaveLines:
+// a moving pointer anywhere in the section drags nearby points along, each point eases back with almost
+// no wobble, and untouched the lines drift slowly. The drift pauses off-screen and in hidden tabs, and on
+// touch screens (no hover) the lines are drawn once and stay still. Under reduced motion they're drawn
+// once, still. Decorative (aria-hidden). Place inside a `position: relative` section.
+interface Props { class?: string }
+const { class: cls = 'top-0 h-[360px]' } = Astro.props;
+---
+<div class:list={['ribbon-lines pointer-events-none absolute inset-x-0', cls]} aria-hidden="true">
+	<canvas class="absolute inset-0 h-full w-full"></canvas>
+</div>
+
+<script>
+	// Tuning (CSS pixels)
+	const LINES = [
+		// base height (0–1 of the band), two sine waves (amplitude px, wavelength px, phase), opacity, width
+		{ y: 0.30, a1: 34, l1: 1100, p1: 0.0, a2: 12, l2: 430, p2: 1.2, o: 0.95, w: 1.4 },
+		{ y: 0.36, a1: 40, l1: 1250, p1: 0.6, a2: 10, l2: 520, p2: 2.6, o: 0.75, w: 1.1 },
+		{ y: 0.46, a1: 46, l1: 1400, p1: 1.4, a2: 14, l2: 610, p2: 0.4, o: 0.9, w: 1.3 },
+		{ y: 0.55, a1: 38, l1: 1180, p1: 2.3, a2: 9, l2: 480, p2: 3.4, o: 0.6, w: 1 },
+		{ y: 0.64, a1: 52, l1: 1550, p1: 3.1, a2: 16, l2: 700, p2: 1.9, o: 0.85, w: 1.2 },
+		{ y: 0.74, a1: 30, l1: 1000, p1: 4.0, a2: 11, l2: 390, p2: 5.0, o: 0.55, w: 1 },
+	];
+	const STEP = 6;          // px between points along a line
+	const RADIUS = 140;      // how far from the pointer points are affected
+	const DRAG = 0.3;        // how much of the pointer's movement a point picks up
+	const SPRING = 0.04;     // pull back toward the resting shape
+	const DAMPING = 0.78;    // velocity kept each frame
+	const MAX_OFFSET = 40;   // a point never strays further than this
+	const DRIFT = 8;         // idle drift: how far points wander
+	const DRIFT_SPEED = 0.42;
+
+	function init(root: HTMLElement, still: boolean) {
+		const section = (root.closest('section') ?? root.parentElement) as HTMLElement;
+		const canvas = root.querySelector('canvas')!;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return false;
+
+		let W = 0, H = 0, dpr = 1;
+		let rest: Float32Array[] = [], off: Float32Array[] = [], vel: Float32Array[] = [];
+		const build = () => {
+			dpr = Math.min(devicePixelRatio || 1, 2);
+			W = root.clientWidth; H = root.clientHeight;
+			canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+			// lines run a little past both edges so the ends never show
+			const n = Math.ceil((W + 80) / STEP) + 1;
+			rest = LINES.map((L) => {
+				const r = new Float32Array(n * 2);
+				for (let i = 0; i < n; i++) {
+					const x = -40 + i * STEP;
+					r[i * 2] = x;
+					r[i * 2 + 1] = L.y * H + L.a1 * Math.sin((x / L.l1) * Math.PI * 2 + L.p1) + L.a2 * Math.sin((x / L.l2) * Math.PI * 2 + L.p2);
+				}
+				return r;
+			});
+			off = rest.map((r) => new Float32Array(r.length));
+			vel = rest.map((r) => new Float32Array(r.length));
+		};
+
+		let t = 0, moving = false;
+		const draw = () => {
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			ctx.clearRect(0, 0, W, H);
+			ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+			for (let l = 0; l < rest.length; l++) {
+				const r = rest[l], o = off[l], L = LINES[l], ph = l * 0.7;
+				ctx.strokeStyle = `rgba(255, 255, 255, ${L.o})`;
+				ctx.lineWidth = L.w;
+				ctx.beginPath();
+				for (let i = 0; i < r.length; i += 2) {
+					const rx = r[i], ry = r[i + 1];
+					const x = rx + o[i];
+					const y = ry + o[i + 1] + DRIFT * Math.sin(t + rx * 0.006 + ph);
+					if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+				}
+				ctx.stroke();
+			}
+		};
+
+		const step = () => {
+			let energy = 0;
+			for (let l = 0; l < rest.length; l++) {
+				const o = off[l], v = vel[l];
+				for (let i = 0; i < o.length; i++) {
+					v[i] = (v[i] - o[i] * SPRING) * DAMPING;
+					o[i] += v[i];
+					if (o[i] > MAX_OFFSET) o[i] = MAX_OFFSET; else if (o[i] < -MAX_OFFSET) o[i] = -MAX_OFFSET;
+					energy += Math.abs(v[i]) + Math.abs(o[i]) * 0.05;
+				}
+			}
+			return energy;
+		};
+
+		let px = NaN, py = NaN;
+		const push = (fx: number, fy: number, dx: number, dy: number) => {
+			const R2 = RADIUS * RADIUS;
+			for (let l = 0; l < rest.length; l++) {
+				const r = rest[l], o = off[l], v = vel[l];
+				for (let i = 0; i < r.length; i += 2) {
+					const ex = r[i] + o[i] - fx, ey = r[i + 1] + o[i + 1] - fy;
+					const d2 = ex * ex + ey * ey;
+					if (d2 > R2) continue;
+					const f = 1 - Math.sqrt(d2) / RADIUS;
+					const k = f * f * DRAG;
+					v[i] += dx * k; v[i + 1] += dy * k;
+				}
+			}
+		};
+
+		let raf = 0, inView = false, last = 0;
+		const lowPower = (navigator.hardwareConcurrency || 8) <= 4 || ((navigator as any).deviceMemory || 8) <= 4;
+		const IDLE_FRAME = 1000 / (lowPower ? 15 : 30);
+		const canHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
+		const loop = (now: number) => {
+			if (!moving && now - last < IDLE_FRAME) { raf = inView && !document.hidden ? requestAnimationFrame(loop) : 0; return; }
+			last = now;
+			t = (now / 1000) * DRIFT_SPEED;
+			if (moving && step() < 0.3) {
+				for (const o of off) o.fill(0);
+				for (const v of vel) v.fill(0);
+				moving = false;
+			}
+			draw();
+			raf = inView && !document.hidden ? requestAnimationFrame(loop) : 0;
+		};
+		const kick = () => { if (!raf && inView && !document.hidden && (canHover || moving)) raf = requestAnimationFrame(loop); };
+
+		build();
+		draw();
+		addEventListener('resize', () => { build(); draw(); });
+		if (still) return true;
+
+		section.addEventListener('pointermove', (e) => {
+			if (e.pointerType === 'touch') return;
+			const rect = root.getBoundingClientRect();
+			const fx = e.clientX - rect.left, fy = e.clientY - rect.top;
+			if (!Number.isNaN(px)) push(fx, fy, fx - px, fy - py);
+			px = fx; py = fy;
+			moving = true;
+			kick();
+		}, { passive: true });
+		section.addEventListener('pointerleave', () => { px = NaN; py = NaN; });
+		new IntersectionObserver(([e]) => { inView = e.isIntersecting; kick(); }).observe(root);
+		document.addEventListener('visibilitychange', kick);
+		return true;
+	}
+
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	document.querySelectorAll<HTMLElement>('.ribbon-lines').forEach((el) => {
+		try { init(el, reduced); } catch { /* decorative: nothing to show without the canvas */ }
+	});
+</script>
