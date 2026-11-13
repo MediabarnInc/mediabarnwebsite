@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
+@import "@fontsource-variable/google-sans-flex/opsz.css"; /* Google Sans Flex (OFL), weight + optical size axes */
 @import "@fontsource-variable/bodoni-moda/wght.css"; /* real bold Didone for the /alt/ hero where the system Didot is missing */
 
 /* Theano Didot by Alexey Kryukov, SIL Open Font License 1.1. Regular is its only weight; Latin subset. */
@@ -8,7 +8,7 @@
 /* =========================================================================
    Mediabarn brand, from mediabarninc.com (2026-10-26):
    red #FF1F26, paper #EAE4D7, light paper #F6F1E3, ink #2E1E1A,
-   Theano Didot headlines, Inter body. Texture direction (paper, noisy gradients,
+   Theano Didot headlines, Google Sans Flex (36pt optical size) body. Texture direction (paper, noisy gradients,
    drafting lines) from the moodboard: rust, clay, cocoa, espresso.
    Layer 1: primitives. Layer 2: semantic tokens that sections remap.
    ========================================================================= */
@@ -78,7 +78,7 @@
 }
 
 @theme {
-  --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: "Google Sans Flex Variable", "Google Sans Flex", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-serif: "Theano Didot", Didot, "Bodoni Moda Variable", "Bodoni 72", "Bodoni MT", Georgia, serif; /* Theano Didot (self-hosted, OFL) for everyone; the rest only while it loads */
   --breakpoint-pad: 621px;
   --breakpoint-tab: 761px;
@@ -91,6 +91,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
+  /* Google Sans Flex at its 36pt optical size everywhere, rather than following the type size */
+  font-optical-sizing: none; font-variation-settings: "opsz" 36;
   -webkit-font-smoothing: antialiased;
   position: relative;
 }
@@ -263,8 +265,8 @@ html.motion [data-unveil].up img { scale: 1; }
 
 /* Page heroes: every subpage starts its content 40px below the nav (desktop and mobile alike).
    The section's own top padding is dropped (some heroes set py-* utilities); the wrap carries the 40px. */
-.page-hero { padding-top: 0 !important; }
-.page-hero > .wrap { position: relative; padding-top: 40px; padding-bottom: clamp(72px,8vw,120px); }
+.page-hero { padding-block: 0 !important; }
+.page-hero > .wrap { position: relative; padding-top: 40px; padding-bottom: clamp(48px,5vw,72px); }
 .page-hero h1 { font-size: clamp(44px, 6.4vw, 86px); font-weight: 400; }
 /* a smaller hero headline for heroes with an image beside it (product, Federal, Healthcare) */
 .page-hero h1.product-h { font-size: clamp(40px, 4.6vw, 68px); }

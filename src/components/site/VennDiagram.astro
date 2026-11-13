@@ -1,6 +1,6 @@
 ---
 // CX / UX / SD Venn for the Design page, drawn after the current site's diagram (2026-11-02): CX the
-// largest, SD overlapping it from the upper left, UX inside CX across the SD edge. Inter labels. Hovering or focusing a circle lights its definition, and hovering a definition
+// largest, SD overlapping it from the upper left, UX inside CX across the SD edge. Google Sans Flex labels. Hovering or focusing a circle lights its definition, and hovering a definition
 // lights its circle (pair them with data-term="cx|ux|sd" on the definitions). The highlight is a pointer
 // nicety: the diagram is one labelled image for screen readers, and the definitions beside it carry the content.
 ---
@@ -27,7 +27,7 @@
 	.venn-c circle { fill: #F4EEE6; fill-opacity: .6; stroke: #C9A68A; stroke-width: 1.5; transition: fill .3s var(--ease), fill-opacity .3s var(--ease), stroke .3s var(--ease); cursor: pointer; }
 	.venn.has-active .venn-c circle { fill-opacity: .35; }
 	.venn.has-active .venn-c.active circle { fill: #E8B8A0; fill-opacity: .75; stroke: var(--red); }
-	.venn-labels text { font-family: 'Inter Variable', Inter, system-ui, sans-serif; font-weight: 700; font-size: 34px; text-anchor: middle; fill: #1E1512; pointer-events: none; }
+	.venn-labels text { font-family: 'Google Sans Flex Variable', system-ui, sans-serif; font-variation-settings: 'opsz' 36; font-weight: 700; font-size: 34px; text-anchor: middle; fill: #1E1512; pointer-events: none; }
 	/* the definition paired with the lit circle */
 	:global([data-term].venn-lit) { border-color: var(--red) !important; }
 	:global([data-term].venn-lit dt) { color: var(--red-ink); }

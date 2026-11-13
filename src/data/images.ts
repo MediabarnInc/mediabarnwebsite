@@ -5,6 +5,7 @@ import throughTheGlass from '@/assets/photos/through-the-glass.jpg';
 import teamAtWall from '@/assets/photos/team-at-wall.jpg';
 import laptopAndPhone from '@/assets/photos/laptop-and-phone.png';
 import wireframeSketch from '@/assets/photos/wireframe-sketch.png';
+import phoneAtWindow from '@/assets/photos/phone-at-window.jpg';
 import cafeLaptop from '@/assets/photos/cafe-laptop.png';
 import stickyNotes from '@/assets/photos/sticky-notes.png';
 import interviewCamera from '@/assets/photos/interview-camera.png';
@@ -25,7 +26,7 @@ import greg from '@/assets/team/greg.png';
 import mauro from '@/assets/team/mauro.jpg';
 
 export const photos = {
-	officeLobby, throughTheGlass, teamAtWall, laptopAndPhone, wireframeSketch, cafeLaptop,
+	officeLobby, throughTheGlass, teamAtWall, laptopAndPhone, wireframeSketch, cafeLaptop, phoneAtWindow,
 	stickyNotes, interviewCamera, emptyChair, peopleWriting, healthMeeting, telehealthNurse,
 	researchInterview, designWorkshop, sunsetDesk, federalBuilding, capitolSunset, careConversation, workshopNotes,
 };

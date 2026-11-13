@@ -14,7 +14,7 @@ const sectors = [
 	{ t: 'Healthcare', h: '/healthcare/', d: 'Patient, practitioner, and payer journeys mapped, measured, and improved, one initiative at a time.', tint: 'rgba(129,117,112,.38)', mood: 'clay' as const, photo: photos.careConversation },
 ];
 // one photo per pillar, from the supplied photography
-const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.laptopAndPhone];
+const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.phoneAtWindow];
 
 ---
 
@@ -46,7 +46,7 @@ const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.la
 	<section class="alt-sec" aria-labelledby="where-h">
 		<div class="wrap">
 			<div data-stagger class="mb-14 grid gap-6 desk:grid-cols-[1fr_1fr] desk:items-end">
-				<h2 id="where-h" class="max-w-[14ch]">Where experience is <span class="em">hardest</span> to get right.</h2>
+				<h2 id="where-h" class="max-w-[14ch]">Where UX can be challenging…</h2>
 				<p class="lede max-w-[46ch] desk:justify-self-end" style="--i:1">Most of our work is in government services and healthcare, where getting the experience wrong costs people time, money, and care.</p>
 			</div>
 			<div data-stagger class="grid gap-6 tab:grid-cols-2">
@@ -55,7 +55,7 @@ const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.la
 						<Placeholder label={`${s.t}: photography`} ratio="5/4" src={s.photo} class="parallax transition-transform duration-700 group-hover:scale-[1.03]" />
 						<div class="absolute inset-0" style={`background:${s.tint}`}></div>
 						<div class="absolute inset-x-0 bottom-0 grid gap-3 p-8 text-[var(--paper-light)]">
-							<h3 class="font-serif !text-[clamp(40px,4.4vw,60px)] leading-none !text-[var(--paper-light)]">{s.t} <span class="arrow text-[.6em]" aria-hidden="true">→</span></h3>
+							<h3 class="font-serif !text-[clamp(40px,4.4vw,60px)] leading-none !text-[var(--paper-light)]">{s.t} <svg class="arrow chev" viewBox="0 0 12 20" aria-hidden="true"><path d="M2 2l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></h3>
 							<p class="max-w-[40ch] text-[16px] leading-[1.6] text-[color-mix(in_srgb,var(--paper-light)_88%,transparent)]">{s.d}</p>
 						</div>
 					</a>
@@ -109,4 +109,6 @@ const pillarPhotos = [photos.researchInterview, photos.designWorkshop, photos.la
 	}
 	.alt-sec { padding-block: clamp(72px, 9vw, 140px); color: #483933; }
 	.alt-sec h2 { color: #483933; }
+	/* minimal chevron after the sector titles: a thin stroke at about a third of the cap height */
+	.chev { width: .22em; height: .36em; margin-left: .18em; vertical-align: .1em; }
 </style>
